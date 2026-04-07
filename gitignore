@@ -1,7 +1,15 @@
 .DS_Store
+.next
 .next/
+node_modules
 node_modules/
-tsconfig.tsbuildinfo
 .env
 .env.local
 .env.*.local
+tsconfig.tsbuildinfo
+git/
+next/
+supabase/___All_Errors.txt
+supabase/__supabase_Error.txt
+types/___All_Errors.txt
+types/__types_Error.txt
