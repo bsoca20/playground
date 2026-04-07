@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Del Ego-System al Ecosystem — Leadership House × Bluebarna</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--red:#FF3030;--dark:#1F1D1D;--grey:#F0F0F0;--white:#FFFFFF;--muted:rgba(255,255,255,0.5);--dim:rgba(255,255,255,0.08);}
+html,body{height:100%;overflow:hidden;background:#111;}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#fff;}
+
+.presentation{width:100vw;height:100vh;display:flex;flex-direction:column;}
+.slides-wrap{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;background:var(--dark);display:none;flex-direction:column;padding:32px 56px 20px;opacity:0;transition:opacity .25s;}
+.slide.active{display:flex;opacity:1;}
+
+/* Header */
+.sh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;flex-shrink:0;}
+.logo{font-family:'Anton',Impact,sans-serif;font-size:12px;letter-spacing:2px;line-height:1.15;color:#fff;}
+.logo small{display:block;font-family:'Helvetica Neue',sans-serif;font-size:8px;letter-spacing:3px;color:var(--muted);font-weight:400;}
+.snum{font-size:10px;color:var(--muted);letter-spacing:2px;padding-top:2px;}
+
+/* Body layouts */
+.sb{flex:1;display:flex;gap:40px;align-items:center;overflow:hidden;}
+.sl{flex:0 0 380px;display:flex;flex-direction:column;}
+.sr{flex:1;display:flex;flex-direction:column;justify-content:center;}
+
+/* Typography */
+.tag{font-size:10px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:12px;font-weight:500;}
+.title{font-family:'Anton',Impact,sans-serif;font-size:48px;line-height:1.0;color:#fff;text-transform:uppercase;margin-bottom:16px;}
+.title .r{color:var(--red);}
+.sub{font-size:14px;line-height:1.65;color:rgba(255,255,255,0.7);margin-bottom:16px;}
+.rl{width:40px;height:3px;background:var(--red);margin-bottom:16px;}
+
+/* Big stat */
+.bs{font-family:'Anton',Impact,sans-serif;font-size:96px;line-height:1;color:var(--red);}
+.bsl{font-size:16px;color:rgba(255,255,255,0.75);line-height:1.45;margin-top:6px;max-width:280px;}
+
+/* Stat cards */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.sc{background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:16px;}
+.sc .v{font-family:'Anton',Impact,sans-serif;font-size:38px;color:var(--red);line-height:1;margin-bottom:6px;}
+.sc .l{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.4;}
+.sc .src{font-size:9px;color:rgba(255,255,255,0.28);margin-top:6px;letter-spacing:.3px;}
+
+/* Chart container */
+.cc{position:relative;width:100%;}
+
+/* Insight list */
+.il{list-style:none;margin-top:10px;}
+.il li{font-size:13px;color:rgba(255,255,255,0.7);padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:10px;line-height:1.45;}
+.il li::before{content:'→';color:var(--red);flex-shrink:0;}
+
+/* Quote box */
+.qb{background:rgba(255,48,48,0.07);border-left:3px solid var(--red);padding:14px 18px;border-radius:0 6px 6px 0;margin:12px 0;}
+.qb p{font-size:14px;font-style:italic;color:rgba(255,255,255,0.82);line-height:1.6;}
+.qb .att{font-size:9px;color:var(--red);margin-top:6px;letter-spacing:1px;text-transform:uppercase;}
+
+/* Two-col */
+.tc{display:grid;grid-template-columns:1fr 1fr;gap:24px;width:100%;}
+
+/* Stage cards */
+.stg{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;}
+.stg.hi{background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);}
+
+/* Migration cards */
+.mg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;}
+.mc{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;position:relative;overflow:hidden;}
+.mc.hi{background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.25);}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.08);}
+.mc.hi::before{background:var(--red);}
+.mc .from{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.mc .arrow{font-size:14px;color:var(--red);margin:4px 0;}
+.mc .to{font-size:12px;font-weight:700;color:#fff;margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px;}
+.mc .desc{font-size:11px;color:rgba(255,255,255,0.48);line-height:1.4;}
+.mc .src-tag{font-size:9px;color:rgba(255,48,48,0.6);margin-top:6px;}
+
+/* Ecosystem map */
+.em{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:10px;width:100%;flex:1;}
+.en{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px;}
+.en.center{background:rgba(255,48,48,0.1);border-color:rgba(255,48,48,0.3);border-width:2px;grid-column:2;grid-row:1/3;justify-content:center;align-items:center;text-align:center;}
+.en-icon{font-size:22px;margin-bottom:4px;}
+.en-title{font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;}
+.en-desc{font-size:10px;color:rgba(255,255,255,0.45);line-height:1.4;}
+.en-q{font-size:10px;color:var(--red);font-style:italic;margin-top:4px;line-height:1.3;}
+
+/* Step flow */
+.sf-flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;width:100%;}
+.sf-step{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:8px 12px;flex:1;min-width:80px;}
+.sf-step.hi{background:rgba(255,48,48,0.1);border-color:rgba(255,48,48,0.25);}
+.sf-step .sn{font-family:'Anton',Impact,sans-serif;font-size:18px;color:var(--red);line-height:1;}
+.sf-step .st{font-size:10px;font-weight:700;color:#fff;text-transform:uppercase;margin-top:4px;letter-spacing:.3px;}
+.sf-arrow{color:var(--red);font-size:14px;flex-shrink:0;}
+
+/* Footer */
+.sf{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid rgba(255,255,255,0.07);margin-top:auto;flex-shrink:0;}
+.srcs{font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:.2px;}
+.nt{font-size:9px;color:rgba(255,255,255,0.28);cursor:pointer;letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(255,255,255,0.1);padding:3px 8px;border-radius:3px;transition:all .2s;user-select:none;}
+.nt:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
+
+/* Notes panel */
+.np{background:rgba(0,0,0,0.92);border-top:2px solid var(--red);padding:16px 56px;max-height:160px;overflow-y:auto;display:none;flex-shrink:0;}
+.np.vis{display:block;}
+.np h4{font-size:9px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:8px;}
+.np p{font-size:12px;color:rgba(255,255,255,0.72);line-height:1.7;}
+
+/* Nav */
+.nb{background:rgba(0,0,0,0.45);padding:10px 56px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0;}
+.dots{display:flex;gap:5px;align-items:center;}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.18);cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--red);width:16px;border-radius:2px;}
+.nc{font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:1px;}
+.nctrls{display:flex;gap:10px;}
+.nb-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.65);padding:6px 16px;border-radius:3px;cursor:pointer;font-size:11px;font-family:'Helvetica Neue',sans-serif;letter-spacing:1px;text-transform:uppercase;transition:all .2s;}
+.nb-btn:hover{background:var(--red);border-color:var(--red);color:#fff;}
+
+/* Glow effect */
+.glow::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(255,48,48,0.1) 0%,transparent 70%);pointer-events:none;}
+
+/* Inline numbers */
+.n-red{font-family:'Anton',Impact,sans-serif;color:var(--red);}
+
+/* Divider arrow */
+.da{display:flex;align-items:center;gap:12px;margin:10px 0;}
+.da-line{flex:1;height:1px;background:rgba(255,255,255,0.08);}
+.da-label{font-size:9px;color:var(--red);letter-spacing:2px;text-transform:uppercase;}
+
+/* Big label pair */
+.blp{display:flex;align-items:center;gap:20px;margin:12px 0;}
+.blp-box{flex:1;padding:14px;border-radius:8px;text-align:center;}
+.blp-box.ego{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);}
+.blp-box.eco{background:rgba(255,48,48,0.08);border:1px solid rgba(255,48,48,0.25);}
+.blp-box .bv{font-family:'Anton',Impact,sans-serif;font-size:28px;line-height:1;margin-bottom:4px;}
+.blp-box .bl{font-size:11px;color:rgba(255,255,255,0.55);line-height:1.3;}
+.blp-vs{font-family:'Anton',Impact,sans-serif;font-size:20px;color:rgba(255,255,255,0.2);}
+
+/* Orch steps */
+.os{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;margin-top:8px;}
+.oc{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;}
+.oc.hi{background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);}
+.oc .on{font-family:'Anton',Impact,sans-serif;font-size:26px;color:var(--red);display:block;margin-bottom:6px;}
+.oc .ot{font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;}
+.oc .od{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.4;}
+
+/* Lab canvas */
+.lab{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;flex:1;}
+.lab-node{border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;}
+.lab-node.patient{background:rgba(255,48,48,0.08);border:2px solid rgba(255,48,48,0.3);}
+.lab-node.hcp{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);}
+.lab-node.hospital{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);}
+.lab-node.payer{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);}
+.lab-node.regulator{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);}
+.lab-node.digital{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);}
+.lab-node .ln-title{font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:8px;}
+.lab-node .ln-icon{font-size:18px;}
+.lab-node .ln-need{font-size:10px;color:rgba(255,48,48,0.8);font-style:italic;line-height:1.3;}
+.lab-node .ln-q{font-size:10px;color:rgba(255,255,255,0.38);line-height:1.3;margin-top:4px;}
+.lab-node .ln-q span{color:rgba(255,255,255,0.65);}
+.lab-tag{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:2px;}
+</style>
+</head>
+<body>
+<div class="presentation" id="app">
+<div class="slides-wrap">
+
+<!-- ═══════════════ SLIDE 1 — COVER ═══════════════ -->
+<div class="slide glow active" data-n="1" style="position:relative;overflow:hidden;">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">01 / 08</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="tag">Bloque 2 · Mentalidad Ecosistémica en Lanzamientos</div>
+      <div class="title" style="font-size:58px;line-height:.95;">DEL<br>EGO-<br>SYSTEM<br>AL<br><span class="r">ECOSYSTEM.</span></div>
+      <p class="sub" style="margin-top:16px;">Los lanzamientos fracasan porque se diseñan desde la empresa hacia fuera. Los que ganan se construyen desde el ecosistema hacia adentro.</p>
+      <div style="margin-top:12px;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:1px;">MENTALIDAD · INTERDEPENDENCIAS · ORQUESTACIÓN · MAPEO · LIDERAZGO</div>
+    </div>
+    <div class="sr">
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:28px;margin-bottom:16px;">
+        <div style="font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">El cambio de paradigma</div>
+        <div class="blp">
+          <div class="blp-box ego"><div class="bv" style="color:rgba(255,255,255,0.35);">EGO-SYSTEM</div><div class="bl">Mi empresa en el centro.<br>Control. Silos. Transacción.</div></div>
+          <div class="blp-vs">→</div>
+          <div class="blp-box eco"><div class="bv" style="color:var(--red);">ECOSYSTEM</div><div class="bl">El paciente en el centro.<br>Orquestación. Interdependencia.<br>Valor compartido.</div></div>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;margin-top:8px;">"Las empresas ya no compiten entre sí de forma individual. Ahora los <strong style="color:#fff;">ecosistemas compiten contra ecosistemas</strong>. Las que no se adapten enfrentarán una desventaja devastadora."</div>
+        <div style="font-size:9px;color:var(--red);margin-top:6px;letter-spacing:1px;text-transform:uppercase;">Orlando Vergara — Del Ego al Eco, 2023</div>
+      </div>
+      <div class="sg" style="margin-top:0;">
+        <div class="sc">
+          <div class="v">14.6%</div>
+          <div class="l">de los ingresos totales anuales atribuidos a modelos de ecosistema por empresas life sciences de alto rendimiento</div>
+          <div class="src">EY Ecosystem Study, 2025</div>
+        </div>
+        <div class="sc">
+          <div class="v">1 en 10</div>
+          <div class="l">lanzamientos superó $100M en ventas en el primer año (2020–2024) — vs. 1 en 5 en el período anterior</div>
+          <div class="src">IQVIA Modern Launch, Oct 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Fuentes: Orlando Vergara — Del Ego al Eco (2023); EY Life Sciences Ecosystem Study 2025; IQVIA Modern Launch Playbook, Octubre 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 2 — EL MODELO ROTO ═══════════════ -->
+<div class="slide" data-n="2">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">02 / 08</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">El Problema · Mentalidad Ego-System</div>
+      <div class="title">Por qué<br>el modelo<br>actual<br><span class="r">falla.</span></div>
+      <p class="sub">El lanzamiento tradicional se diseña desde la empresa hacia afuera. El producto en el centro. Los stakeholders, a la periferia. El resultado es predecible.</p>
+      <div class="qb">
+        <p>"El culpable no es el producto — es un modelo de lanzamiento que no ha evolucionado al ritmo de un ecosistema sanitario cada vez más conectado y complejo."</p>
+        <div class="att">Guidehouse — Pharma Launch Strategy, Agosto 2025</div>
+      </div>
+    </div>
+    <div class="sr">
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Ego-System vs. Ecosystem: Diferencias estructurales de mentalidad</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+        <div style="display:grid;grid-template-columns:1fr 30px 1fr;gap:8px;align-items:center;">
+          <div style="font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:1.5px;text-transform:uppercase;text-align:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);">EGO-SYSTEM</div>
+          <div></div>
+          <div style="font-size:9px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;text-align:center;padding:4px 0;border-bottom:1px solid rgba(255,48,48,0.2);">ECOSYSTEM</div>
+        </div>
+        <div id="compareRows"></div>
+      </div>
+      <div style="background:rgba(255,48,48,0.06);border:1px solid rgba(255,48,48,0.15);border-radius:8px;padding:14px 18px;display:flex;align-items:center;gap:16px;">
+        <div style="font-family:'Anton',Impact,sans-serif;font-size:40px;color:var(--red);flex-shrink:0;">&gt;80%</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">La tasa de reposición de pipeline biopharma caerá más del 80% entre 2021 y 2028 — de 2.5x a 0.6x. Ninguna empresa puede cubrir ese gap sola. La respuesta está en los ecosistemas. <span style="font-size:9px;color:rgba(255,255,255,0.28);">EY / Evaluate Pharma 2025</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Fuentes: Orlando Vergara — Del Ego al Eco (2023); Guidehouse Pharma Launch Aug 2025; EY Life Sciences Ecosystem Study 2025; IQVIA Launch Excellence IX, 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 3 — QUÉ ES UN ECOSISTEMA ═══════════════ -->
+<div class="slide" data-n="3">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">03 / 08</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">Definición · Ecosystems Leaders Mindset</div>
+      <div class="title" style="font-size:40px;">¿Qué es<br>realmente un<br><span class="r">ecosistema</span><br>en pharma?</div>
+      <div class="qb" style="margin-top:12px;">
+        <p>"Una red de organizaciones independientes y complementarias que, al compartir un propósito común, se unen para resolver las necesidades de las personas mediante soluciones integrales, coherentes y convenientes."</p>
+        <div class="att">Orlando Vergara — Del Ego al Eco, 2023</div>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:10px;line-height:1.5;">No es un canal. No es una alianza táctica. Es un <strong style="color:#fff;">sistema de propósito compartido</strong> centrado en un Área de la Vida del paciente — no en un producto.</p>
+    </div>
+    <div class="sr">
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Los 3 componentes de un ecosistema de lanzamiento</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+        <div style="background:rgba(255,48,48,0.08);border:1px solid rgba(255,48,48,0.2);border-radius:8px;padding:16px;display:flex;gap:16px;align-items:flex-start;">
+          <div style="font-family:'Anton',Impact,sans-serif;font-size:32px;color:var(--red);flex-shrink:0;line-height:1;">01</div>
+          <div><div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;">Propósito Compartido</div><div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.45;">El ecosistema existe para mejorar la vida del paciente — no para maximizar el volumen de prescripciones. Este propósito alinea a actores que de otro modo serían independientes o competidores.</div></div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px;display:flex;gap:16px;align-items:flex-start;">
+          <div style="font-family:'Anton',Impact,sans-serif;font-size:32px;color:rgba(255,255,255,0.3);flex-shrink:0;line-height:1;">02</div>
+          <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.75);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;">Interdependencia Real</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.45;">No solo identificar stakeholders — entender cómo sus decisiones se afectan mutuamente. Un retraso del pagador no es solo un problema de acceso: es un fallo de todo el sistema de valor.</div></div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px;display:flex;gap:16px;align-items:flex-start;">
+          <div style="font-family:'Anton',Impact,sans-serif;font-size:32px;color:rgba(255,255,255,0.3);flex-shrink:0;line-height:1;">03</div>
+          <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.75);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;">Orquestación — No Control</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.45;">El líder del ecosistema no dirige — orquesta. Influye sin autoridad directa. Crea condiciones para que otros actores aporten su máximo valor al sistema.</div></div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:12px 16px;border:1px solid rgba(255,255,255,0.07);">
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;">En pharma, las compañías más preparadas para el futuro están migrando de vender fármacos aislados a <strong style="color:#fff;">participar en plataformas de salud integradas</strong>. El valor de un medicamento ya no está solo en la molécula — está en los outcomes que genera. <span style="font-size:9px;color:rgba(255,255,255,0.28);">IMD Future Readiness 2025 · PwC Future of Pharma Jan 2026</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Fuentes: Orlando Vergara — Del Ego al Eco (2023); IMD Pharmaceutical Future Readiness Indicator 2025; PwC Future of Pharma January 2026; EY Ecosystems in Life Sciences 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 4 — LAS 6 MIGRACIONES ═══════════════ -->
+<div class="slide" data-n="4">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">04 / 08</div></div>
+  <div class="sb" style="flex-direction:column;gap:14px;align-items:flex-start;">
+    <div>
+      <div class="tag">Las 6 Migraciones · Aplicadas a Pharma Launches</div>
+      <div class="title" style="font-size:36px;">El lanzamiento ecosistémico exige <span class="r">6 cambios de paradigma.</span></div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.55);max-width:900px;">Del libro <em style="color:rgba(255,255,255,0.75);">"Del Ego al Eco"</em> — traducido al contexto real de un lanzamiento farmacéutico en 2025. Estas migraciones no son secuenciales: son simultáneas.</p>
+    </div>
+    <div class="mg">
+      <div class="mc hi">
+        <div class="from">De</div><div style="font-size:12px;color:rgba(255,255,255,0.4);font-weight:700;">EGO TÓXICO</div>
+        <div class="arrow">↓</div>
+        <div class="to">ECO — Propósito</div>
+        <div class="desc">Del "somos los mejores" al "hacemos lo mejor para el paciente." El lanzamiento no celebra el producto — celebra el outcome del paciente.</div>
+        <div class="src-tag">Migración 1</div>
+      </div>
+      <div class="mc">
+        <div class="from">De</div><div style="font-size:12px;color:rgba(255,255,255,0.4);font-weight:700;">SUMA CERO</div>
+        <div class="arrow">↓</div>
+        <div class="to">ABUNDANCIA</div>
+        <div class="desc">No toda cuota ganada es cuota robada. Un ecosistema bien construido agranda el mercado total de pacientes tratados correctamente.</div>
+        <div class="src-tag">Migración 2</div>
+      </div>
+      <div class="mc">
+        <div class="from">De</div><div style="font-size:12px;color:rgba(255,255,255,0.4);font-weight:700;">FOCO INTERNO</div>
+        <div class="arrow">↓</div>
+        <div class="to">FOCO EXTERNO</div>
+        <div class="desc">El mercado cambia fuera de la empresa. La señal más relevante para el launch está en el paciente, el HCP y el pagador — no en el forecast interno.</div>
+        <div class="src-tag">Migración 3 · ZS 2025</div>
+      </div>
+      <div class="mc">
+        <div class="from">De</div><div style="font-size:12px;color:rgba(255,255,255,0.4);font-weight:700;">PIRÁMIDES</div>
+        <div class="arrow">↓</div>
+        <div class="to">CÍRCULOS</div>
+        <div class="desc">De estructuras verticales de launch team a equipos modulares, cross-funcionales, con medical, market access y commercial co-liderados desde el día 1.</div>
+        <div class="src-tag">Migración 4 · PMLiVE Sep 2025</div>
+      </div>
+      <div class="mc hi">
+        <div class="from">De</div><div style="font-size:12px;color:rgba(255,255,255,0.4);font-weight:700;">COMPETICIÓN</div>
+        <div class="arrow">↓</div>
+        <div class="to">COOPETICIÓN</div>
+        <div class="desc">Con advocacy groups, sociedades médicas, digitales, incluso competidores en áreas de acceso. El ecosistema compite contra el statu quo — no contra sí mismo.</div>
+        <div class="src-tag">Migración 5 · Elliogen Aug 2025</div>
+      </div>
+      <div class="mc">
+        <div class="from">De</div><div style="font-size:12px;color:rgba(255,255,255,0.4);font-weight:700;">REACTIVO</div>
+        <div class="arrow">↓</div>
+        <div class="to">PROACTIVO</div>
+        <div class="desc">No esperar la aprobación para empezar a construir el ecosistema. El market shaping comienza 24–36 meses antes del lanzamiento.</div>
+        <div class="src-tag">Migración 6 · IQVIA 2025</div>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 20px;width:100%;display:flex;align-items:center;gap:16px;">
+      <div style="font-family:'Anton',Impact,sans-serif;font-size:13px;color:var(--red);letter-spacing:1px;text-transform:uppercase;flex-shrink:0;">Nota clave</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;">Ninguna de estas migraciones es un proyecto. Todas son cambios de mentalidad que se manifiestan en decisiones concretas: <strong style="color:#fff;">quién está en la sala cuando se diseña el launch, qué datos se priorizan, y qué pregunta guía el plan.</strong></div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Marco: Orlando Vergara — Del Ego al Eco (2023). Evidencia externa: ZS 2025; IQVIA Launch Excellence IX 2025; PMLiVE Sep 2025; Elliogen Aug 2025; Guidehouse Aug 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 5 — STAKEHOLDERS VS INTERDEPENDENCIAS ═══════════════ -->
+<div class="slide" data-n="5">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">05 / 08</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">El Cambio Clave · De Lista a Red</div>
+      <div class="title" style="font-size:40px;">Stakeholders<br>vs.<br><span class="r">Interdepen-<br>dencias.</span></div>
+      <p class="sub">La mayoría de los planes de lanzamiento tienen una lista de stakeholders. Muy pocos tienen un mapa de cómo las decisiones de un actor afectan al resto del sistema.</p>
+      <div class="qb">
+        <p>"El launch excellence ya no se define por una táctica aislada, sino por la orquestación de personas, plataformas y procesos."</p>
+        <div class="att">PM360 — Key Elements of Successful Launches, Diciembre 2025</div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5;">Identificar stakeholders es necesario. Entender sus <strong style="color:#fff;">interdependencias</strong> es lo que convierte un plan de launch en una estrategia de ecosistema.</div>
+    </div>
+    <div class="sr">
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Las cadenas de interdependencia que rompen lanzamientos</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:rgba(255,48,48,0.07);border:1px solid rgba(255,48,48,0.18);border-radius:8px;padding:14px 16px;">
+          <div style="font-size:9px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Cadena 1 — Acceso</div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);">Aprobación EMA</div>
+            <span style="color:var(--red);">→</span>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);">HTA nacional</div>
+            <span style="color:var(--red);">→</span>
+            <div style="background:rgba(255,48,48,0.2);border-radius:4px;padding:5px 10px;font-size:11px;color:rgba(255,150,150,0.9);">531 días de espera</div>
+            <span style="color:var(--red);">→</span>
+            <div style="background:rgba(255,48,48,0.3);border-radius:4px;padding:5px 10px;font-size:11px;color:var(--red);">Paciente sin acceso</div>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:6px;">El regulador no controla al pagador. El pagador no controla al hospital. Si el Launch Team no gestiona esta cadena, nadie lo hará.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px 16px;">
+          <div style="font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Cadena 2 — Prescripción</div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);">KOL convencido</div>
+            <span style="color:var(--red);">→</span>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);">HCP prescribe</div>
+            <span style="color:var(--red);">→</span>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);">PA requerida</div>
+            <span style="color:var(--red);">→</span>
+            <div style="background:rgba(255,48,48,0.2);border-radius:4px;padding:5px 10px;font-size:11px;color:rgba(255,150,150,0.9);">Paciente abandona</div>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:6px;">El 94% de los médicos dice que la autorización previa retrasa el cuidado necesario. La intención de prescribir no es suficiente.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px 16px;">
+          <div style="font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Cadena 3 — Engagement</div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);">Rep visita HCP</div>
+            <span style="color:var(--red);">→</span>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);">Mensaje genérico</div>
+            <span style="color:var(--red);">→</span>
+            <div style="background:rgba(255,48,48,0.2);border-radius:4px;padding:5px 10px;font-size:11px;color:rgba(255,150,150,0.9);">&lt;2 min de atención</div>
+            <span style="color:var(--red);">→</span>
+            <div style="background:rgba(255,48,48,0.3);border-radius:4px;padding:5px 10px;font-size:11px;color:var(--red);">Sin cambio de conducta</div>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:6px;">El 80% de los HCPs recibe comunicaciones genéricas e impersonales. La visita es una oportunidad de ecosistema — no solo un touchpoint.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Fuentes: Orlando Vergara — Del Ego al Eco (2023); PM360 Dic 2025; EFPIA W.A.I.T. Jan 2024; AMA Jul 2024; Indegene Omnichannel May 2025; IQVIA Launch Excellence IX 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 6 — DEL CONTROL A LA ORQUESTACIÓN ═══════════════ -->
+<div class="slide" data-n="6">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">06 / 08</div></div>
+  <div class="sb" style="flex-direction:column;gap:14px;align-items:flex-start;">
+    <div>
+      <div class="tag">Liderazgo Ecosistémico · Del Control a la Orquestación</div>
+      <div class="title" style="font-size:36px;">El líder de lanzamiento como <span class="r">orquestador.</span></div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.55);max-width:900px;">En el modelo ego-system, el Brand Manager controla. En el modelo ecosistema, el Launch Leader orquesta — influye sin autoridad directa sobre actores que no dependen de él.</p>
+    </div>
+    <div class="os">
+      <div class="oc hi">
+        <span class="on">01</span>
+        <div class="ot">Conector</div>
+        <div class="od">Identifica y conecta puntos clave — personas, organizaciones, recursos — dentro y fuera de la empresa. Ve el sistema completo, no solo su función.</div>
+        <div style="font-size:9px;color:var(--red);margin-top:6px;">ELM — Ecosystems Leaders Mindset</div>
+      </div>
+      <div class="oc">
+        <span class="on">02</span>
+        <div class="ot">Influencer sin autoridad</div>
+        <div class="od">No puede obligar al pagador. No puede forzar al hospital. Pero puede construir el caso de valor que hace que todos quieran participar en el ecosistema.</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-top:6px;">Vergara, 2023</div>
+      </div>
+      <div class="oc">
+        <span class="on">03</span>
+        <div class="ot">Polidiestro</div>
+        <div class="od">Explota el negocio actual mientras explora el futuro. Gestiona el launch del día 1 y diseña la evolución del ecosistema para el año 3.</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-top:6px;">Vergara, 2023</div>
+      </div>
+      <div class="oc hi">
+        <span class="on">04</span>
+        <div class="ot">Market Shaper</div>
+        <div class="od">Educa, inspira y equipa al ecosistema — HCPs, advocacy groups y pagadores — para que adopten la nueva terapia. El lanzamiento empieza antes del día 1.</div>
+        <div style="font-size:9px;color:var(--red);margin-top:6px;">PMLiVE Sep 2025</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;width:100%;">
+      <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px 18px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Modelo Ego-System — Launch Manager</div>
+        <ul class="il" style="margin-top:0;">
+          <li style="font-size:11px;">Define el plan → lo ejecuta el equipo</li>
+          <li style="font-size:11px;">Mide actividades: visitas, calls, share of voice</li>
+          <li style="font-size:11px;">Stakeholders = audiencia a convencer</li>
+          <li style="font-size:11px;">Éxito = primeras semanas de ventas</li>
+        </ul>
+      </div>
+      <div style="flex:1;background:rgba(255,48,48,0.07);border:1px solid rgba(255,48,48,0.2);border-radius:8px;padding:14px 18px;">
+        <div style="font-size:9px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Modelo Ecosystem — Launch Orchestrator</div>
+        <ul class="il" style="margin-top:0;">
+          <li style="font-size:11px;"><strong style="color:#fff;">Co-diseña</strong> el plan con pacientes, HCPs, pagadores</li>
+          <li style="font-size:11px;">Mide outcomes: adherencia, acceso, calidad de vida</li>
+          <li style="font-size:11px;">Stakeholders = <strong style="color:#fff;">socios activos del ecosistema</strong></li>
+          <li style="font-size:11px;">Éxito = valor del paciente a los 36 meses</li>
+        </ul>
+      </div>
+    </div>
+    <div class="qb" style="margin:0;width:100%;">
+      <p>"Las compañías ganadoras de 2035 construirán y participarán en ecosistemas que apoyen al paciente durante todo el ciclo de vida de la enfermedad — no solo en el momento de la prescripción."</p>
+      <div class="att">PwC Future of Pharma — Enero 2026</div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Fuentes: Orlando Vergara — Del Ego al Eco (2023); PwC Future of Pharma Jan 2026; PMLiVE Sep 2025; Guidehouse Aug 2025; ZS Pharma Trends 2025; IQVIA Modern Launch Oct 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 7 — ECOSYSTEM MAPPING LAB ═══════════════ -->
+<div class="slide" data-n="7">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">07 / 08</div></div>
+  <div class="sb" style="flex-direction:column;gap:12px;align-items:flex-start;overflow:hidden;">
+    <div>
+      <div class="tag">Ecosystem Mapping Lab · Ejercicio de Clase</div>
+      <div class="title" style="font-size:34px;">Mapea tu ecosistema de <span class="r">lanzamiento.</span></div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.55);max-width:900px;">Cada nodo es un actor del ecosistema. Para cada uno: ¿Qué necesita? ¿Qué decide? ¿Cómo afecta a los demás? ¿Qué rol juega tu empresa?</p>
+    </div>
+    <div class="lab">
+      <div class="lab-node patient">
+        <div class="lab-tag">Nodo Central</div>
+        <div class="ln-title"><span class="ln-icon">🧑‍⚕️</span>PACIENTE</div>
+        <div class="ln-need">Necesidad: Acceso rápido, adherencia sostenida, calidad de vida real.</div>
+        <div class="ln-q">Pregunta clave: <span>¿Qué barreras encuentra entre el diagnóstico y el tratamiento efectivo?</span></div>
+        <div class="ln-q">Interdependencia: <span>Su abandono afecta datos de RWE, reputación del producto y renovación de contratos.</span></div>
+      </div>
+      <div class="lab-node hcp">
+        <div class="lab-tag">Actor 1</div>
+        <div class="ln-title"><span class="ln-icon">👨‍⚕️</span>HCP / KOL</div>
+        <div class="ln-need">Necesidad: Información relevante, sin fricción, en el momento adecuado.</div>
+        <div class="ln-q">Pregunta clave: <span>¿Qué les impide prescribir con confianza desde el día 1?</span></div>
+        <div class="ln-q">Interdependencia: <span>Su experiencia de engagement condiciona si usan el PSP y si hablan del producto con colegas.</span></div>
+      </div>
+      <div class="lab-node hospital">
+        <div class="lab-tag">Actor 2</div>
+        <div class="ln-title"><span class="ln-icon">🏥</span>HOSPITAL / INSTITUCIÓN</div>
+        <div class="ln-need">Necesidad: Eficiencia del sistema, reducción de reingresos, justificación presupuestaria.</div>
+        <div class="ln-q">Pregunta clave: <span>¿Cómo encaja el nuevo tratamiento en los protocolos existentes?</span></div>
+        <div class="ln-q">Interdependencia: <span>Su inclusión en guías clínicas determina el acceso real a prescriptores especialistas.</span></div>
+      </div>
+      <div class="lab-node payer">
+        <div class="lab-tag">Actor 3</div>
+        <div class="ln-title"><span class="ln-icon">💰</span>PAGADOR / HTA</div>
+        <div class="ln-need">Necesidad: Valor demostrable, control de gasto, evidencia en vida real.</div>
+        <div class="ln-q">Pregunta clave: <span>¿Qué evidencia necesita para financiar el acceso amplio?</span></div>
+        <div class="ln-q">Interdependencia: <span>Sus decisiones de reembolso controlan el volumen de prescripciones durante los primeros 531 días.</span></div>
+      </div>
+      <div class="lab-node regulator">
+        <div class="lab-tag">Actor 4</div>
+        <div class="ln-title"><span class="ln-icon">📋</span>REGULADOR / AEMPS</div>
+        <div class="ln-need">Necesidad: Seguridad, cumplimiento, farmacovigilancia post-comercialización.</div>
+        <div class="ln-q">Pregunta clave: <span>¿Qué condicionantes post-aprobación afectan a la estrategia comercial?</span></div>
+        <div class="ln-q">Interdependencia: <span>Sus condiciones REMS/gestión de riesgos pueden bloquear canales digitales o limitar la población prescriptora.</span></div>
+      </div>
+      <div class="lab-node digital">
+        <div class="lab-tag">Actor 5</div>
+        <div class="ln-title"><span class="ln-icon">📱</span>PLATAFORMAS DIGITALES</div>
+        <div class="ln-need">Necesidad: Integración, datos de uso, modelos de monetización o alianza.</div>
+        <div class="ln-q">Pregunta clave: <span>¿Qué plataforma conecta mejor con el paciente en su momento de necesidad?</span></div>
+        <div class="ln-q">Interdependencia: <span>Su adopción por parte del HCP o el paciente amplifica o anula la inversión en PSP y adherencia.</span></div>
+      </div>
+    </div>
+    <div style="background:rgba(255,48,48,0.06);border:1px solid rgba(255,48,48,0.15);border-radius:8px;padding:10px 18px;width:100%;display:flex;align-items:center;gap:16px;flex-shrink:0;">
+      <div style="font-size:9px;color:var(--red);letter-spacing:2px;text-transform:uppercase;flex-shrink:0;">Pregunta Lab</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.4;">Para tu producto: ¿Cuál de estos nodos tiene la mayor influencia sobre el éxito en año 1? ¿Cuál está más descuidado en tu plan actual? ¿Qué interdependencia no visible podría bloquear el lanzamiento?</div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Marco: Orlando Vergara — Del Ego al Eco (2023) · 7 Pasos para Ecosistemizar. Aplicación pharma: Elliogen Aug 2025; IQVIA Launch Excellence Framework 2025; PM360 Dic 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 8 — CIERRE ═══════════════ -->
+<div class="slide glow" data-n="8" style="position:relative;overflow:hidden;">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">08 / 08</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="tag">La Pregunta Final · Liderazgo Ecosistémico</div>
+      <div class="title" style="font-size:50px;line-height:.95;">¿SER LOS<br>MEJORES<br>O HACER<br>LO MEJOR<br><span class="r">PARA EL<br>MUNDO?</span></div>
+    </div>
+    <div class="sr">
+      <p style="font-size:14px;color:rgba(255,255,255,0.72);line-height:1.7;margin-bottom:16px;">La piedra angular del cambio de mentalidad. El lanzamiento ego-system pregunta: ¿cómo somos los mejores en el mercado? El lanzamiento ecosistémico pregunta: ¿cómo hacemos lo mejor para la vida del paciente?</p>
+      <div class="sg">
+        <div class="sc" style="background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);">
+          <div style="font-size:9px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">Diseña desde el propósito</div>
+          <div class="l">El propósito ecosistémico atrae socios, construye confianza con pagadores y genera datos de outcomes que otros no tienen.</div>
+        </div>
+        <div class="sc" style="background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);">
+          <div style="font-size:9px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">Mapea antes de planificar</div>
+          <div class="l">El mapa del ecosistema precede al plan comercial. Sin él, el plan está optimizando el interior de un sistema que no comprende.</div>
+        </div>
+        <div class="sc" style="background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);">
+          <div style="font-size:9px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">Orquesta — no controles</div>
+          <div class="l">Tu empresa no puede controlar al pagador, al hospital ni al paciente. Puede construir el sistema donde todos quieren participar.</div>
+        </div>
+        <div class="sc" style="background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);">
+          <div style="font-size:9px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">Mide outcomes, no actividades</div>
+          <div class="l">El ecosistema se mide en adherencia, calidad de vida y acceso real — no en número de visitas o share of voice.</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,48,48,0.07);border-left:3px solid var(--red);padding:14px 18px;border-radius:0 6px 6px 0;margin-top:14px;">
+        <p style="font-size:14px;font-style:italic;color:rgba(255,255,255,0.82);line-height:1.6;">"Las compañías que primero construyan plataformas de salud integradas, pasen de prescripciones transaccionales a branded health journeys, y midan el éxito en outcomes de paciente — serán las que definan el estándar del lanzamiento en 2030."</p>
+        <div style="font-size:9px;color:var(--red);margin-top:6px;letter-spacing:1px;text-transform:uppercase;">PwC Future of Pharma — Enero 2026 · Orlando Vergara — Del Ego al Eco, 2023</div>
+      </div>
+      <div style="margin-top:12px;display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,0.28);letter-spacing:.5px;">
+        <span>www.leadership-house.com</span>
+        <span>www.bluebarna.com</span>
+        <span>Datos: 2024–2026</span>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Síntesis: Orlando Vergara — Del Ego al Eco (2023); PwC Future of Pharma Jan 2026; IMD Future Readiness 2025; EY Ecosystems in Life Sciences 2025; IQVIA Modern Launch Oct 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+</div><!-- end slides-wrap -->
+
+<!-- Speaker Notes -->
+<div class="np" id="np"><h4>Notas del Ponente</h4><p id="nc"></p></div>
+
+<!-- Nav bar -->
+<div class="nb">
+  <div class="dots" id="dots"></div>
+  <div class="nc" id="counter">1 / 8</div>
+  <div class="nctrls">
+    <button class="nb-btn" onclick="prev()">← PREV</button>
+    <button class="nb-btn" onclick="next()">NEXT →</button>
+  </div>
+</div>
+</div>
+
+<script>
+const notes=[
+  "Estamos en el segundo bloque del programa. Si el primero explicó POR QUÉ los lanzamientos fracasan usando datos de mercado, este bloque responde al QUÉ HACER con esa realidad. La respuesta no es un proceso mejor. Es un cambio de mentalidad. La tesis central es simple pero radical: los lanzamientos farmacéuticos se diseñan desde la empresa hacia afuera — con el producto en el centro. Los que ganan se construyen desde el ecosistema hacia adentro — con el paciente en el centro. Ese cambio lo llamamos 'Del Ego-System al Ecosystem'.",
+  "El modelo de lanzamiento tradicional tiene un defecto estructural: asume que la empresa puede controlar el camino del producto hasta el paciente. No puede. El pagador no depende de ella. El hospital no depende de ella. El paciente tampoco. Cuando el modelo mental es ego-céntrico, se optimizan los procesos internos mientras el sistema externo actúa en otra dirección. La tasa de reposición de pipeline biopharma caerá más del 80% antes de 2028. Ninguna empresa puede resolver eso sola. La única respuesta estructural son los ecosistemas.",
+  "La definición es precisa: un ecosistema no es una alianza ni un canal. Es una red de actores independientes que comparten un propósito — resolver las necesidades de las personas. En pharma, ese propósito es la salud del paciente. Los tres componentes — propósito compartido, interdependencia real y orquestación — son inseparables. Sin propósito, el ecosistema no cohesiona. Sin interdependencia, es solo multichannel. Sin orquestación, es caos. Las compañías más preparadas del mundo ya están haciendo esta transición — de vender fármacos a participar en plataformas de salud.",
+  "Estas seis migraciones vienen del libro 'Del Ego al Eco'. No son teóricas — cada una tiene un equivalente directo en las decisiones de lanzamiento. La más urgente para pharma en 2025 es probablemente la migración 6: de reactivo a proactivo. Las compañías que esperan la aprobación regulatoria para empezar a construir el ecosistema llegan tarde. El market shaping real comienza 24 a 36 meses antes del día 1. Hagan la prueba: ¿cuándo en su empresa empieza el trabajo con pagadores, advocacy groups y hospitales? La respuesta es reveladora.",
+  "Esta diapositiva introduce la diferencia más importante del bloque: identificar stakeholders es necesario pero insuficiente. El mapa de stakeholders dice quién está en el sistema. El mapa de interdependencias dice cómo las decisiones de uno afectan a todos los demás. Las tres cadenas que ven aquí — acceso, prescripción y engagement — son los puntos de quiebre más frecuentes en los lanzamientos europeos. Ninguno se puede resolver de forma aislada. El retraso del pagador no es un problema de market access. Es un problema de ecosistema no preparado.",
+  "El cambio del Launch Manager al Launch Orchestrator es el cambio de mentalidad más difícil en pharma. Porque implica soltar el control. Un orquestador no puede obligar al pagador a reembolsar más rápido. No puede forzar al hospital a incluir el producto en guías. Pero puede construir el caso de valor que hace que todos quieran hacerlo. La competencia central ya no es gestionar un plan — es influir sin autoridad directa sobre un sistema complejo. Eso se llama Ecosystems Leaders Mindset.",
+  "Este es el ejercicio central del bloque. Cada equipo tiene un producto y un mercado. El objetivo es construir el mapa de interdependencias — no la lista de stakeholders. Para cada nodo: ¿Qué necesita? ¿Qué decide? ¿Cómo afecta a los otros cinco actores? ¿Cuál tiene más influencia en el año 1? ¿Cuál está más descuidado en el plan actual? La pregunta que más suele revelar insight: ¿qué interdependencia no visible podría bloquear el lanzamiento aunque todo lo demás esté bien ejecutado?",
+  "Cerramos con la pregunta fundacional del libro: ¿ser los mejores del mundo o hacer lo mejor para el mundo? Para el contexto de lanzamiento farmacéutico, esa pregunta tiene consecuencias operativas concretas. Querer 'ser el mejor' produce planes centrados en share of market. Querer 'hacer lo mejor' produce estrategias centradas en outcomes de paciente — que resultan, paradójicamente, en mejor performance comercial a largo plazo. PwC lo confirma con datos de Q4 2025: las compañías que están rompiendo el ciclo de bajo rendimiento son exactamente las que han hecho este cambio."
+];
+
+let cur=1;const tot=8;let notesOn=false;
+
+function show(n){
+  document.querySelectorAll('.slide').forEach(s=>{s.style.display='none';s.classList.remove('active');});
+  const t=document.querySelector('.slide[data-n="'+n+'"]');
+  if(t){t.style.display='flex';t.classList.add('active');}
+  cur=n;
+  document.getElementById('counter').textContent=n+' / '+tot;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i+1===n));
+  document.getElementById('nc').textContent=notes[n-1]||'';
+}
+
+function next(){if(cur<tot)show(cur+1);}
+function prev(){if(cur>1)show(cur-1);}
+function toggleNotes(){notesOn=!notesOn;document.getElementById('np').classList.toggle('vis',notesOn);}
+
+const dc=document.getElementById('dots');
+for(let i=1;i<=tot;i++){const d=document.createElement('div');d.className='dot'+(i===1?' active':'');d.onclick=()=>show(i);dc.appendChild(d);}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')prev();
+  if(e.key==='n'||e.key==='N')toggleNotes();
+});
+
+// Slide 2 — comparison table
+window.addEventListener('load',()=>{
+  const rows=[
+    ['Mi empresa en el centro','El paciente en el centro'],
+    ['Controlo el proceso','Orquesto el sistema'],
+    ['Stakeholders = audiencia','Stakeholders = socios'],
+    ['Mido actividades','Mido outcomes'],
+    ['Silos funcionales','Equipos cross-funcionales'],
+    ['El launch termina el día 1','El launch es un proceso continuo'],
+  ];
+  const el=document.getElementById('compareRows');
+  if(el){
+    rows.forEach(r=>{
+      el.innerHTML+=`<div style="display:grid;grid-template-columns:1fr 30px 1fr;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <div style="font-size:11px;color:rgba(255,255,255,0.38);text-align:center;padding:4px 8px;background:rgba(255,255,255,0.03);border-radius:4px;">${r[0]}</div>
+        <div style="text-align:center;color:var(--red);font-size:12px;">→</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.78);text-align:center;padding:4px 8px;background:rgba(255,48,48,0.06);border-radius:4px;">${r[1]}</div>
+      </div>`;
+    });
+  }
+});
+
+show(1);
+</script>
+</body>
+</html>

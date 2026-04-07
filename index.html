@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cefalix Launch Simulator</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo-area">
+        <div class="logo-pill">Neuro Strategy Lab</div>
+        <div class="logo-name">CEFA<span>LIX</span> LAUNCH SIM</div>
+      </div>
+      <div class="header-actions">
+        <div class="round-pill" id="round-badge">AÑO 1 · MARKET SHAPING</div>
+        <button class="btn btn-ghost small-btn" data-tab-target="facilitador">Facilitador</button>
+      </div>
+    </header>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab-target="equipo">Decisiones</button>
+      <button class="tab-btn" data-tab-target="mercado">Mercado</button>
+      <button class="tab-btn" data-tab-target="resultados">Resultados</button>
+      <button class="tab-btn" data-tab-target="ranking">Ranking</button>
+      <button class="tab-btn" data-tab-target="facilitador">Facilitador</button>
+      <button class="tab-btn" data-tab-target="escenarios">Escenarios</button>
+    </div>
+
+    <main>
+      <section id="panel-equipo" class="panel active">
+        <div class="context-box">
+          <div class="context-title">
+            Caso Cefalix · Año <span id="ctx-year">1</span> ·
+            <span id="ctx-phase">Market Shaping (T-24 a T-12)</span>
+          </div>
+          <div class="context-copy" id="ctx-text"></div>
+        </div>
+
+        <div class="tpill-row">
+          <button class="tpill active" data-team="0">Equipo A</button>
+          <button class="tpill" data-team="1">Equipo B</button>
+          <button class="tpill" data-team="2">Equipo C</button>
+        </div>
+
+        <div class="timeline" id="year-timeline"></div>
+
+        <div class="cols-2 wide-gap">
+          <div>
+            <div class="st">Asignación Presupuesto Anual</div>
+            <div class="budget-bar-wrap" id="bbar">
+              <div class="bb-left">
+                <div class="label">Presupuesto disponible</div>
+                <div class="value" id="bval">€12.000.000</div>
+              </div>
+              <div class="bb-right">
+                <div class="label">Asignado</div>
+                <div class="value" id="bassigned">€0</div>
+              </div>
+            </div>
+            <div id="sliders"></div>
+            <div class="btn-row">
+              <button class="btn btn-primary" id="confirm-btn">Confirmar Año <span id="confirm-year-lbl">1</span></button>
+              <button class="btn btn-ghost" id="reset-btn">Resetear</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="st">Proyecciones Dinámicas</div>
+            <div class="cols-2 compact-grid">
+              <div class="card">
+                <div class="card-header">Launch Strength Año 3</div>
+                <div class="card-val good" id="proj-strength">—</div>
+                <div class="card-sub">Índice compuesto de ejecución</div>
+              </div>
+              <div class="card">
+                <div class="card-header">Ventas Año 1</div>
+                <div class="card-val blueish small-val" id="proj-s1">—</div>
+                <div class="card-sub">Ingresos netos estimados</div>
+              </div>
+            </div>
+            <div class="cols-2 compact-grid">
+              <div class="card">
+                <div class="card-header">Pacientes tratados</div>
+                <div class="card-val amber small-val" id="proj-pac">—</div>
+                <div class="card-sub">Año actual</div>
+              </div>
+              <div class="card">
+                <div class="card-header">ROI estimado</div>
+                <div class="card-val small-val" id="proj-roi">—</div>
+                <div class="card-sub">Retorno vs inversión</div>
+              </div>
+            </div>
+
+            <div class="st space-top">Alertas Estratégicas</div>
+            <div id="alerts-panel" class="stack-space"></div>
+
+            <div class="st space-top">Tabla de Inversiones</div>
+            <table class="mt">
+              <thead>
+                <tr>
+                  <th>Área</th>
+                  <th>€</th>
+                  <th>%</th>
+                  <th>Impacto</th>
+                </tr>
+              </thead>
+              <tbody id="inv-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-mercado" class="panel">
+        <div class="st">Contexto de Mercado · Migraña Preventiva</div>
+
+        <div class="cols-4 compact-grid">
+          <div class="card">
+            <div class="card-header">Población migraña</div>
+            <div class="card-val blueish small-val">4,0M</div>
+            <div class="card-sub">Base amplia de enfermedad</div>
+          </div>
+          <div class="card">
+            <div class="card-header">Target launchable base</div>
+            <div class="card-val good small-val" id="mkt-target">42.000</div>
+            <div class="card-sub">&gt;8 MMD + 3 TF</div>
+          </div>
+          <div class="card">
+            <div class="card-header">Objetivo Año Launch</div>
+            <div class="card-val bad small-val">3.254</div>
+            <div class="card-sub">Pacientes tratados</div>
+          </div>
+          <div class="card">
+            <div class="card-header">Net price anual</div>
+            <div class="card-val amber small-val" id="price-display">€3.468</div>
+            <div class="card-sub">Base del caso</div>
+          </div>
+        </div>
+
+        <div class="cols-2 wide-gap">
+          <div>
+            <div class="st">Mapa Competitivo</div>
+            <div class="card stack-space">
+              <div class="card-header">Cuota de mercado proyectada</div>
+              <div id="comp-bars"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">Palancas competitivas</div>
+              <table class="mt">
+                <thead>
+                  <tr>
+                    <th>Marca</th>
+                    <th>Posición</th>
+                    <th>Fuerza</th>
+                    <th>Riesgo</th>
+                  </tr>
+                </thead>
+                <tbody id="comp-table"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <div class="st">Sistema y Stakeholders</div>
+            <div class="card stack-space">
+              <div class="card-header">Actores que deciden el launch</div>
+              <div class="hl"><span class="hl-l">Neurología / KOLs</span><span class="hl-v"><span class="chip chip-r">Crítico</span></span></div>
+              <div class="hl"><span class="hl-l">Farmacia hospitalaria</span><span class="hl-v"><span class="chip chip-r">Crítico</span></span></div>
+              <div class="hl"><span class="hl-l">Access regional / hospital</span><span class="hl-v"><span class="chip chip-a">Alto</span></span></div>
+              <div class="hl"><span class="hl-l">Atención primaria / derivación</span><span class="hl-v"><span class="chip chip-a">Alto</span></span></div>
+              <div class="hl"><span class="hl-l">Paciente y asociaciones</span><span class="hl-v"><span class="chip chip-b">Medio</span></span></div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">Restricciones del caso</div>
+              <div class="alert-item alert-danger">Sin access hospitalario, Cefalix pierde velocidad de listing y deja cuentas clave abiertas a LenovoBio y TeraHead.</div>
+              <div class="alert-item alert-warn">Sin medical temprano, los neurólogos tardan más en llegar a primera prescripción y el funnel se estrecha.</div>
+              <div class="alert-item alert-warn">Si no rediseñas el journey, el mercado real capturable cae por derivación tardía y listas de espera.</div>
+              <div class="alert-item alert-ok">El first mover advantage existe, pero solo si se activa antes del launch.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-resultados" class="panel">
+        <div class="cols-4 compact-grid" id="kpi-row"></div>
+        <div class="cols-2 wide-gap">
+          <div class="card">
+            <div class="card-header">Cuota de mercado por año</div>
+            <div class="chart-box"><canvas id="chart-share"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header">Ventas acumuladas</div>
+            <div class="chart-box"><canvas id="chart-sales"></canvas></div>
+          </div>
+        </div>
+        <div class="cols-2 wide-gap space-top">
+          <div class="card">
+            <div class="card-header">Distribución de inversión</div>
+            <div id="invest-bars"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">Eventos de mercado</div>
+            <div class="elog" id="elog"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-ranking" class="panel">
+        <div class="st">Clasificación General</div>
+        <div class="cols-3 compact-grid" id="rank-cards"></div>
+        <div class="div"></div>
+        <div class="st">Comparativa de Decisiones</div>
+        <table class="mt">
+          <thead>
+            <tr>
+              <th>Área</th>
+              <th>Equipo A</th>
+              <th>Equipo B</th>
+              <th>Equipo C</th>
+            </tr>
+          </thead>
+          <tbody id="cmp-body"></tbody>
+        </table>
+        <div class="div"></div>
+        <div class="st">Lectura de estrategia</div>
+        <div id="decision-analysis"></div>
+      </section>
+
+      <section id="panel-facilitador" class="panel">
+        <div class="cols-2 wide-gap">
+          <div>
+            <div class="st">Control de Simulación</div>
+            <div class="card">
+              <div class="card-header">Estado actual</div>
+              <div class="fac-title" id="fac-year">Año 1 — Market Shaping</div>
+              <div class="fac-sub" id="fac-phase">T-24 a T-12 antes del launch</div>
+              <div class="btn-row">
+                <button class="btn btn-primary" id="advance-btn">Avanzar Año</button>
+                <button class="btn btn-red" id="reset-all-btn">Reiniciar</button>
+              </div>
+            </div>
+
+            <div class="st space-top">Evento manual</div>
+            <div class="card stack-space">
+              <div>
+                <label class="field-label" for="ev-type">Tipo</label>
+                <select id="ev-type" class="field-input">
+                  <option value="positive">Positivo para Cefalix</option>
+                  <option value="negative">Negativo para Cefalix</option>
+                  <option value="neutral">Competitivo / neutro</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" for="ev-text">Descripción</label>
+                <textarea id="ev-text" rows="4" class="field-input" placeholder="Ej: publicación RWE acelera listings en hospitales de referencia..."></textarea>
+              </div>
+              <button class="btn btn-primary" id="publish-btn">Publicar</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="st">Eventos Predefinidos</div>
+            <div class="card stack-space" id="preset-events"></div>
+
+            <div class="st space-top">Estado de equipos</div>
+            <div id="team-status"></div>
+
+            <div class="st space-top">Parámetros del caso</div>
+            <div class="card">
+              <div class="hl"><span class="hl-l">Target launchable</span><span class="hl-v" id="p-mkt">42.000 pac.</span></div>
+              <div class="hl"><span class="hl-l">Precio neto anual</span><span class="hl-v" id="p-price">€3.468</span></div>
+              <div class="hl"><span class="hl-l">Competidores activos</span><span class="hl-v" id="p-comp">3</span></div>
+              <div class="hl"><span class="hl-l">Managed Access pipeline</span><span class="hl-v">Activo</span></div>
+              <div class="hl"><span class="hl-l">Meta de pacientes</span><span class="hl-v">3.254</span></div>
+              <div class="hl"><span class="hl-l">First mover advantage</span><span class="hl-v" id="p-fma">Medio</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-escenarios" class="panel">
+        <div class="st">Escenarios de Lanzamiento</div>
+        <p class="section-copy">Cada escenario cambia el tamaño capturable del funnel, la presión competitiva y la fricción de acceso del sistema.</p>
+        <div class="cols-3 compact-grid" id="sc-cards"></div>
+
+        <div class="div"></div>
+        <div class="st">Variables Clave del Caso</div>
+        <div class="cols-3 compact-grid" id="var-grid"></div>
+      </section>
+    </main>
+
+    <div id="modal">
+      <div class="modal-box">
+        <div class="modal-title" id="m-title">Confirmar decisiones</div>
+        <div class="modal-body" id="m-body"></div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="modal-cancel">Cancelar</button>
+          <button class="btn btn-primary" id="modal-ok">Confirmar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>

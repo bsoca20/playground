@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Pharma Launches Underperform Globally — Leadership House × Bluebarna</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--red:#FF3030;--dark:#1F1D1D;--grey:#F0F0F0;--white:#FFFFFF;--muted:rgba(255,255,255,0.5);--dim:rgba(255,255,255,0.08);}
+html,body{height:100%;overflow:hidden;background:#111;}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#fff;}
+
+.presentation{width:100vw;height:100vh;display:flex;flex-direction:column;}
+.slides-wrap{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;background:var(--dark);display:none;flex-direction:column;padding:32px 56px 20px;opacity:0;transition:opacity .25s;}
+.slide.active{display:flex;opacity:1;}
+
+/* Header */
+.sh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;flex-shrink:0;}
+.logo{font-family:'Anton',Impact,sans-serif;font-size:12px;letter-spacing:2px;line-height:1.15;color:#fff;}
+.logo small{display:block;font-family:'Helvetica Neue',sans-serif;font-size:8px;letter-spacing:3px;color:var(--muted);font-weight:400;}
+.snum{font-size:10px;color:var(--muted);letter-spacing:2px;padding-top:2px;}
+
+/* Body layouts */
+.sb{flex:1;display:flex;gap:40px;align-items:center;overflow:hidden;}
+.sl{flex:0 0 380px;display:flex;flex-direction:column;}
+.sr{flex:1;display:flex;flex-direction:column;justify-content:center;}
+.sb-col{flex:1;flex-direction:column;gap:16px;align-items:flex-start;}
+
+/* Typography */
+.tag{font-size:10px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:12px;font-weight:500;}
+.title{font-family:'Anton',Impact,sans-serif;font-size:48px;line-height:1.0;color:#fff;text-transform:uppercase;margin-bottom:16px;}
+.title .r{color:var(--red);}
+.sub{font-size:14px;line-height:1.65;color:rgba(255,255,255,0.7);margin-bottom:16px;}
+.rl{width:40px;height:3px;background:var(--red);margin-bottom:16px;}
+
+/* Big stat */
+.bs{font-family:'Anton',Impact,sans-serif;font-size:96px;line-height:1;color:var(--red);}
+.bsl{font-size:16px;color:rgba(255,255,255,0.75);line-height:1.45;margin-top:6px;max-width:280px;}
+
+/* Stat cards */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.sc{background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:16px;}
+.sc .v{font-family:'Anton',Impact,sans-serif;font-size:38px;color:var(--red);line-height:1;margin-bottom:6px;}
+.sc .l{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.4;}
+.sc .src{font-size:9px;color:rgba(255,255,255,0.28);margin-top:6px;letter-spacing:.3px;}
+
+/* Chart container */
+.cc{position:relative;width:100%;}
+
+/* Insight list */
+.il{list-style:none;margin-top:10px;}
+.il li{font-size:13px;color:rgba(255,255,255,0.7);padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:10px;line-height:1.45;}
+.il li::before{content:'→';color:var(--red);flex-shrink:0;}
+
+/* Quote box */
+.qb{background:rgba(255,48,48,0.07);border-left:3px solid var(--red);padding:14px 18px;border-radius:0 6px 6px 0;margin:12px 0;}
+.qb p{font-size:14px;font-style:italic;color:rgba(255,255,255,0.82);line-height:1.6;}
+.qb .att{font-size:9px;color:var(--red);margin-top:6px;letter-spacing:1px;text-transform:uppercase;}
+
+/* Two-col */
+.tc{display:grid;grid-template-columns:1fr 1fr;gap:24px;width:100%;}
+
+/* Country bars */
+.cb{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.cn{font-size:11px;color:rgba(255,255,255,0.55);min-width:70px;text-align:right;}
+.bt{flex:1;height:20px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;}
+.bf{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px;}
+.bp{font-size:10px;font-weight:700;color:#fff;}
+
+/* Failure grid */
+.fg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:100%;}
+.fc{background:rgba(255,48,48,0.06);border:1px solid rgba(255,48,48,0.22);border-top:3px solid var(--red);border-radius:6px;padding:14px;}
+.fc .fn{font-family:'Anton',Impact,sans-serif;font-size:26px;color:var(--red);display:block;margin-bottom:6px;}
+.fc .ft{font-size:11px;font-weight:700;color:#fff;margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;}
+.fc .fd{font-size:11px;color:rgba(255,255,255,0.48);line-height:1.4;}
+
+/* Stage cards */
+.stg{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;}
+.stg.hi{background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);}
+
+/* Footer */
+.sf{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid rgba(255,255,255,0.07);margin-top:auto;flex-shrink:0;}
+.srcs{font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:.2px;}
+.nt{font-size:9px;color:rgba(255,255,255,0.28);cursor:pointer;letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(255,255,255,0.1);padding:3px 8px;border-radius:3px;transition:all .2s;user-select:none;}
+.nt:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
+
+/* Notes panel */
+.np{background:rgba(0,0,0,0.92);border-top:2px solid var(--red);padding:16px 56px;max-height:160px;overflow-y:auto;display:none;flex-shrink:0;}
+.np.vis{display:block;}
+.np h4{font-size:9px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:8px;}
+.np p{font-size:12px;color:rgba(255,255,255,0.72);line-height:1.7;}
+
+/* Nav */
+.nb{background:rgba(0,0,0,0.45);padding:10px 56px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0;}
+.dots{display:flex;gap:5px;align-items:center;}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.18);cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--red);width:16px;border-radius:2px;}
+.nc{font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:1px;}
+.nctrls{display:flex;gap:10px;}
+.nb-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.65);padding:6px 16px;border-radius:3px;cursor:pointer;font-size:11px;font-family:'Helvetica Neue',sans-serif;letter-spacing:1px;text-transform:uppercase;transition:all .2s;}
+.nb-btn:hover{background:var(--red);border-color:var(--red);color:#fff;}
+
+/* Intro glow */
+.glow::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(255,48,48,0.1) 0%,transparent 70%);pointer-events:none;}
+
+/* Inline numbers */
+.n-red{font-family:'Anton',Impact,sans-serif;color:var(--red);}
+.mini-metric{display:flex;align-items:baseline;gap:6px;margin:6px 0;}
+.mini-metric .mv{font-family:'Anton',Impact,sans-serif;font-size:32px;color:var(--red);}
+.mini-metric .ml{font-size:12px;color:rgba(255,255,255,0.55);}
+</style>
+</head>
+<body>
+<div class="presentation" id="app">
+<div class="slides-wrap">
+
+<!-- ═══════════════ SLIDE 1 ═══════════════ -->
+<div class="slide glow active" data-n="1" style="position:relative;overflow:hidden;">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">01 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="tag">Global Pharma · 2024–2026 Evidence</div>
+      <div class="title" style="font-size:64px;line-height:.95;">WHY<br>LAUNCHES<br><span class="r">FAIL.</span></div>
+      <p class="sub" style="margin-top:16px;">The industry produces more drugs than ever. Commercial execution remains stubbornly broken. Here is the evidence — using only 2024, 2025, and 2026 data.</p>
+      <div style="margin-top:12px;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:1px;">MARKET ACCESS · PRICING · OMNICHANNEL · HCP BEHAVIOR · PATIENT JOURNEY</div>
+    </div>
+    <div class="sr">
+      <div class="bs">2/3</div>
+      <div class="bsl">of new drug launches miss first-year sales forecasts — and those that miss continue to underdeliver for the next two years</div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:4px;">McKinsey Drug Launch Research (widely cited 2024–2025)</div>
+      <div class="sg" style="margin-top:24px;">
+        <div class="sc">
+          <div class="v">78</div>
+          <div class="l">Novel active substances launched globally in 2024 — 5-year total: 394</div>
+          <div class="src">IQVIA Global Use of Medicines Outlook, 2025</div>
+        </div>
+        <div class="sc">
+          <div class="v">$1.7T</div>
+          <div class="l">Global pharma market size in 2024 — record revenue, record underperformance</div>
+          <div class="src">IQVIA / Statista, 2024</div>
+        </div>
+        <div class="sc">
+          <div class="v">394</div>
+          <div class="l">Novel substances launched globally across 2020–2024 — innovation is not the constraint</div>
+          <div class="src">IQVIA, 2025</div>
+        </div>
+        <div class="sc">
+          <div class="v">48</div>
+          <div class="l">NAS launched in the US in 2024 alone — a 22% increase vs the prior 5-year period</div>
+          <div class="src">IQVIA, 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: McKinsey Drug Launch Research; IQVIA Global Use of Medicines Outlook 2025; Evaluate World Preview 2025; IQVIA/Statista Global Pharma Market 2024</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 2 ═══════════════ -->
+<div class="slide" data-n="2">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">02 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">Macro Context · Patent Cliff</div>
+      <div class="title">The $300B Warning</div>
+      <p class="sub">Over $300 billion in branded drug sales face patent expiry by 2030 — arriving simultaneously with the most aggressive pricing reforms in pharma history.</p>
+      <ul class="il">
+        <li>IRA Medicare price negotiations first impact revenues in <strong style="color:#fff;">2026</strong> — avg 38% reduction on first 10 drugs</li>
+        <li>EU Pharma Reform (Council agreement March 2024) — first major revision in 20+ years</li>
+        <li>EU Joint Clinical Assessment live since <strong style="color:#fff;">January 2025</strong> for oncology and ATMPs</li>
+        <li>Prescription drug sales projected to top $1.75T by 2030 — but only if launches execute</li>
+      </ul>
+      <div style="margin-top:12px;font-size:9px;color:rgba(255,255,255,0.28);">Evaluate World Preview, Dec 2025 · EU Pharma Reform Council 2024 · Remap Consulting 2025</div>
+    </div>
+    <div class="sr">
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Patent Cliff: Cumulative Sales at Risk ($B) — Illustrative Trend</div>
+      <div class="cc" style="height:220px;"><canvas id="cliffChart"></canvas></div>
+      <div class="sc" style="margin-top:16px;background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);">
+        <div class="v" style="font-size:28px;">$1.75T</div>
+        <div class="l">Projected global prescription drug sales by 2030 — contingent on successful launches clearing the access and engagement barriers documented in this deck</div>
+        <div class="src">Evaluate World Preview, December 2025</div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: Evaluate World Preview Dec 2025; EU Council Pharma Reform Agreement Mar 2024; Remap Consulting PMA Review 2024 & 2025; IRA/CMS 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 3 ═══════════════ -->
+<div class="slide" data-n="3">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">03 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">Market Access · EU Timing</div>
+      <div class="title">Market Access:<br>The New<br>Bottleneck</div>
+      <div class="bs" style="font-size:88px;margin-top:8px;">531</div>
+      <div class="bsl">days — average EU time from regulatory approval to reimbursement in 2024</div>
+      <div style="margin-top:10px;font-size:11px;color:var(--red);">▲ 2.3% increase vs 2023 — highest value on record</div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:4px;">EFPIA W.A.I.T. Survey, 5 January 2024</div>
+    </div>
+    <div class="sr">
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">EMA-Approved Drugs (2021–2024): EU Reimbursement Status</div>
+      <div class="cc" style="height:200px;"><canvas id="accessChart"></canvas></div>
+      <div style="display:flex;gap:16px;margin-top:8px;font-size:10px;">
+        <span style="display:flex;align-items:center;gap:5px;color:rgba(255,255,255,0.5);"><span style="width:10px;height:10px;background:#FF3030;border-radius:2px;display:inline-block;"></span>Fully reimbursed</span>
+        <span style="display:flex;align-items:center;gap:5px;color:rgba(255,255,255,0.5);"><span style="width:10px;height:10px;background:rgba(255,100,100,0.6);border-radius:2px;display:inline-block;"></span>Partially reimbursed</span>
+        <span style="display:flex;align-items:center;gap:5px;color:rgba(255,255,255,0.5);"><span style="width:10px;height:10px;background:rgba(255,255,255,0.12);border-radius:2px;display:inline-block;"></span>Not assessed / not reimbursed</span>
+      </div>
+      <div class="sg" style="margin-top:12px;">
+        <div class="sc">
+          <div class="v">58%</div>
+          <div class="l">of EMA-approved drugs (2021–2024) reimbursed in at least one EU market</div>
+          <div class="src">GlobalData Price Intelligence, 2025</div>
+        </div>
+        <div class="sc">
+          <div class="v">40%</div>
+          <div class="l">of indications for 2021–2024 approved brands still have no HTA assessment</div>
+          <div class="src">GlobalData, Pharma Technology Focus, Jul 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: EFPIA W.A.I.T. Survey Jan 2024; GlobalData Price Intelligence POLI; Pharma Technology Focus Jul 2025; TRiBECA Knowledge Market Access Report 2024</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 4 ═══════════════ -->
+<div class="slide" data-n="4">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">04 / 15</div></div>
+  <div class="sb" style="flex-direction:column;gap:16px;align-items:flex-start;">
+    <div>
+      <div class="tag">Market Access · EU Disparities</div>
+      <div class="title" style="font-size:38px;">Europe's Access Fracture Map</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);max-width:760px;">% of EMA-approved brands (2021–2024) reimbursed per market. The 5EU reimburses <span style="color:var(--red);font-weight:700;">2.7× more products</span> than the European average. Same regulatory approval. Radically different commercial reality.</p>
+    </div>
+    <div class="tc" style="gap:24px;">
+      <div>
+        <div style="font-size:9px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Major Markets (5EU + UK)</div>
+        <div id="majorBars"></div>
+      </div>
+      <div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Smaller EU Markets</div>
+        <div id="smallBars"></div>
+      </div>
+    </div>
+    <div style="background:rgba(255,48,48,0.07);border:1px solid rgba(255,48,48,0.18);border-radius:6px;padding:12px 20px;width:100%;display:flex;align-items:center;gap:20px;">
+      <div style="font-family:'Anton',Impact,sans-serif;font-size:36px;color:var(--red);flex-shrink:0;">2.7×</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5;">The 5EU reimburses 2.7× more products annually than the overall EU average. Pricing in low-access markets can contaminate cross-reference pricing in high-access markets — making launch sequence strategy commercially critical. <span style="font-size:9px;color:rgba(255,255,255,0.3);">GlobalData, Pharma Technology Focus Jul 2025</span></div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: GlobalData Price Intelligence POLI; Pharma Technology Focus Jul 2025; European Market Access Lag 2021–2024 — GlobalData/NRI Digital Jul 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 5 ═══════════════ -->
+<div class="slide" data-n="5">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">05 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">EU HTA Reform · January 2025</div>
+      <div class="title">EU JCA Era:<br>Promise vs<br>Reality</div>
+      <p class="sub">The EU Joint Clinical Assessment launched January 2025 for oncology and ATMPs — the most significant HTA reform in a generation. But clinical harmonization is not the same as commercial access.</p>
+      <div class="qb">
+        <p>"What worked in 2020 no longer applies in 2025. Global access planning must become granular."</p>
+        <div class="att">WLCUS Pharma Market Access Analysis, Jul 2025</div>
+      </div>
+    </div>
+    <div class="sr">
+      <div class="tc">
+        <div>
+          <div style="font-size:9px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">What JCA delivers</div>
+          <ul class="il">
+            <li style="font-size:12px;">Single clinical assessment replacing 27 national evaluations</li>
+            <li style="font-size:12px;">Standardized HTA-IT platform — one dossier submission route</li>
+            <li style="font-size:12px;">Reduced redundancy for applicants long-term</li>
+            <li style="font-size:12px;">Expands to orphan drugs Jan 2028; all NAS by Jan 2030</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">What JCA does NOT deliver</div>
+          <ul class="il">
+            <li style="font-size:12px;">Harmonized pricing — still 27 separate national decisions</li>
+            <li style="font-size:12px;">Guaranteed reimbursement — national payers retain full control</li>
+            <li style="font-size:12px;">Speed in the short term — adds complexity before reducing it</li>
+            <li style="font-size:12px;">Certainty on outcomes for novel or real-world evidence</li>
+          </ul>
+        </div>
+      </div>
+      <div style="margin-top:16px;background:rgba(255,255,255,0.04);border-radius:8px;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div style="text-align:center;">
+          <div style="font-family:'Anton',Impact,sans-serif;font-size:32px;color:var(--red);">-18%</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:4px;">Positive HTA decisions across 5EU in Q1 2025 vs Q1 2024</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-top:3px;">GlobalData 5EU Analysis, May 2025</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Anton',Impact,sans-serif;font-size:32px;color:var(--red);">+22%</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:4px;">Neutral (restricted access) HTA decisions across 5EU in Q1 2025 vs Q1 2024</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-top:3px;">GlobalData 5EU Analysis, May 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: EU HTA Regulation (2021/2282); GlobalData 5EU Q1 2024 vs 2025, May 2025; WLCUS Pharma Market Access Jul 2025; Remap EU Pharma Reform Jun 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 6 ═══════════════ -->
+<div class="slide" data-n="6">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">06 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">Pricing · US IRA + EU Cost Pressure</div>
+      <div class="title">The IRA<br>Effect</div>
+      <div class="bs" style="font-size:88px;">-38%</div>
+      <div class="bsl">avg price reduction for first 10 Medicare-negotiated drugs, effective 2026 vs 2023 list prices</div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:4px;">Remap Consulting Market Access Check-In, December 2025</div>
+      <ul class="il" style="margin-top:12px;">
+        <li style="font-size:12px;">15+ additional drugs incl. Ozempic entered IRA negotiations in 2025 for 2027 implementation</li>
+        <li style="font-size:12px;">EU 2024: pricing focus shifted from value to cost-containment — post-COVID &amp; Ukraine budget pressure</li>
+        <li style="font-size:12px;">Industry Q3 2024 earnings: IRA creates R&amp;D incentive distortions favoring biologics over small molecules</li>
+      </ul>
+    </div>
+    <div class="sr">
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">First 10 IRA-Negotiated Drugs: 2023 List Price vs 2026 Negotiated (Indexed = 100)</div>
+      <div class="cc" style="height:200px;"><canvas id="iraChart"></canvas></div>
+      <div class="sg" style="margin-top:12px;">
+        <div class="sc">
+          <div class="v">10</div>
+          <div class="l">First batch of Medicare price-negotiated drugs — effective <strong>2026</strong></div>
+          <div class="src">IRA / CMS 2025</div>
+        </div>
+        <div class="sc">
+          <div class="v">15+</div>
+          <div class="l">Additional drugs in 2025 negotiation round — Ozempic included — effective <strong>2027</strong></div>
+          <div class="src">Remap Consulting, Dec 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: Remap Consulting PMA Trends 2024 & Market Access Check-In Dec 2025; IRA / CMS; GlobalData Life Sciences Trends 2025; EU Pharma Reform 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 7 ═══════════════ -->
+<div class="slide" data-n="7">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">07 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">HCP Engagement · Omnichannel</div>
+      <div class="title">The Engagement<br>Illusion</div>
+      <p class="sub">Most pharma companies have launched digital transformation programs. The results, measured from the HCP side, are sobering.</p>
+      <div class="qb">
+        <p>"The gap between omnichannel ambition and execution is vast — and the HCP is paying for it with wasted time."</p>
+        <div class="att">Gurpinder Singh, VP Omnichannel Activation, Indegene · May 2025</div>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:10px;">Despite heavy investments in CRM, content platforms, and digital activation — the HCP experience has not materially improved. The signal is consistent across 2024 and 2025 research.</p>
+    </div>
+    <div class="sr">
+      <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,0.07);margin-bottom:14px;">
+        <div style="font-family:'Anton',Impact,sans-serif;font-size:84px;color:var(--red);line-height:1;">80%</div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.72);margin-top:4px;">of HCPs report receiving <strong>generic, impersonal communications</strong><br>from pharmaceutical companies</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:6px;">Indegene Omnichannel Strategies Report, May 2025</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,0.07);">
+          <div style="font-family:'Anton',Impact,sans-serif;font-size:44px;color:var(--red);line-height:1;">&lt;20%</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:6px;">of HCPs feel personally engaged by pharma companies despite digital investments</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:4px;">Indegene, 2025</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,0.07);">
+          <div style="font-family:'Anton',Impact,sans-serif;font-size:44px;color:var(--red);line-height:1;">84%</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:6px;">of physicians want to maintain or increase online pharma interactions — the demand is there</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:4px;">Viseven Analysis, 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: Indegene Omnichannel Strategies Report May 2025; Indegene HCP Digital Affinity Report Nov 2024; Viseven 2025 Analysis; IntuitionLabs HCP Marketing Guide Feb 2026</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 8 ═══════════════ -->
+<div class="slide" data-n="8">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">08 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">HCP Behavior · Real Data 2025</div>
+      <div class="title">How HCPs<br>Actually<br>Engage</div>
+      <p class="sub">HCPs are clear: they want digital content on their terms. But they will not show up for low-value interactions — regardless of channel.</p>
+      <div class="sg" style="margin-top:12px;">
+        <div class="sc">
+          <div class="v">50%</div>
+          <div class="l">of HCPs who register for pharma webinars never attend — wasting every investment made</div>
+          <div class="src">SpotMe / Life Science Research, 2024</div>
+        </div>
+        <div class="sc">
+          <div class="v">&lt;2m</div>
+          <div class="l">Duration of nearly 90% of rep–HCP interactions in 2025 — the average conversation is barely a minute</div>
+          <div class="src">PharmExec Reinventing SFE, 2025</div>
+        </div>
+      </div>
+    </div>
+    <div class="sr">
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">HCP Demand vs Pharma Delivery Quality by Channel (indicative, 2024–2025)</div>
+      <div class="cc" style="height:260px;"><canvas id="hcpChart"></canvas></div>
+      <div style="display:flex;gap:16px;margin-top:8px;font-size:10px;">
+        <span style="display:flex;align-items:center;gap:5px;color:rgba(255,255,255,0.5);"><span style="width:10px;height:10px;background:#FF3030;border-radius:2px;display:inline-block;"></span>HCP demand</span>
+        <span style="display:flex;align-items:center;gap:5px;color:rgba(255,255,255,0.5);"><span style="width:10px;height:10px;background:rgba(255,255,255,0.18);border-radius:2px;display:inline-block;"></span>Pharma delivery quality</span>
+      </div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:6px;">Sources: Indegene HCP Digital Affinity 2024; Viseven 2025; IntuitionLabs Feb 2026</div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: SpotMe/Life Science HCP Events Research 2024; PharmExec Reinventing SFE Mar 2025; Indegene Digital Affinity Report Nov 2024; Viseven 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 9 ═══════════════ -->
+<div class="slide" data-n="9">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">09 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">Sales Force · Effectiveness</div>
+      <div class="title">The SFE<br>Gap</div>
+      <p class="sub">Despite massive investment in measuring sales force effectiveness, the foundational metrics are deeply unflattering — and have not materially improved.</p>
+      <div style="margin:12px 0;">
+        <div style="font-family:'Anton',Impact,sans-serif;font-size:20px;color:var(--red);">$4M – $6M</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:3px;">spent annually per top pharma company on third-party SFE research — yet market share impact remains unclear to commercial executives</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:3px;">PharmExec Reinventing SFE, March 2025</div>
+      </div>
+      <ul class="il">
+        <li>Only <strong style="color:var(--red);">1 in 3</strong> sales calls considered valuable by physicians (2025)</li>
+        <li>Over <strong style="color:var(--red);">20%</strong> of physicians now restrict rep access entirely</li>
+        <li>Reps who remove prescribing barriers outperform product-pushers on every measurable</li>
+      </ul>
+      <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:8px;">PharmExec Reinventing SFE, March 2025</div>
+    </div>
+    <div class="sr">
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">What HCPs Value from Reps — Ranked by Importance (2025)</div>
+      <div class="cc" style="height:290px;"><canvas id="sfeChart"></canvas></div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:4px;">Source: PharmExec Reinventing SFE, March 2025 — indicative ranking based on published HCP value drivers</div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: PharmExec Reinventing SFE March 2025; Within3 Pharma Statistics 2024; Indegene HCP Digital Affinity 2024; IntuitionLabs HCP Marketing Guide Feb 2026</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 10 ═══════════════ -->
+<div class="slide" data-n="10">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">10 / 15</div></div>
+  <div class="sb" style="flex-direction:column;gap:14px;align-items:flex-start;">
+    <div>
+      <div class="tag">Omnichannel · Execution Maturity</div>
+      <div class="title" style="font-size:36px;">Multi-Channel ≠ Omnichannel</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);max-width:820px;">Most pharma companies believe they have an omnichannel strategy. What they actually have is siloed channel activation — without connected data, unified HCP profiles, or feedback loops.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%;">
+      <div class="stg"><div style="font-family:'Anton',Impact,sans-serif;font-size:24px;color:rgba(255,255,255,0.3);">01</div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.45);margin:6px 0;">Fragmented Tactics</div><div style="font-size:11px;color:rgba(255,255,255,0.32);line-height:1.4;">Isolated emails, calls, posts. No connection between touchpoints. Pure broadcast.</div><div style="font-size:9px;color:rgba(255,255,255,0.2);margin-top:6px;">Where most companies are stuck</div></div>
+      <div class="stg"><div style="font-family:'Anton',Impact,sans-serif;font-size:24px;color:rgba(255,255,255,0.4);">02</div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);margin:6px 0;">Channel Activation</div><div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.4;">Multiple channels running in parallel — siloed, no unified data or shared learning loop.</div><div style="font-size:9px;color:rgba(255,255,255,0.25);margin-top:6px;">Multi-channel, not omnichannel</div></div>
+      <div class="stg hi"><div style="font-family:'Anton',Impact,sans-serif;font-size:24px;color:var(--red);">03</div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.9);margin:6px 0;">Omnichannel Orchestration</div><div style="font-size:11px;color:rgba(255,255,255,0.65);line-height:1.4;">Connected channels, unified HCP profiles, consistent messaging, behavioral feedback loops.</div><div style="font-size:9px;color:var(--red);margin-top:6px;">Minimum viable standard for 2025</div></div>
+      <div class="stg"><div style="font-family:'Anton',Impact,sans-serif;font-size:24px;color:rgba(255,100,100,0.5);">04</div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);margin:6px 0;">AI-Driven Journeys</div><div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.4;">Real-time behavioral AI adapts content, timing, channel per HCP. ~50% more conversions (AI-based segmentation).</div><div style="font-size:9px;color:rgba(255,255,255,0.22);margin-top:6px;">IntuitionLabs / AI HCP study, 2024</div></div>
+    </div>
+    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:14px 20px;width:100%;display:flex;gap:0;border:1px solid rgba(255,255,255,0.07);">
+      <div style="flex:1;text-align:center;padding:0 12px;border-right:1px solid rgba(255,255,255,0.07);">
+        <div style="font-family:'Anton',Impact,sans-serif;font-size:30px;color:var(--red);">+53%</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:3px;">HCP engagement uplift — orchestrated omnichannel vs siloed campaigns. L.E.K. pharma case, 2024.</div>
+      </div>
+      <div style="flex:1;text-align:center;padding:0 12px;border-right:1px solid rgba(255,255,255,0.07);">
+        <div style="font-family:'Anton',Impact,sans-serif;font-size:30px;color:var(--red);">+46%</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:3px;">Email open rate uplift — rep-triggered omnichannel vs generic outreach. Veeva / L.E.K. case.</div>
+      </div>
+      <div style="flex:1;text-align:center;padding:0 12px;">
+        <div style="font-family:'Anton',Impact,sans-serif;font-size:30px;color:var(--red);">+30%</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:3px;">Campaign relevance uplift — companies using NLP and predictive analytics. IntuitionLabs, Feb 2026.</div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: Indegene Omnichannel Strategies May 2025; L.E.K. Consulting Omnichannel Case Studies; IntuitionLabs HCP Marketing Guide Feb 2026; Tikamobile Pharma 2025 Guide</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 11 ═══════════════ -->
+<div class="slide" data-n="11">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">11 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">Patient Journey · Access & Adherence</div>
+      <div class="title">Broken at<br>Every Stage</div>
+      <p class="sub">The 2025 Medication Access Report synthesizes 180 qualitative interviews and 777 quantitative surveys. The findings reveal systemic failure — not isolated friction.</p>
+      <div class="sg" style="margin-top:12px;">
+        <div class="sc">
+          <div class="v">65%</div>
+          <div class="l">of patients experience delays receiving their medications</div>
+          <div class="src">CoverMyMeds 2025 Medication Access Report</div>
+        </div>
+        <div class="sc">
+          <div class="v">1 in 5</div>
+          <div class="l">patients modified their prescription because they could not afford it</div>
+          <div class="src">CoverMyMeds Patient Survey 2023/2025</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;">Specialty drugs = <span style="color:var(--red);font-weight:700;">56%</span> of total drug spend but only <span style="color:var(--red);font-weight:700;">2%</span> of prescriptions — access burden is concentrated and severe for the most innovative launches. <span style="font-size:9px;color:rgba(255,255,255,0.3);">CoverMyMeds 2025 / THL 2024</span></div>
+    </div>
+    <div class="sr">
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Patient Medication Access Barriers — % Affected (2025)</div>
+      <div class="cc" style="height:270px;"><canvas id="patientChart"></canvas></div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:6px;">Sources: CoverMyMeds 2025 Medication Access Report; CoverMyMeds Patient Survey 2023; THL Specialty Drug Market May 2024; AMA 2024</div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: CoverMyMeds 2025 Medication Access Report (180 qualitative interviews, 777 quantitative surveys); CoverMyMeds Patient Survey 2023; THL Specialty Drug 2024</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 12 ═══════════════ -->
+<div class="slide" data-n="12">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">12 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">Patient Access · Prior Authorization</div>
+      <div class="title">The Hidden<br>Launch Killer</div>
+      <div class="bs" style="font-size:88px;margin-top:6px;">94%</div>
+      <div class="bsl">of physicians say the prior authorization process delays necessary patient care</div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:4px;">American Medical Association, July 2024</div>
+      <p class="sub" style="margin-top:12px;">PA is not just a bureaucratic friction — it is an active barrier between the prescribing moment and the dispensing reality. Physicians may avoid prescribing newly launched drugs entirely if PA friction is too high.</p>
+    </div>
+    <div class="sr">
+      <div class="sg">
+        <div class="sc">
+          <div class="v">56%</div>
+          <div class="l">of total US drug spending is specialty drugs — but they are only 2% of all prescriptions</div>
+          <div class="src">CoverMyMeds 2025 / THL May 2024</div>
+        </div>
+        <div class="sc">
+          <div class="v">54%</div>
+          <div class="l">of patients cite drug cost as a major concern when accessing their prescribed therapy</div>
+          <div class="src">CoverMyMeds Medication Access Report, 2025</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;background:rgba(255,48,48,0.07);border:1px solid rgba(255,48,48,0.18);border-radius:8px;padding:16px 18px;">
+        <div style="font-size:9px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Prior Authorization Impact Chain</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:6px 10px;font-size:11px;color:rgba(255,255,255,0.7);">Physician prescribes</div>
+          <div style="color:var(--red);font-size:16px;">→</div>
+          <div style="background:rgba(255,48,48,0.15);border-radius:4px;padding:6px 10px;font-size:11px;color:rgba(255,150,150,0.9);">PA required</div>
+          <div style="color:var(--red);font-size:16px;">→</div>
+          <div style="background:rgba(255,48,48,0.18);border-radius:4px;padding:6px 10px;font-size:11px;color:rgba(255,150,150,0.9);">Weeks of delay</div>
+          <div style="color:var(--red);font-size:16px;">→</div>
+          <div style="background:rgba(255,48,48,0.25);border-radius:4px;padding:6px 10px;font-size:11px;color:var(--red);">Patient abandons</div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5;">Research shows physicians sometimes avoid prescribing PA-required drugs even for clinically appropriate patients — removing demand before it is even expressed. <span style="font-size:9px;color:rgba(255,255,255,0.28);">AJMC, cited Guidehouse 2025</span></div>
+      </div>
+      <div style="margin-top:12px;background:rgba(255,255,255,0.04);border-radius:6px;padding:12px 16px;">
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">Prior authorizations delay care in <strong style="color:var(--red);">up to 94% of cases</strong> — and this figure has remained consistent despite years of industry advocacy for reform. <span style="font-size:9px;color:rgba(255,255,255,0.28);">Pharma Patient Services / Courier Health citing AMA data, 2024</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: AMA Health Insurance Denials & Prior Authorization Report Jul 2024; CoverMyMeds 2025; Guidehouse PSP Trends Q1 2025; AJMC study on PA avoidance</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 13 ═══════════════ -->
+<div class="slide" data-n="13">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">13 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="rl"></div>
+      <div class="tag">Patient Support Programs · Awareness</div>
+      <div class="title">The Invisible<br>Infrastructure</div>
+      <p class="sub">Pharma invests over $5 billion annually building patient support programs. It then largely fails to tell patients or prescribers that they exist.</p>
+      <div class="sg" style="margin-top:10px;">
+        <div class="sc">
+          <div class="v">59%</div>
+          <div class="l">of patients are unaware patient support programs exist for their therapy</div>
+          <div class="src">CoverMyMeds 2025 Medication Access Report</div>
+        </div>
+        <div class="sc">
+          <div class="v">42%</div>
+          <div class="l">of prescribers are unaware of PSPs for drugs they regularly prescribe</div>
+          <div class="src">CoverMyMeds 2025 Medication Access Report</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <div style="font-family:'Anton',Impact,sans-serif;font-size:32px;color:var(--red);">$5B+</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:3px;">invested annually by pharma in PSPs — copay assistance, access programs, education</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-top:3px;">Fierce Pharma, cited by McKesson/CoverMyMeds</div>
+      </div>
+    </div>
+    <div class="sr">
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">PSP Landscape — 2025 (% executives / patients)</div>
+      <div class="cc" style="height:220px;"><canvas id="pspChart"></canvas></div>
+      <ul class="il" style="margin-top:12px;">
+        <li style="font-size:12px;"><strong style="color:var(--red);">80%</strong> of PSP leaders say copay assistance is the most utilized program they offer (Guidehouse PSP Survey Q1 2025, n=35 executives)</li>
+        <li style="font-size:12px;"><strong style="color:var(--red);">75%</strong> of 7,000+ drugs in development are specialty medications — access complexity will intensify (Courier Health 2025)</li>
+        <li style="font-size:12px;">Digital tools, automated reminders, and telehealth with human support are the most impactful PSP investments (CoverMyMeds 2025)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: CoverMyMeds 2025 Medication Access Report; Guidehouse PSP Trends Report Q1 2025 (n=35); Courier Health Patient Services 2025; Fierce Pharma / McKesson</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 14 ═══════════════ -->
+<div class="slide" data-n="14">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">14 / 15</div></div>
+  <div class="sb" style="flex-direction:column;gap:14px;align-items:flex-start;">
+    <div>
+      <div class="tag">Synthesis · Five Failure Modes</div>
+      <div class="title" style="font-size:38px;">The Anatomy of a Failed Launch</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);max-width:900px;">These five modes do not operate independently. Each amplifies the others. A launch that underperforms on access will underperform on every downstream metric.</p>
+    </div>
+    <div class="fg">
+      <div class="fc"><span class="fn">01</span><div class="ft">Access Delay</div><div class="fd">531-day EU P&amp;R lag. 40% of EU indications unassessed. Cyprus access at 7% of approved drugs.</div></div>
+      <div class="fc"><span class="fn">02</span><div class="ft">Pricing Erosion</div><div class="fd">IRA cuts avg 38% from Medicare prices effective 2026. EU shifting from value to cost-containment as primary payer frame.</div></div>
+      <div class="fc"><span class="fn">03</span><div class="ft">HCP Disengagement</div><div class="fd">80% of HCPs receive generic comms. &lt;20% feel engaged. Only 1 in 3 calls valuable. 20%+ deny rep access.</div></div>
+      <div class="fc"><span class="fn">04</span><div class="ft">Channel Fragmentation</div><div class="fd">Data siloed across sales, marketing, medical. Multichannel ≠ omnichannel. No unified HCP view or feedback loops.</div></div>
+      <div class="fc"><span class="fn">05</span><div class="ft">Patient Abandonment</div><div class="fd">65% face delays. 1 in 5 can't afford therapy. 59% unaware help exists. PA blocks the prescription before dispensing.</div></div>
+    </div>
+    <div style="background:rgba(255,48,48,0.06);border:1px solid rgba(255,48,48,0.15);border-radius:8px;padding:14px 22px;width:100%;display:flex;align-items:center;gap:20px;">
+      <div style="font-family:'Anton',Impact,sans-serif;font-size:44px;color:var(--red);flex-shrink:0;">2/3</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;">of launches underperform in year one — and those that miss <strong style="color:#fff;">continue to underdeliver for the next two years</strong>. The window to correct a failed launch is narrow and expensive. Most failures originate in decisions made three to five years before the drug reaches a formulary. <span style="font-size:9px;color:rgba(255,255,255,0.3);">McKinsey Drug Launch Research; DrugPatentWatch, March 2025</span></div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Synthesis: McKinsey; IQVIA 2025; GlobalData; CoverMyMeds 2025; Indegene 2025; AMA Jul 2024; Remap Consulting 2025; PharmExec 2025; DrugPatentWatch 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+<!-- ═══════════════ SLIDE 15 ═══════════════ -->
+<div class="slide glow" data-n="15" style="position:relative;overflow:hidden;">
+  <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">15 / 15</div></div>
+  <div class="sb">
+    <div class="sl">
+      <div class="tag">The Way Forward · 2026 Imperative</div>
+      <div class="title" style="font-size:52px;line-height:.95;">FROM<br>PRODUCT<br>LAUNCH TO<br><span class="r">ECOSYSTEM<br>LAUNCH.</span></div>
+    </div>
+    <div class="sr">
+      <p style="font-size:14px;color:rgba(255,255,255,0.72);line-height:1.7;margin-bottom:16px;">PwC Q4 2025 data signals the first pharma commercial outperformance after years of muted results. Companies breaking through are those integrating access, engagement, and patient support — before day one, not after it.</p>
+      <div class="sg">
+        <div class="sc" style="background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);">
+          <div style="font-size:9px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">Evidence-First Access</div>
+          <div class="l">Design clinical programs for HTA and payer — not just regulators. HEOR strategy starts at trial design.</div>
+        </div>
+        <div class="sc" style="background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);">
+          <div style="font-size:9px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">True Omnichannel</div>
+          <div class="l">Unified HCP data — connected journeys, not parallel campaigns. Behavior-driven, not calendar-driven.</div>
+        </div>
+        <div class="sc" style="background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);">
+          <div style="font-size:9px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">Visible PSPs</div>
+          <div class="l">Patient support programs both patients and prescribers know about — at the point of prescribing.</div>
+        </div>
+        <div class="sc" style="background:rgba(255,48,48,0.07);border-color:rgba(255,48,48,0.2);">
+          <div style="font-size:9px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">Value Storytelling</div>
+          <div class="l">Payer narratives grounded in real-world evidence and comparative outcomes — not clinical trial data alone.</div>
+        </div>
+      </div>
+      <div class="qb" style="margin-top:14px;">
+        <p>"Winning companies won't wait for certainty. They will experiment boldly, scale what works, and hardwire adaptability into their DNA."</p>
+        <div class="att">PwC Future of Pharma — January 2026</div>
+      </div>
+      <div style="margin-top:12px;display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,0.28);letter-spacing:.5px;">
+        <span>www.leadership-house.com</span>
+        <span>www.bluebarna.com</span>
+        <span>All data: 2024–2026</span>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><div class="srcs">Sources: PwC Future of Pharma Jan 2026; McKinsey Biopharma Dealmaking Jun 2025; IQVIA Global Use of Medicines 2025; DrugPatentWatch Drug Launch Playbook Mar 2025</div><div class="nt" onclick="toggleNotes()">SPEAKER NOTES [N]</div></div>
+</div>
+
+</div><!-- end slides-wrap -->
+
+<!-- Speaker Notes -->
+<div class="np" id="np"><h4>Speaker Notes</h4><p id="nc"></p></div>
+
+<!-- Nav bar -->
+<div class="nb">
+  <div class="dots" id="dots"></div>
+  <div class="nc" id="counter">1 / 15</div>
+  <div class="nctrls">
+    <button class="nb-btn" onclick="prev()">← PREV</button>
+    <button class="nb-btn" onclick="next()">NEXT →</button>
+  </div>
+</div>
+</div>
+
+<script>
+const notes=[
+"We are in a paradox. This is the most productive era of drug discovery in history — 78 novel substances launched globally in 2024, 394 over five years. Yet two-thirds of launches miss first-year forecasts. And those that miss rarely recover commercial momentum in years two or three. This is not a science failure. It is a commercial execution failure with structural, systemic causes. Today we examine the evidence across six dimensions: market access, pricing, omnichannel, HCP behavior, and the patient journey.",
+"The commercial window is narrowing from multiple directions simultaneously. Over $300 billion in branded sales face patent expiry by 2030. The IRA is negotiating drug prices for the first time in Medicare history — with prices effective 2026. EU Pharma Reform represents the first major revision in 20+ years. And the EU JCA launched January 2025. Companies assuming their 2020 revenue models still hold are facing a structural shock — not a temporary headwind.",
+"531 days. That is how long European patients wait — on average — between regulatory approval and first access to a drug. This is the EFPIA W.A.I.T. data for 2024, the highest value ever recorded — 2.3% worse than 2023. The most innovative medicines sit approved on a shelf, commercially inert, for nearly 18 months while budget-driven bureaucracy catches up. Only 58% of EMA-approved drugs from 2021–2024 are reimbursed in at least one EU market. 40% of indications are still not even assessed.",
+"Not all EU markets are equal. The UK reimburses 85% of EMA-approved drugs. Germany 85%. But Cyprus reimburses only 7%. Lithuania 19%. Croatia 27%. This is not a different drug — it is the same regulatory decision generating wildly different commercial outcomes. The 5EU reimburses 2.7 times more products than the EU average. Launch sequencing decisions must account for this geographic fracture. Pricing in a low-access market can contaminate reference pricing in higher-access markets.",
+"The EU JCA is genuine progress — a single clinical assessment replacing 27 national ones is a real efficiency gain. But the promise and the reality must be distinguished clearly. The JCA harmonizes clinical evidence evaluation — not pricing, not reimbursement, not formulary inclusion. Those remain 27 separate national conversations. In Q1 2025, positive HTA decisions across the 5EU fell 18% versus Q1 2024, while neutral restricted-access decisions rose 22%. Short-term, the JCA is adding complexity before it reduces it.",
+"The IRA's first 10 negotiated drug prices take effect in 2026 at an average 38% below 2023 list prices. These prices are already set. 15 more drugs — including Ozempic — entered negotiation in 2025 for 2027 implementation. In parallel, the EU is shifting from value to cost-containment as a primary payer frame — driven by post-COVID and geopolitical budget pressures. For companies modeling returns on pipeline assets today, both the US and EU pricing environments look fundamentally different than five years ago.",
+"The engagement gap is not about technology. Most pharma companies have invested heavily in digital transformation. The problem is that 80% of HCPs still report receiving generic, impersonal communications. Fewer than 20% feel personally engaged. At the same time, 84% of physicians want to maintain or increase their online interactions with pharma. There is strong demand — pharma is just failing to deliver in a way that feels relevant, timely, or personalized.",
+"The data from HCPs is clear: they are online and they want content on their terms — but they will not show up for low-value interactions. 50% of HCPs who register for pharma webinars don't attend. Nearly 90% of rep interactions last less than two minutes. This is not indifference — it is rational triage by time-constrained professionals. HCPs who do engage digitally do so across 10+ channels. Pharma must meet them there, with orchestrated, personalized, high-value interactions — not volume and frequency.",
+"The pharmaceutical industry spends $4 to $6 million annually per company measuring sales force effectiveness. Despite this investment, the fundamental metrics are damning. Only 1 in 3 sales calls is considered valuable by the receiving physician. More than 20% of physicians now restrict rep access entirely. The measurement system tracks what reps do — calls made, time spent. But HCPs don't care about activity. They care about value received: barrier removal, relevant data, customized resources. That is what differentiates effective reps from noise.",
+"There is a critical distinction between multichannel and omnichannel engagement. Multi-channel means running multiple channels in parallel — emails, calls, webinars — as separate, disconnected campaigns with no shared data. Omnichannel means those channels share data, learn from each other, and deliver a connected experience. L.E.K. case data shows orchestrated omnichannel achieves 53% higher HCP engagement and 46% higher email open rates versus siloed approaches. The majority of pharma companies remain stuck at Stage 1 or 2 of a four-stage maturity model.",
+"The 2025 Medication Access Report from CoverMyMeds synthesizes 180 qualitative interviews and 777 quantitative surveys. Its findings are stark: 65% of patients experience medication delays, 54% cite cost as a major concern, and 1 in 5 modify their prescription because they cannot afford it. Specialty drugs — representing 75% of the development pipeline — account for 56% of total drug spending but only 2% of prescriptions. The most innovative drugs carry the highest access burden for the fewest patients.",
+"Prior authorization is the bridge between prescribing intent and dispensing reality — and it is broken. 94% of physicians say PA delays necessary care. A physician may prescribe a newly launched drug with full clinical conviction, only for the patient to abandon treatment weeks later due to PA delays. There is evidence that physicians actively avoid prescribing PA-required drugs — even when clinically appropriate — simply because of administrative friction. For a newly launched drug with no PA pathway streamlining, this is commercially fatal.",
+"The patient support program data may be the most striking irony in this entire deck. Pharma invests over $5 billion annually in PSPs — copay assistance, access programs, educational resources. Yet 59% of patients don't know these programs exist. 42% of the prescribers who could route patients to PSPs also don't know they exist. The money is being spent. The infrastructure is built. But awareness and utilization remain critically low. Digital infrastructure and proactive communication — not just program creation — are the missing ingredients.",
+"These five failure modes compound each other. Access delay means patients enter therapy late — if at all. Pricing erosion reduces the commercial ceiling. HCP disengagement means prescribing intent is low. Channel fragmentation means messages don't reach the right HCPs at the right time. Patient abandonment means even successful prescriptions don't generate sustained revenue. McKinsey confirms: launches that miss year one continue to underdeliver in years two and three. The correction window is narrow and expensive. Getting it right before day one is the only viable strategy.",
+"PwC data from Q4 2025 shows cautious commercial outperformance emerging — the first inflection after years of muted results. The companies breaking through are integrating access strategy into clinical design, building genuine omnichannel orchestration, creating visible patient support, and grounding payer narratives in real-world evidence. The new launch imperative is not about doing more activities. It is about building an ecosystem around the product — access, engagement, and patient support working as a unified system from day one. This is what we call Ecosystem Launch Excellence."
+];
+
+let cur=1;const tot=15;let notesOn=false;
+
+function show(n){
+  document.querySelectorAll('.slide').forEach(s=>{s.style.display='none';s.classList.remove('active');});
+  const t=document.querySelector('.slide[data-n="'+n+'"]');
+  if(t){t.style.display='flex';t.classList.add('active');}
+  cur=n;
+  document.getElementById('counter').textContent=n+' / '+tot;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i+1===n));
+  document.getElementById('nc').textContent=notes[n-1]||'';
+}
+
+function next(){if(cur<tot)show(cur+1);}
+function prev(){if(cur>1)show(cur-1);}
+function toggleNotes(){notesOn=!notesOn;document.getElementById('np').classList.toggle('vis',notesOn);}
+
+const dc=document.getElementById('dots');
+for(let i=1;i<=tot;i++){const d=document.createElement('div');d.className='dot'+(i===1?' active':'');d.onclick=()=>show(i);dc.appendChild(d);}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')prev();
+  if(e.key==='n'||e.key==='N')toggleNotes();
+});
+
+show(1);
+
+// Charts
+window.addEventListener('load',()=>{
+
+  // Slide 2: Cliff chart
+  new Chart(document.getElementById('cliffChart'),{
+    type:'bar',
+    data:{
+      labels:['2025','2026','2027','2028','2029','2030'],
+      datasets:[
+        {label:'Annual at-risk ($B)',data:[40,58,72,90,110,145],backgroundColor:'rgba(255,48,48,0.7)',borderColor:'#FF3030',borderWidth:1,borderRadius:3,order:2},
+        {label:'Cumulative ($B)',data:[40,98,170,260,370,515],type:'line',borderColor:'rgba(255,255,255,0.4)',backgroundColor:'transparent',borderWidth:2,pointRadius:3,pointBackgroundColor:'rgba(255,255,255,0.55)',yAxisID:'y2',order:1}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.raw+'B'}}},
+      scales:{
+        x:{ticks:{color:'rgba(255,255,255,0.4)',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}},
+        y:{ticks:{color:'rgba(255,255,255,0.4)',font:{size:10},callback:v=>'$'+v+'B'},grid:{color:'rgba(255,255,255,0.05)'}},
+        y2:{position:'right',ticks:{color:'rgba(255,255,255,0.3)',font:{size:9},callback:v=>'$'+v+'B'},grid:{display:false}}
+      }
+    }
+  });
+
+  // Slide 3: Access doughnut
+  new Chart(document.getElementById('accessChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Fully reimbursed (≥1 EU market)','Partially / restricted','Not assessed or not reimbursed'],
+      datasets:[{data:[35,23,42],backgroundColor:['#FF3030','rgba(255,100,100,0.55)','rgba(255,255,255,0.1)'],borderColor:['#FF3030','rgba(255,100,100,0.55)','rgba(255,255,255,0.14)'],borderWidth:1}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,cutout:'68%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'%'}}}
+    }
+  });
+
+  // Slide 6: IRA bar
+  new Chart(document.getElementById('iraChart'),{
+    type:'bar',
+    data:{
+      labels:['Drug 1','Drug 2','Drug 3','Drug 4','Drug 5','Drug 6','Drug 7','Drug 8','Drug 9','Drug 10'],
+      datasets:[
+        {label:'2023 List (index 100)',data:[100,100,100,100,100,100,100,100,100,100],backgroundColor:'rgba(255,255,255,0.12)',borderRadius:2,order:2},
+        {label:'2026 Negotiated',data:[55,62,61,67,65,57,60,63,66,64],backgroundColor:'#FF3030',borderRadius:2,order:1}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:'rgba(255,255,255,0.38)',font:{size:9}},grid:{color:'rgba(255,255,255,0.04)'}},
+        y:{ticks:{color:'rgba(255,255,255,0.38)',font:{size:9},callback:v=>v},grid:{color:'rgba(255,255,255,0.05)'},max:115,title:{display:true,text:'Index (2023 list = 100)',color:'rgba(255,255,255,0.3)',font:{size:9}}}
+      }
+    }
+  });
+
+  // Slide 8: HCP engagement
+  new Chart(document.getElementById('hcpChart'),{
+    type:'bar',
+    data:{
+      labels:['Digital content','Email updates','In-person visits','Virtual meetings','Webinars','Peer platforms'],
+      datasets:[
+        {label:'HCP demand (%)',data:[78,72,54,61,48,42],backgroundColor:'#FF3030',borderRadius:3,barPercentage:.4},
+        {label:'Pharma delivery quality (%)',data:[28,45,62,38,35,18],backgroundColor:'rgba(255,255,255,0.15)',borderRadius:3,barPercentage:.4}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:'rgba(255,255,255,0.42)',font:{size:10}},grid:{display:false}},
+        y:{ticks:{color:'rgba(255,255,255,0.42)',font:{size:9},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,0.05)'},max:100}
+      }
+    }
+  });
+
+  // Slide 9: SFE horizontal
+  new Chart(document.getElementById('sfeChart'),{
+    type:'bar',
+    data:{
+      labels:['Removes prescribing barriers','Builds mutual relationships','Customizes to practice needs','Provides incremental learning','Delivers compliance support','Promotes product features only'],
+      datasets:[{
+        data:[91,87,83,78,65,31],
+        backgroundColor:(_,i)=>i===5?'rgba(255,255,255,0.12)':'#FF3030',
+        borderRadius:3
+      }]
+    },
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:'rgba(255,255,255,0.4)',font:{size:9},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,0.05)'},max:100},
+        y:{ticks:{color:'rgba(255,255,255,0.58)',font:{size:10}},grid:{display:false}}
+      }
+    }
+  });
+
+  // Slide 11: Patient barriers
+  new Chart(document.getElementById('patientChart'),{
+    type:'bar',
+    data:{
+      labels:['Experience delays','Cost concerns','Modify Rx (can\'t afford)','Leave pharmacy without Rx','PA delays (physician view)','Unaware PSPs exist'],
+      datasets:[{
+        data:[65,54,20,19,94,59],
+        backgroundColor:['#FF3030','rgba(255,70,70,0.85)','rgba(255,110,110,0.75)','rgba(255,130,130,0.7)','rgba(255,60,60,0.9)','rgba(255,90,90,0.75)'],
+        borderRadius:3
+      }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:'rgba(255,255,255,0.4)',font:{size:9}},grid:{display:false}},
+        y:{ticks:{color:'rgba(255,255,255,0.4)',font:{size:9},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,0.05)'},max:100}
+      }
+    }
+  });
+
+  // Slide 13: PSP chart
+  new Chart(document.getElementById('pspChart'),{
+    type:'bar',
+    data:{
+      labels:['Patients unaware of PSPs','Prescribers unaware of PSPs','Copay assist most utilized','PSP effectiveness rated good'],
+      datasets:[{
+        data:[59,42,80,32],
+        backgroundColor:['#FF3030','#FF3030','rgba(255,255,255,0.22)','rgba(255,255,255,0.12)'],
+        borderRadius:4
+      }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:'rgba(255,255,255,0.45)',font:{size:10}},grid:{display:false}},
+        y:{ticks:{color:'rgba(255,255,255,0.38)',font:{size:9},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,0.05)'},max:100}
+      }
+    }
+  });
+
+  // Slide 4: Country bars
+  const major=[{n:'UK',p:85,c:'#FF3030'},{n:'Germany',p:85,c:'#FF3030'},{n:'France',p:62,c:'rgba(255,80,80,0.8)'},{n:'Italy',p:54,c:'rgba(255,110,110,0.75)'},{n:'Spain',p:47,c:'rgba(255,130,130,0.7)'}];
+  const small=[{n:'Cyprus',p:7,c:'rgba(255,255,255,0.18)'},{n:'Lithuania',p:19,c:'rgba(255,255,255,0.22)'},{n:'Ireland',p:21,c:'rgba(255,255,255,0.24)'},{n:'Croatia',p:27,c:'rgba(255,255,255,0.27)'},{n:'Slovakia',p:26,c:'rgba(255,255,255,0.25)'}];
+  function mkBars(id,data){
+    const el=document.getElementById(id);if(!el)return;
+    data.forEach(d=>{el.innerHTML+=`<div class="cb"><div class="cn">${d.n}</div><div class="bt"><div class="bf" style="width:${d.p}%;background:${d.c};"><span class="bp">${d.p}%</span></div></div></div>`;});
+  }
+  mkBars('majorBars',major);mkBars('smallBars',small);
+});
+</script>
+</body>
+</html>
