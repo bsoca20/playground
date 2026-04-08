@@ -22,7 +22,7 @@ export default function ProgramPage() {
             "The risk of organizational silos and fragmented accountability",
             "Internal & external misalignment"
           ],
-          deck: "/pharma_launch_deck_LH.html"
+          deck: "/pharma_launch_v2_LH.html"
         },
         {
           time: "13:45–14:45",
@@ -259,6 +259,22 @@ export default function ProgramPage() {
                 className="flex w-full items-center justify-center rounded-xl border border-white/10 px-5 py-3 text-sm font-semibold text-zinc-500 transition-colors hover:border-white/20 hover:text-zinc-300"
               >
                 Acceso facilitador
+              </a>
+              <a
+                href="/launch_master_planning_LH.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center rounded-xl border border-white/10 px-5 py-3 text-sm font-semibold text-zinc-500 transition-colors hover:border-white/20 hover:text-zinc-300"
+              >
+                Launch Planner
+              </a>
+              <a
+                href="/escronicos_barometro_LH.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-black text-red-400 transition-colors hover:bg-red-500/15"
+              >
+                Dashboard EsCrónicos →
               </a>
             </div>
           </div>

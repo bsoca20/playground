@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Launch Master Tool — España | Leadership House</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  --red:#d81f2a;--red2:rgba(216,31,42,0.15);--red3:rgba(216,31,42,0.06);
+  --bg:#09090b;--bg2:#111113;--bg3:#18181d;--bg4:#1e1e25;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.04);
+  --txt:rgba(255,255,255,0.87);--dim:rgba(255,255,255,0.44);--faint:rgba(255,255,255,0.2);
+  --gm:#ffffff;--reg:#e8a838;--med:#3dba8a;--acc:#4a9eff;--mkt:#d81f2a;
+  --ven:#ff7c3e;--kam:#b06cf4;--sup:#5ec8e8;--uc:#f0c040;--ms:#80e060;
+  --psp:#ff88bb;--fin:#aaaaaa;--pv:#90c0ff;--pa:#60d4a0;--hr:#ddaaff;--xfn:#e0e0e0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'Barlow',sans-serif;font-size:13px;line-height:1.5;min-height:100vh}
+
+/* ── HEADER ── */
+.mast{background:var(--bg);border-bottom:1px solid var(--border);padding:20px 36px 16px;position:sticky;top:0;z-index:200;backdrop-filter:blur(10px)}
+.mast-inner{max-width:1440px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:17px;letter-spacing:2.5px;text-transform:uppercase;color:#fff;line-height:1}
+.logo small{font-size:9px;font-weight:400;letter-spacing:2px;color:var(--faint);display:block;margin-top:3px}
+.doc-ttl{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-top:8px}
+.doc-sub{font-size:11px;color:var(--faint);margin-top:2px}
+.mast-right{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-n{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:26px;color:var(--red);line-height:1}
+.stat-l{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);margin-top:2px}
+
+/* ── PRODUCT TYPE SELECTOR ── */
+.prod-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 36px}
+.prod-bar-inner{max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.prod-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-right:4px}
+.prod-btn{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:5px 14px;border-radius:3px;border:1px solid var(--border);background:var(--bg3);color:var(--dim);cursor:pointer;transition:all .12s}
+.prod-btn:hover{border-color:rgba(255,255,255,0.18);color:var(--txt)}
+.prod-btn.active{color:#fff}
+.prod-all.active{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.25)}
+.prod-ap.active{background:rgba(78,200,100,0.15);border-color:rgba(78,200,100,0.4);color:#5edb78}
+.prod-sp.active{background:rgba(74,158,255,0.15);border-color:rgba(74,158,255,0.4);color:#7ac0ff}
+.prod-on.active{background:rgba(216,31,42,0.15);border-color:rgba(216,31,42,0.4);color:#e87070}
+.prod-er.active{background:rgba(240,192,64,0.15);border-color:rgba(240,192,64,0.4);color:#f0c040}
+.prod-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.dl-btn{margin-left:auto;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 16px;border-radius:3px;border:1px solid rgba(216,31,42,0.35);background:var(--red2);color:var(--red);cursor:pointer;transition:all .12s}
+.dl-btn:hover{background:var(--red);color:#fff}
+
+/* ── TABS ── */
+.tab-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 36px;position:sticky;top:89px;z-index:190}
+.tab-nav-inner{max-width:1440px;margin:0 auto;display:flex;gap:0}
+.tab-btn{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:12px 18px;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .12s;white-space:nowrap}
+.tab-btn:hover{color:var(--txt)}
+.tab-btn.active{color:#fff;border-bottom-color:var(--red)}
+
+/* ── CONTROLS (tab1) ── */
+.ctrl-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 36px;position:sticky;top:133px;z-index:180}
+.ctrl-inner{max-width:1440px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.srch{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:6px 12px;color:var(--txt);font-family:'Barlow',sans-serif;font-size:12px;width:200px;outline:none;transition:border-color .15s}
+.srch:focus{border-color:var(--red)}
+.srch::placeholder{color:var(--faint)}
+.fg{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.flbl{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-right:2px}
+.fb{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:3px 9px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;color:var(--dim);cursor:pointer;transition:all .1s;white-space:nowrap}
+.fb:hover{border-color:rgba(255,255,255,0.15);color:var(--txt)}
+.fb.active{background:var(--red);border-color:var(--red);color:#fff}
+.cnt{background:var(--red2);border:1px solid rgba(216,31,42,0.28);border-radius:10px;padding:3px 9px;font-size:11px;color:var(--red);font-weight:600;margin-left:4px}
+
+/* ── MAIN ── */
+.main{max-width:1440px;margin:0 auto;padding:28px 36px 80px}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ── PHASE ── */
+.phase-sec{margin-bottom:44px}
+.phase-hdr{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.phase-tag{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:10px;letter-spacing:2px;text-transform:uppercase;background:var(--red);color:#fff;padding:3px 9px;border-radius:2px}
+.phase-nm{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;color:#fff;letter-spacing:.3px}
+.phase-desc{font-size:10px;color:var(--faint);margin-left:auto}
+
+/* ── DEPT BLOCK ── */
+.dept-blk{margin-bottom:10px;border:1px solid var(--border2);border-radius:5px;overflow:hidden}
+.dept-hdr{display:flex;align-items:center;gap:9px;padding:8px 14px;background:var(--bg2);cursor:pointer;user-select:none;transition:background .1s}
+.dept-hdr:hover{background:var(--bg3)}
+.ddot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dnm{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;flex:1}
+.dcnt{font-size:10px;color:var(--faint);background:rgba(255,255,255,0.05);padding:2px 7px;border-radius:8px}
+.dtog{font-size:9px;color:var(--faint);transition:transform .18s}
+.dtog.open{transform:rotate(90deg)}
+.dept-body{display:none;border-top:1px solid var(--border2)}
+.dept-body.open{display:block}
+
+/* ── ACTION ROW ── */
+.arow{display:grid;grid-template-columns:24px 1fr 90px 70px;align-items:start;gap:10px;padding:7px 14px;border-bottom:1px solid var(--border2);transition:background .08s}
+.arow:last-child{border-bottom:none}
+.arow:hover{background:rgba(255,255,255,0.018)}
+.arow.hidden{display:none}
+.anum{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;color:var(--faint);text-align:right;padding-top:1px}
+.atxt{font-size:12.5px;color:rgba(255,255,255,0.76);line-height:1.42}
+.atxt strong{color:#fff;font-weight:600}
+.atype{font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:2px 6px;border-radius:3px;text-align:center;white-space:nowrap;margin-top:1px;align-self:start}
+.t-est{background:rgba(216,31,42,0.15);color:#e87070}
+.t-pro{background:rgba(232,168,56,0.15);color:#e8c060}
+.t-cie{background:rgba(61,186,138,0.15);color:#60d4a0}
+.t-acc{background:rgba(74,158,255,0.15);color:#7ac0ff}
+.t-com{background:rgba(255,124,62,0.15);color:#ff9a70}
+.t-ope{background:rgba(94,200,232,0.15);color:#80d8f0}
+.t-pac{background:rgba(255,136,187,0.15);color:#ffaacc}
+.t-gob{background:rgba(170,170,170,0.15);color:#bbb}
+.aprio{display:flex;justify-content:center;align-self:start;margin-top:1px}
+.prio{font-size:9px;letter-spacing:.5px;padding:2px 6px;border-radius:2px;font-weight:700;text-transform:uppercase}
+.p-c{background:rgba(216,31,42,0.22);color:var(--red);border:1px solid rgba(216,31,42,0.3)}
+.p-a{background:rgba(232,168,56,0.18);color:#e8c060;border:1px solid rgba(232,168,56,0.25)}
+.p-m{background:rgba(255,255,255,0.05);color:var(--faint);border:1px solid var(--border2)}
+
+/* ── NO RESULTS ── */
+.no-res{text-align:center;padding:60px 20px;color:var(--faint)}
+
+/* ── TAB 2: WORKSTREAMS ── */
+.ws-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-top:24px}
+.ws-card{background:var(--bg2);border:1px solid var(--border2);border-radius:6px;overflow:hidden}
+.ws-card-hdr{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border2)}
+.ws-letter{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;color:var(--red);line-height:1;flex-shrink:0}
+.ws-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.5px;color:#fff}
+.ws-body{padding:12px 16px}
+.ws-item{font-size:12px;color:rgba(255,255,255,0.65);padding:4px 0;border-bottom:1px solid var(--border2);display:flex;align-items:flex-start;gap:8px}
+.ws-item:last-child{border-bottom:none}
+.ws-item::before{content:'→';color:var(--red);font-size:10px;flex-shrink:0;margin-top:2px}
+
+/* ── TAB 3: ESPAÑA ── */
+.es-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px;margin-top:24px}
+.es-card{background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:18px 20px}
+.es-card.critico{border-left:3px solid var(--red)}
+.es-card.importante{border-left:3px solid #e8c060}
+.es-card.info{border-left:3px solid var(--acc)}
+.es-icon{font-size:22px;margin-bottom:10px}
+.es-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:#fff;margin-bottom:8px;letter-spacing:.3px}
+.es-txt{font-size:12.5px;color:rgba(255,255,255,0.65);line-height:1.55}
+.es-cite{font-size:10px;color:var(--faint);margin-top:8px;font-style:italic}
+.es-section-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin:28px 0 12px;border-bottom:1px solid var(--border);padding-bottom:8px}
+
+/* ── TAB 4: ENTREGABLES ── */
+.ent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin-top:24px}
+.ent-card{background:var(--bg2);border:1px solid var(--border2);border-radius:5px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.ent-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:28px;color:var(--red);line-height:1;flex-shrink:0;min-width:32px}
+.ent-info{}
+.ent-nm{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:#fff;letter-spacing:.3px}
+.ent-desc{font-size:11.5px;color:rgba(255,255,255,0.55);margin-top:4px;line-height:1.45}
+.ent-dept{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);margin-top:6px}
+
+/* ── TAB 5: MI PRODUCTO ── */
+.mp-layout{display:grid;grid-template-columns:340px 1fr;gap:24px;margin-top:24px}
+@media(max-width:900px){.mp-layout{grid-template-columns:1fr}}
+.mp-form{background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:24px;align-self:start;position:sticky;top:200px}
+.mp-form-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:17px;color:#fff;margin-bottom:20px;letter-spacing:.5px}
+.fld{margin-bottom:16px}
+.fld label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:6px}
+.fld input,.fld select,.fld textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:8px 12px;color:var(--txt);font-family:'Barlow',sans-serif;font-size:12.5px;outline:none;transition:border-color .15s}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--red)}
+.fld select option{background:var(--bg3)}
+.fld textarea{resize:vertical;min-height:70px}
+.mp-radio-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mp-radio{position:relative}
+.mp-radio input{position:absolute;opacity:0;width:0;height:0}
+.mp-radio label{display:block;padding:7px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;color:var(--dim);cursor:pointer;text-align:center;transition:all .12s}
+.mp-radio input:checked + label{color:#fff}
+.mp-radio.ap input:checked + label{background:rgba(78,200,100,0.15);border-color:rgba(78,200,100,0.4);color:#5edb78}
+.mp-radio.sp input:checked + label{background:rgba(74,158,255,0.15);border-color:rgba(74,158,255,0.4);color:#7ac0ff}
+.mp-radio.on input:checked + label{background:rgba(216,31,42,0.15);border-color:rgba(216,31,42,0.4);color:#e87070}
+.mp-radio.er input:checked + label{background:rgba(240,192,64,0.15);border-color:rgba(240,192,64,0.4);color:#f0c040}
+.gen-btn{width:100%;background:var(--red);color:#fff;border:none;border-radius:4px;padding:11px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:opacity .12s;margin-top:8px}
+.gen-btn:hover{opacity:.85}
+.mp-out{min-height:300px}
+.mp-empty{text-align:center;padding:80px 20px;color:var(--faint)}
+.mp-empty-icon{font-size:40px;margin-bottom:16px}
+.mp-report{}
+.mp-report-hdr{background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:20px 24px;margin-bottom:20px}
+.mp-prod-nm{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:28px;color:#fff}
+.mp-prod-meta{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}
+.mp-meta-chip{background:var(--bg3);border:1px solid var(--border2);border-radius:3px;padding:3px 10px;font-size:11px;color:var(--dim)}
+.mp-phase-block{background:var(--bg2);border:1px solid var(--border2);border-radius:6px;margin-bottom:12px;overflow:hidden}
+.mp-phase-hdr{padding:10px 16px;display:flex;align-items:center;gap:12px}
+.mp-phase-hdr.current{background:rgba(216,31,42,0.08);border-bottom:1px solid rgba(216,31,42,0.15)}
+.mp-phase-hdr.past{background:rgba(255,255,255,0.02)}
+.mp-phase-hdr.future{background:var(--bg2)}
+.mp-phase-dates{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--red)}
+.mp-phase-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:#fff}
+.mp-phase-badge{font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:2px;font-weight:700}
+.badge-current{background:rgba(216,31,42,0.2);color:var(--red);border:1px solid rgba(216,31,42,0.3)}
+.badge-past{background:rgba(255,255,255,0.06);color:var(--faint)}
+.badge-future{background:rgba(74,158,255,0.1);color:#7ac0ff;border:1px solid rgba(74,158,255,0.2)}
+.mp-phase-actions{padding:10px 16px;border-top:1px solid var(--border2);display:grid;gap:6px}
+.mp-action-item{font-size:12px;color:rgba(255,255,255,0.7);display:flex;align-items:flex-start;gap:8px;padding:4px 0}
+.mp-action-item::before{content:'·';color:var(--red);font-size:16px;line-height:1;flex-shrink:0}
+.mp-risk-box{background:rgba(216,31,42,0.06);border:1px solid rgba(216,31,42,0.15);border-radius:6px;padding:14px 18px;margin-top:20px}
+.mp-risk-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--red);margin-bottom:10px;letter-spacing:.5px}
+.mp-risk-item{font-size:12px;color:rgba(255,255,255,0.65);padding:3px 0;display:flex;gap:8px}
+.mp-risk-item::before{content:'⚠';font-size:11px;flex-shrink:0}
+
+/* ── SHARED ── */
+.ttl-area{margin-bottom:16px}
+.page-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;color:#fff;letter-spacing:.5px}
+.page-sub{font-size:12px;color:var(--dim);margin-top:4px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="mast">
+  <div class="mast-inner">
+    <div>
+      <div class="logo">LEADERSHIP HOUSE<small>POWERED BY BLUEBARNA</small></div>
+      <div class="doc-ttl">Launch Master Tool — España</div>
+      <div class="doc-sub">De T-24 meses a T+12 · Todos los departamentos · Specialty · Oncología · Enfermedades Raras · Primaria</div>
+    </div>
+    <div class="mast-right">
+      <div class="stat"><div class="stat-n" id="statActions">148</div><div class="stat-l">Acciones</div></div>
+      <div class="stat"><div class="stat-n">16</div><div class="stat-l">Departamentos</div></div>
+      <div class="stat"><div class="stat-n">8</div><div class="stat-l">Periodos</div></div>
+      <div class="stat"><div class="stat-n">36</div><div class="stat-l">Meses</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT TYPE + DOWNLOAD -->
+<div class="prod-bar">
+  <div class="prod-bar-inner">
+    <span class="prod-label">Tipo de producto:</span>
+    <button class="prod-btn prod-all active" data-prod="all">Todos</button>
+    <button class="prod-btn prod-ap" data-prod="ap">🏥 Atención Primaria</button>
+    <button class="prod-btn prod-sp" data-prod="specialty">💊 Specialty</button>
+    <button class="prod-btn prod-on" data-prod="onco">🔬 Oncología</button>
+    <button class="prod-btn prod-er" data-prod="er">🧬 Enfermedades Raras</button>
+    <div class="prod-sep"></div>
+    <button class="dl-btn" id="dlExcel">⬇ Descargar Excel</button>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-nav">
+  <div class="tab-nav-inner">
+    <div class="tab-btn active" data-tab="t1">📋 Lista Maestra</div>
+    <div class="tab-btn" data-tab="t2">🗂 Workstreams A–L</div>
+    <div class="tab-btn" data-tab="t3">🇪🇸 España Específico</div>
+    <div class="tab-btn" data-tab="t4">📦 25 Entregables</div>
+    <div class="tab-btn" data-tab="t5">⚙️ Mi Producto</div>
+    <div class="tab-btn" data-tab="t6">🧠 Red Neural</div>
+  </div>
+</div>
+
+<!-- CONTROLS (only for tab1) -->
+<div class="ctrl-bar" id="ctrlBar">
+  <div class="ctrl-inner">
+    <input type="text" class="srch" id="srch" placeholder="🔍  Buscar acción...">
+    <div class="fg">
+      <span class="flbl">Fase:</span>
+      <button class="fb active" data-fp="all">Todas</button>
+      <button class="fb" data-fp="p1">T-24/T-18</button>
+      <button class="fb" data-fp="p2">T-18/T-12</button>
+      <button class="fb" data-fp="p3">T-12/T-6</button>
+      <button class="fb" data-fp="p4">T-6/T-3</button>
+      <button class="fb" data-fp="p5">T-3/T0</button>
+      <button class="fb" data-fp="p6">T0/T+3</button>
+      <button class="fb" data-fp="p7">T+3/T+6</button>
+      <button class="fb" data-fp="p8">T+6/T+12</button>
+    </div>
+    <div class="fg">
+      <span class="flbl">Dpto:</span>
+      <button class="fb active" data-fd="all">Todos</button>
+      <button class="fb" data-fd="gm">GM/PMO</button>
+      <button class="fb" data-fd="reg">Reg.</button>
+      <button class="fb" data-fd="med">Medical</button>
+      <button class="fb" data-fd="acc">Acceso</button>
+      <button class="fb" data-fd="mkt">Mktg</button>
+      <button class="fb" data-fd="ven">Ventas</button>
+      <button class="fb" data-fd="kam">KAM</button>
+      <button class="fb" data-fd="sup">Supply</button>
+      <button class="fb" data-fd="uc">UC/ATU</button>
+      <button class="fb" data-fd="ms">Mkt Shape</button>
+      <button class="fb" data-fd="psp">PSP</button>
+      <button class="fb" data-fd="fin">Finance</button>
+      <button class="fb" data-fd="pv">Farmacovig.</button>
+      <button class="fb" data-fd="pa">Pub Affairs</button>
+      <button class="fb" data-fd="hr">RRHH</button>
+    </div>
+    <div class="fg">
+      <span class="flbl">Prio:</span>
+      <button class="fb active" data-fpr="all">Todas</button>
+      <button class="fb" data-fpr="critico">Crítico</button>
+      <button class="fb" data-fpr="alto">Alto</button>
+    </div>
+    <span class="cnt" id="cnt">148</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="main">
+
+<!-- ── TAB 1: LISTA MAESTRA ── -->
+<div class="tab-content active" id="t1">
+  <div id="listContainer"></div>
+  <div class="no-res" id="noRes" style="display:none">
+    <div style="font-size:28px;margin-bottom:10px">🔍</div>
+    No hay acciones con los filtros seleccionados.
+  </div>
+</div>
+
+<!-- ── TAB 2: WORKSTREAMS ── -->
+<div class="tab-content" id="t2">
+  <div class="ttl-area">
+    <div class="page-ttl">Workstreams Maestros por Departamento</div>
+    <div class="page-sub">12 workstreams con todas las áreas de decisión, herramientas y entregables clave por función</div>
+  </div>
+  <div class="ws-grid" id="wsGrid"></div>
+</div>
+
+<!-- ── TAB 3: ESPAÑA ESPECÍFICO ── -->
+<div class="tab-content" id="t3">
+  <div class="ttl-area">
+    <div class="page-ttl">Puntos Específicos de España que No Se Pueden Olvidar</div>
+    <div class="page-sub">El contexto regulatorio, de acceso y operativo que diferencia un lanzamiento en España de cualquier otro mercado europeo</div>
+  </div>
+  <div id="esContent"></div>
+</div>
+
+<!-- ── TAB 4: 25 ENTREGABLES ── -->
+<div class="tab-content" id="t4">
+  <div class="ttl-area">
+    <div class="page-ttl">Los 25 Entregables Imprescindibles del Launch</div>
+    <div class="page-sub">Si estos 25 documentos existen, son buenos y están actualizados, el lanzamiento tiene fundamentos sólidos</div>
+  </div>
+  <div class="ent-grid" id="entGrid"></div>
+</div>
+
+<!-- ── TAB 5: MI PRODUCTO ── -->
+<div class="tab-content" id="t6"></div>
+
+<div class="tab-content" id="t5">
+  <div class="ttl-area">
+    <div class="page-ttl">Mi Producto — Plan Personalizado</div>
+    <div class="page-sub">Introduce los datos de tu producto y genera un informe de acciones y timelines específico</div>
+  </div>
+  <div class="mp-layout">
+    <div class="mp-form">
+      <div class="mp-form-ttl">📝 Configurador</div>
+      <div class="fld">
+        <label>Nombre del producto</label>
+        <input type="text" id="mpName" placeholder="Ej: Cefalix, Lumivant...">
+      </div>
+      <div class="fld">
+        <label>Indicación terapéutica</label>
+        <input type="text" id="mpIndic" placeholder="Ej: Migraña episódica moderada-severa">
+      </div>
+      <div class="fld">
+        <label>Área terapéutica</label>
+        <select id="mpArea">
+          <option value="">— Selecciona —</option>
+          <option>Neurología</option>
+          <option>Oncología</option>
+          <option>Cardiología</option>
+          <option>Reumatología</option>
+          <option>Dermatología</option>
+          <option>Respiratorio / EPOC / Asma</option>
+          <option>Enfermedades Raras</option>
+          <option>Endocrinología / Diabetes</option>
+          <option>Inmunología / Inflamación</option>
+          <option>Hemato-Oncología</option>
+          <option>Gastroenterología</option>
+          <option>Otros</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Tipo de mercado</label>
+        <div class="mp-radio-grid">
+          <div class="mp-radio ap"><input type="radio" name="mpProd" id="r-ap" value="ap"><label for="r-ap">🏥 Atención Primaria</label></div>
+          <div class="mp-radio sp"><input type="radio" name="mpProd" id="r-sp" value="specialty" checked><label for="r-sp">💊 Specialty</label></div>
+          <div class="mp-radio on"><input type="radio" name="mpProd" id="r-on" value="onco"><label for="r-on">🔬 Oncología</label></div>
+          <div class="mp-radio er"><input type="radio" name="mpProd" id="r-er" value="er"><label for="r-er">🧬 Enf. Raras</label></div>
+        </div>
+      </div>
+      <div class="fld">
+        <label>Fecha estimada de lanzamiento comercial</label>
+        <input type="date" id="mpDate">
+      </div>
+      <div class="fld">
+        <label>Fase actual del proyecto</label>
+        <select id="mpPhase">
+          <option value="p1">T-24 a T-18 — Fundamentos</option>
+          <option value="p2">T-18 a T-12 — Construcción</option>
+          <option value="p3">T-12 a T-6 — Preparación</option>
+          <option value="p4">T-6 a T-3 — Readiness</option>
+          <option value="p5">T-3 a T0 — Activación</option>
+          <option value="p6">T0 a T+3 — Aterrizaje</option>
+          <option value="p7">T+3 a T+6 — Escalado</option>
+          <option value="p8">T+6 a T+12 — Optimización</option>
+        </select>
+      </div>
+      <button class="gen-btn" id="genBtn">Generar Plan →</button>
+    </div>
+    <div class="mp-out" id="mpOut">
+      <div class="mp-empty">
+        <div class="mp-empty-icon">🚀</div>
+        <div>Configura tu producto y pulsa<br><strong>Generar Plan</strong> para ver el informe personalizado</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ══════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════
+
+const PHASES = [
+  {id:'p1',period:'T-24 a T-18',name:'Fundamentos Estratégicos',desc:'Pre-aprobación EMA · Estrategia · Constitución del equipo'},
+  {id:'p2',period:'T-18 a T-12',name:'Construcción y Desarrollo',desc:'Post-CHMP · Dossier CIPM · Activación MSL · Brand strategy'},
+  {id:'p3',period:'T-12 a T-6',name:'Preparación Intensiva Pre-launch',desc:'Aprobación AEMPS · Negociación CIPM · Readiness total'},
+  {id:'p4',period:'T-6 a T-3',name:'Ejecución Final y Readiness Total',desc:'"Podríamos lanzar mañana" · Checklist · Simulacros'},
+  {id:'p5',period:'T-3 a T0',name:'Activación',desc:'Go/no-go · First commercial order · Day 0'},
+  {id:'p6',period:'T0 a T+3',name:'Primer Aterrizaje de Mercado',desc:'Primeras prescripciones · Listings · Circuito real'},
+  {id:'p7',period:'T+3 a T+6',name:'Escalado y Corrección',desc:'Second wave · Re-segmentación · RWE primeros datos'},
+  {id:'p8',period:'T+6 a T+12',name:'Optimización, Expansión y Defensa',desc:'Franchise build · Nuevas indicaciones · Consolidación'},
+];
+
+const DEPTS = [
+  {id:'gm', name:'GM / Leadership / PMO', color:'var(--gm)'},
+  {id:'acc',name:'Market Access / HEOR / Pricing', color:'var(--acc)'},
+  {id:'med',name:'Medical Affairs', color:'var(--med)'},
+  {id:'reg',name:'Regulatory / AEMPS', color:'var(--reg)'},
+  {id:'mkt',name:'Marketing / Marca', color:'var(--mkt)'},
+  {id:'ven',name:'Ventas / Field Force', color:'var(--ven)'},
+  {id:'kam',name:'KAM / Hospital', color:'var(--kam)'},
+  {id:'sup',name:'Supply Chain / Operaciones', color:'var(--sup)'},
+  {id:'uc', name:'Uso Compasivo / ATU', color:'var(--uc)'},
+  {id:'ms', name:'Market Shaping / Ecosistema', color:'var(--ms)'},
+  {id:'psp',name:'Paciente / PSP', color:'var(--psp)'},
+  {id:'fin',name:'Finance / Legal / Compliance', color:'var(--fin)'},
+  {id:'pv', name:'Farmacovigilancia / Med Info', color:'var(--pv)'},
+  {id:'pa', name:'Public Affairs / Patient Advocacy', color:'var(--pa)'},
+  {id:'hr', name:'RRHH / Formación', color:'var(--hr)'},
+  {id:'xfn',name:'Cross-Funcional / Gobernanza', color:'var(--xfn)'},
+];
+
+const TYPE_CLS = {estrategia:'t-est',proceso:'t-pro',cientifico:'t-cie',acceso:'t-acc',comercial:'t-com',operaciones:'t-ope',paciente:'t-pac',gobierno:'t-gob'};
+const PRIO_CLS = {critico:'p-c',alto:'p-a',medio:'p-m'};
+
+const ACTIONS = [
+// ── FASE 1: T-24 a T-18 ──
+{id:1,phase:'p1',dept:'gm',text:'<strong>Ambición del lanzamiento en España:</strong> tamaño de apuesta, rol estratégico del país (filial core vs. mercado de referencia), prioridad en el portfolio global.',type:'estrategia',prio:'critico',prod:['all']},
+{id:2,phase:'p1',dept:'gm',text:'<strong>Clasificar el tipo de lanzamiento:</strong> hospitalario puro, specialty mixto, DH, H, primaria o híbrido — determina la arquitectura comercial completa.',type:'estrategia',prio:'critico',prod:['all']},
+{id:3,phase:'p1',dept:'gm',text:'<strong>Nombrar Launch Lead España y crear Launch Governance:</strong> representación cross-functional de todos los departamentos clave desde el inicio.',type:'gobierno',prio:'critico',prod:['all']},
+{id:4,phase:'p1',dept:'gm',text:'<strong>Definir RACI cross-functional:</strong> quién decide, quién ejecuta, quién consulta, quién se informa — en cada workstream crítico del lanzamiento.',type:'gobierno',prio:'critico',prod:['all']},
+{id:5,phase:'p1',dept:'gm',text:'<strong>Principios de trabajo del equipo:</strong> una sola verdad de paciente, una sola forecast, una sola narrativa estratégica — para evitar versiones paralelas por departamento.',type:'gobierno',prio:'critico',prod:['all']},
+{id:6,phase:'p1',dept:'gm',text:'<strong>Cadencia de gobernanza:</strong> weekly core team, monthly steerco, quarterly executive review — con agenda tipo y accountability clara por función.',type:'gobierno',prio:'alto',prod:['all']},
+{id:7,phase:'p1',dept:'gm',text:'<strong>Risk register inicial:</strong> regulatorio, acceso, supply, medical, competidores — con owner asignado y plan de mitigación inicial.',type:'gobierno',prio:'alto',prod:['all']},
+{id:8,phase:'p1',dept:'gm',text:'<strong>Criterios de éxito acordados:</strong> aprobación regulatoria, P&R, listing, ready-to-launch, first patient / first order, uptake a 3-6-12 meses — baseline para toda la governance.',type:'estrategia',prio:'critico',prod:['all']},
+{id:9,phase:'p1',dept:'acc',text:'<strong>Disease area strategy para España:</strong> burden of disease, patient flow, funnel real, cuellos de botella del sistema sanitario español.',type:'estrategia',prio:'critico',prod:['all']},
+{id:10,phase:'p1',dept:'acc',text:'<strong>Segmentación de escenarios de población:</strong> broad label vs. funded label vs. real accessible population — base del forecast y la estrategia de acceso.',type:'estrategia',prio:'critico',prod:['all']},
+{id:11,phase:'p1',dept:'acc',text:'<strong>Access strategy España desde el día 1:</strong> definir los cuatro anillos (epidemiológica, tratable, elegible, accesible) y qué hace falta para ampliar cada uno.',type:'acceso',prio:'critico',prod:['all']},
+{id:12,phase:'p1',dept:'acc',text:'<strong>Modelar escenarios de precio:</strong> target, floor, fallback y net price corridor, considerando IRP europeo y política de confidencialidad de descuentos en España.',type:'acceso',prio:'critico',prod:['all']},
+{id:13,phase:'p1',dept:'acc',text:'<strong>Mapa de decisores completo:</strong> Ministerio/DG Cartera/CIPM, AEMPS/IPT, CCAA, comisiones regionales, hospitales, comités de farmacia — con nivel de influencia y posición actual.',type:'acceso',prio:'critico',prod:['all']},
+{id:14,phase:'p1',dept:'acc',text:'<strong>Evidence generation plan para cerrar gaps de acceso:</strong> RWE, modelos económicos, budget impact nacional y regional, subgrupos priorizados para el dossier de P&R.',type:'acceso',prio:'alto',prod:['all']},
+{id:15,phase:'p1',dept:'acc',text:'<strong>Análisis de necesidad de MEAs:</strong> techos de gasto, payment by results, contratos de outcomes — con análisis de precedentes CIPM en el área terapéutica.',type:'acceso',prio:'alto',prod:['onco','er','specialty']},
+{id:16,phase:'p1',dept:'med',text:'<strong>Medical strategy España:</strong> alineada con global pero adaptada al ecosistema local — centros de referencia, sociedades científicas, cultura de prescripción, redes de expertos.',type:'estrategia',prio:'critico',prod:['all']},
+{id:17,phase:'p1',dept:'med',text:'<strong>Mapeo y priorización de KOLs:</strong> nacionales (tier 1), regionales (tier 2), locales (tier 3) — análisis de influencia científica, prescripción, redes y afiliaciones.',type:'cientifico',prio:'critico',prod:['all']},
+{id:18,phase:'p1',dept:'med',text:'<strong>Scientific narrative:</strong> burden, mechanism of action, meaningful differentiation, patient-relevant endpoints — base de toda la comunicación médica del lanzamiento.',type:'cientifico',prio:'critico',prod:['all']},
+{id:19,phase:'p1',dept:'med',text:'<strong>Readiness científica del producto:</strong> publicaciones disponibles, abstracts, congress strategy, advisory boards programados, insight generation plan estructurado.',type:'cientifico',prio:'alto',prod:['all']},
+{id:20,phase:'p1',dept:'med',text:'<strong>Valorar programa de early access / uso compasivo:</strong> tipología aplicable (individual/cohorte), criterios clínicos, proceso AEMPS, centros potencialmente solicitantes.',type:'proceso',prio:'alto',prod:['onco','er','specialty']},
+{id:21,phase:'p1',dept:'reg',text:'<strong>Ruta regulatoria confirmada:</strong> centralizado EMA, variaciones, indicaciones, orphan/conditional/exceptional — con regulatory milestone map UE/España y fechas clave.',type:'proceso',prio:'critico',prod:['all']},
+{id:22,phase:'p1',dept:'reg',text:'<strong>Planificación del Código Nacional:</strong> el CN activa el circuito nacional y está directamente ligado al arranque formal del IPT para nuevos medicamentos centralizados — timing crítico.',type:'proceso',prio:'critico',prod:['all']},
+{id:23,phase:'p1',dept:'reg',text:'<strong>Estrategia para ficha técnica española:</strong> materiales locales, traducciones, revisiones legales y artworks — con plazos reales de AEMPS para cada elemento.',type:'proceso',prio:'alto',prod:['all']},
+{id:24,phase:'p1',dept:'reg',text:'<strong>Requisitos de serialización FMD y packaging español:</strong> acondicionamiento, PIL en español, FMD compliance — especialmente si hay características especiales de conservación.',type:'proceso',prio:'alto',prod:['all']},
+{id:25,phase:'p1',dept:'reg',text:'<strong>Importación temporal / situaciones especiales:</strong> mapear requisitos si el medicamento se usará antes de la comercialización ordinaria (uso compasivo, PUC, importación de terceros).',type:'proceso',prio:'alto',prod:['onco','er']},
+{id:26,phase:'p1',dept:'sup',text:'<strong>Cadena de suministro para España:</strong> source of supply, release strategy, importación, distribución (canal hospitalario, mayoristas, farmacia), stock policy.',type:'operaciones',prio:'critico',prod:['all']},
+{id:27,phase:'p1',dept:'sup',text:'<strong>Validación de capacidad productiva:</strong> normal launch, launch acelerado, uso compasivo, picos por adjudicaciones hospitalarias — con reserva de capacidad confirmada para España.',type:'operaciones',prio:'alto',prod:['all']},
+{id:28,phase:'p1',dept:'sup',text:'<strong>Plan de supply risk:</strong> identificar vulnerabilidades en la cadena, planes de contingencia, risk register de supply con triggers de activación definidos.',type:'operaciones',prio:'alto',prod:['all']},
+{id:29,phase:'p1',dept:'fin',text:'<strong>Business case España aprobado:</strong> inversión pre-launch, headcount, medical, launch events, market shaping, HEOR/evidence — con P&L por escenario de acceso.',type:'estrategia',prio:'critico',prod:['all']},
+{id:30,phase:'p1',dept:'fin',text:'<strong>Guardrails financieros para negociar precio:</strong> coste de oportunidad de retrasos, floor price, condiciones de descuento / free goods y governance de contratos especiales.',type:'estrategia',prio:'alto',prod:['all']},
+{id:31,phase:'p1',dept:'mkt',text:'<strong>Modelo comercial decidido:</strong> key account only, hospital specialist, mixto KAM+MSL+RAM, specialty+primaria — con análisis de coste-efectividad de cada arquitectura.',type:'estrategia',prio:'critico',prod:['all']},
+{id:32,phase:'p1',dept:'mkt',text:'<strong>Primer borrador de segmentation & targeting:</strong> clientes, hospitales, especialidades, geografías — base para el diseño de la fuerza de ventas y la estrategia omnicanal.',type:'estrategia',prio:'alto',prod:['all']},
+{id:33,phase:'p1',dept:'mkt',text:'<strong>Customer journeys por stakeholder:</strong> especialista prescriptor, farmacia hospitalaria, gerencia, paciente, atención primaria (si influye en derivación o prescripción).',type:'estrategia',prio:'alto',prod:['all']},
+{id:34,phase:'p1',dept:'fin',text:'<strong>Framework de compliance y MLR:</strong> guardrails para interaction plans con HCPs, advisory boards y data collection — adaptados a Farmaindustria y RGPD.',type:'gobierno',prio:'alto',prod:['all']},
+{id:35,phase:'p1',dept:'pa',text:'<strong>Mapeo de organizaciones de pacientes y sociedades:</strong> asociaciones de pacientes, sociedades científicas, fundaciones — posicionamiento, influencia y activismo en el área.',type:'estrategia',prio:'alto',prod:['all']},
+{id:36,phase:'p1',dept:'pa',text:'<strong>Agenda de disease awareness no promocional:</strong> ventanas de policy, oportunidades mediáticas, inequidades territoriales, narrativa de acceso equitativo en España.',type:'estrategia',prio:'medio',prod:['all']},
+
+// ── FASE 2: T-18 a T-12 ──
+{id:37,phase:'p2',dept:'gm',text:'<strong>Congelar Target Product Story España v1:</strong> propuesta de valor, place in therapy, quién prescribe, quién gana con el cambio — documento fundacional del launch.',type:'estrategia',prio:'critico',prod:['all']},
+{id:38,phase:'p2',dept:'gm',text:'<strong>De hipótesis a planes ejecutables:</strong> pasar de "qué queremos decir" a "qué necesita cambiar en el sistema sanitario español" — operacionalizar por departamento.',type:'gobierno',prio:'critico',prod:['all']},
+{id:39,phase:'p2',dept:'gm',text:'<strong>Hiring plan aprobado y en marcha:</strong> MSLs, KAMs, RAM, delegados de specialty — perfiles, timelines de reclutamiento y onboarding antes del launch.',type:'operaciones',prio:'critico',prod:['all']},
+{id:40,phase:'p2',dept:'acc',text:'<strong>Modelo económico completo:</strong> coste-efectividad (si aplica), budget impact nacional y regional por CCAA, análisis de sensibilidad — validado con revisor externo.',type:'acceso',prio:'critico',prod:['all']},
+{id:41,phase:'p2',dept:'acc',text:'<strong>Mapeo regional de acceso prioritario:</strong> Cataluña, Madrid, Andalucía, Valencia, Galicia, País Vasco — timelines, comisiones regionales y decisores clave de cada CCAA.',type:'acceso',prio:'critico',prod:['all']},
+{id:42,phase:'p2',dept:'acc',text:'<strong>Argumentos para IPT y financiación:</strong> comparadores, innovación incremental vs. terapéutica, claims de valor, posición esperada del IPT y estrategia de alegaciones.',type:'acceso',prio:'critico',prod:['all']},
+{id:43,phase:'p2',dept:'acc',text:'<strong>First wave de hospitales priorizada:</strong> criterios objetivos (KOLs, pacientes potenciales, infraestructura, acceso histórico), lista de primeros 20-30 hospitales target.',type:'acceso',prio:'alto',prod:['all']},
+{id:44,phase:'p2',dept:'acc',text:'<strong>Bridge de evidencia faltante:</strong> identificar gaps para acceso y diseñar plan de generación de evidencia complementaria (RWE, subgrupos, análisis económico local).',type:'acceso',prio:'alto',prod:['all']},
+{id:45,phase:'p2',dept:'med',text:'<strong>Advisory boards nacionales y regionales (primer ciclo):</strong> insights sobre práctica clínica real, barreras diagnósticas, unmet needs y posicionamiento clínico esperado.',type:'cientifico',prio:'critico',prod:['all']},
+{id:46,phase:'p2',dept:'med',text:'<strong>Estrategia de congress presence:</strong> selección de congresos nacionales e internacionales, tipos de actividad (simpósio satélite, abstract, poster), calendar y presupuesto.',type:'cientifico',prio:'alto',prod:['all']},
+{id:47,phase:'p2',dept:'med',text:'<strong>Programa de MSL onboarding y scientific narrative mastery:</strong> curriculum de formación, certificación, SOPs de visita científica y KPIs de actividad MSL pre-launch.',type:'operaciones',prio:'alto',prod:['all']},
+{id:48,phase:'p2',dept:'med',text:'<strong>Data release calendar:</strong> coordinar con global la estrategia de publicaciones, timing para congresos españoles clave y journals de referencia en el área terapéutica.',type:'cientifico',prio:'alto',prod:['all']},
+{id:49,phase:'p2',dept:'uc',text:'<strong>Diseño del programa de early access / uso compasivo:</strong> criterio clínico, documentación estándar, governance interno, proceso de recepción/aprobación/seguimiento.',type:'proceso',prio:'alto',prod:['onco','er','specialty']},
+{id:50,phase:'p2',dept:'reg',text:'<strong>Secuencia regulatoria planificada:</strong> CHMP → EC decision → Código Nacional → IPT → precio/reembolso → lanzamiento efectivo — con buffers de tiempo realistas y responsables.',type:'proceso',prio:'critico',prod:['all']},
+{id:51,phase:'p2',dept:'reg',text:'<strong>Coordinación de traducciones, mock-ups y artworks:</strong> packaging español, PIL, etiqueta — con timeline que contemple revisiones de AEMPS y time-to-market.',type:'proceso',prio:'critico',prod:['all']},
+{id:52,phase:'p2',dept:'reg',text:'<strong>Alineación con AEMPS:</strong> condiciones de prescripción (DH/H/VI), sistema de farmacovigilancia local, requisitos de materiales específicos del mercado español.',type:'proceso',prio:'alto',prod:['all']},
+{id:53,phase:'p2',dept:'sup',text:'<strong>Selección de operador logístico y distribuidores:</strong> Alliance Healthcare, HEFAME, OCP, Bidafarma — negociación de condiciones, SLAs y GDP compliance.',type:'operaciones',prio:'critico',prod:['all']},
+{id:54,phase:'p2',dept:'sup',text:'<strong>Validación de empaquetado y liberación de lotes:</strong> artworks finales, PIL en español, FMD serialización, proceso de QP release para el mercado español.',type:'proceso',prio:'alto',prod:['all']},
+{id:55,phase:'p2',dept:'sup',text:'<strong>SOPs de devoluciones, recalls y temperature excursion:</strong> incluyendo plan de contingencia específico ante rotura de stock durante las primeras semanas del lanzamiento.',type:'operaciones',prio:'alto',prod:['all']},
+{id:56,phase:'p2',dept:'mkt',text:'<strong>Brand Strategy España finalizada:</strong> positioning, messaging hierarchy, proof points, claims boundaries — validada con KOLs y equipo de campo.',type:'comercial',prio:'critico',prod:['all']},
+{id:57,phase:'p2',dept:'mkt',text:'<strong>Omnichannel framework diseñado:</strong> mix de canales (visita, e-detail, email, congreso, digital), frecuencia por segmento, customer journey integrado HCP + paciente.',type:'comercial',prio:'alto',prod:['all']},
+{id:58,phase:'p2',dept:'mkt',text:'<strong>Arquitectura de contenidos:</strong> unbranded disease awareness, branded promocional, materiales de acceso, soporte científico, training interno — con flujo MLR.',type:'comercial',prio:'alto',prod:['all']},
+{id:59,phase:'p2',dept:'kam',text:'<strong>Modelo de cobertura y territorios preliminares:</strong> análisis de potencial, cuentas estratégicas asignadas, role clarity entre RAM/KAM/MSL/ventas definida.',type:'estrategia',prio:'critico',prod:['all']},
+{id:60,phase:'p2',dept:'kam',text:'<strong>Account planning framework:</strong> estructura del account plan hospitalario, análisis DAFO, sponsors internos, mapa de stakeholders de cada hospital Tier 1.',type:'acceso',prio:'alto',prod:['all']},
+{id:61,phase:'p2',dept:'hr',text:'<strong>Vendors críticos asegurados:</strong> market research, HEOR, agencia creativa, legal review, medical writing, logística — contratos marco y procesos de aprobación interna.',type:'operaciones',prio:'alto',prod:['all']},
+
+// ── FASE 3: T-12 a T-6 ──
+{id:62,phase:'p3',dept:'gm',text:'<strong>Launch War Room operativo:</strong> revisión mensual con semáforo (verde/amarillo/rojo) por dimensión: regulatory, access, medical, supply, field readiness, materials, hiring, forecast.',type:'gobierno',prio:'critico',prod:['all']},
+{id:63,phase:'p3',dept:'gm',text:'<strong>Escalado real de bloqueos:</strong> diferencia entre un bloqueo de acceso que puede costar 3 meses y un retraso administrativo menor — governance para decisiones de alto impacto.',type:'gobierno',prio:'critico',prod:['all']},
+{id:64,phase:'p3',dept:'acc',text:'<strong>Core value dossier finalizado:</strong> modelos económicos cerrados, objection handler de pagadores listo, comparadores y claims validados para los tres niveles (nacional, autonómico, hospitalario).',type:'acceso',prio:'critico',prod:['all']},
+{id:65,phase:'p3',dept:'acc',text:'<strong>Entrenamiento en negociación basada en escenarios:</strong> simulacros de reunión CIPM, reuniones con comités de farmacia, respuesta a objeciones de impacto presupuestario.',type:'acceso',prio:'critico',prod:['all']},
+{id:66,phase:'p3',dept:'acc',text:'<strong>Hospital listing pack completo:</strong> resumen clínico 2 páginas, coste por paciente, impacto presupuestario local, circuito del paciente, criterios de uso recomendados.',type:'acceso',prio:'critico',prod:['all']},
+{id:67,phase:'p3',dept:'acc',text:'<strong>Estrategia para comités de farmacia hospitalaria:</strong> composición, calendario, proceso de presentación, preguntas tipo del comité y estrategia de respuesta por tipo de comité.',type:'acceso',prio:'critico',prod:['all']},
+{id:68,phase:'p3',dept:'acc',text:'<strong>Mapa de calor de acceso por CCAA y hospital:</strong> quick access vs. slow access vs. blocked — plan de acción diferenciado por perfil de acceso esperado.',type:'acceso',prio:'alto',prod:['all']},
+{id:69,phase:'p3',dept:'acc',text:'<strong>Narrativa diferenciada por CCAA:</strong> adaptar el mensaje de valor a cada contexto autonómico: presupuesto, epidemiología local, alternativas en uso, criterios del comité.',type:'acceso',prio:'alto',prod:['all']},
+{id:70,phase:'p3',dept:'med',text:'<strong>Scientific platform finalizada y MSLs entrenados:</strong> dominio de la narrativa científica, subgrupos, safety profile, FAQ médico-científico, manejo de preguntas difíciles.',type:'cientifico',prio:'critico',prod:['all']},
+{id:71,phase:'p3',dept:'med',text:'<strong>Pre-launch scientific exchange activado:</strong> intensificación de visitas MSL a KOLs tier 1, presentaciones de datos inéditos, insight loop semanal que alimenta la estrategia.',type:'cientifico',prio:'critico',prod:['all']},
+{id:72,phase:'p3',dept:'med',text:'<strong>Early adopters consolidados y speakers bureau listo:</strong> identificar los 15-20 médicos que prescribirán primero, preparar speakers nacionales y regionales para eventos.',type:'cientifico',prio:'alto',prod:['all']},
+{id:73,phase:'p3',dept:'uc',text:'<strong>SOP de uso compasivo operativo:</strong> criterios de elegibilidad, circuito con medical info, farmacovigilancia, stock dedicado, respuesta estándar a centros solicitantes — probado y aprobado.',type:'proceso',prio:'critico',prod:['onco','er','specialty']},
+{id:74,phase:'p3',dept:'uc',text:'<strong>Cumplimiento del RD 1015/2009:</strong> el proceso interno debe prever: solicitud del centro con visto bueno de dirección, informe clínico justificativo, conformidad del promotor/TAC, número de envases — no improvisar.',type:'proceso',prio:'critico',prod:['onco','er','specialty']},
+{id:75,phase:'p3',dept:'uc',text:'<strong>Autorización temporal para grupos (PUC de cohorte):</strong> si aplica, coordinación con AEMPS, protocolo médico completo, centros participantes y plan de reporting.',type:'proceso',prio:'alto',prod:['er','onco']},
+{id:76,phase:'p3',dept:'reg',text:'<strong>Código Nacional confirmado y activo:</strong> verificar que la intención de comercialización y la solicitud del CN estén alineadas con el inicio del IPT — comunicar a Bot PLUS y sistemas de prescripción.',type:'proceso',prio:'critico',prod:['all']},
+{id:77,phase:'p3',dept:'reg',text:'<strong>Pack español, textos y artworks confirmados por AEMPS:</strong> PIL definitivo, cartonaje, etiqueta — coordinación final con planta de manufactura y calendario de printing.',type:'proceso',prio:'critico',prod:['all']},
+{id:78,phase:'p3',dept:'reg',text:'<strong>Calendario de materiales y aprobaciones MLR activado:</strong> cronograma de aprobación de todos los materiales (sales aids, e-detail, email, web) para tener todo listo en T-6.',type:'proceso',prio:'alto',prod:['all']},
+{id:79,phase:'p3',dept:'sup',text:'<strong>First stock build ejecutado:</strong> importación, distribución inicial, stock en almacén, asignación a mayoristas y hospitales según canal — con fechas firmes de release de lotes.',type:'operaciones',prio:'critico',prod:['all']},
+{id:80,phase:'p3',dept:'sup',text:'<strong>Order-to-cash validado y pedidos simulados:</strong> test completo del proceso desde recepción del pedido hospitalario hasta entrega y facturación — antes del lanzamiento.',type:'operaciones',prio:'critico',prod:['all']},
+{id:81,phase:'p3',dept:'sup',text:'<strong>Trazabilidad FMD verificada:</strong> conformidad del NMVS español, simulacro de incidencia de verificación, cold chain validada si aplica.',type:'proceso',prio:'alto',prod:['all']},
+{id:82,phase:'p3',dept:'mkt',text:'<strong>Materiales del lanzamiento finalizados y visados:</strong> sales aids, objection handlers, leave-behinds, email templates, e-detail, contenido digital — todos con aprobación MLR completada.',type:'comercial',prio:'critico',prod:['all']},
+{id:83,phase:'p3',dept:'mkt',text:'<strong>Launch campaign y secuencia de activación diseñadas:</strong> qué activo se activa cuándo, para qué segmento, con qué mensaje — plan de activación semana a semana.',type:'comercial',prio:'critico',prod:['all']},
+{id:84,phase:'p3',dept:'kam',text:'<strong>Equipo contratado, entrenado y certificado:</strong> disease area, producto, mensajes, acceso CCAA, técnicas de venta consultiva, compliance — certificación completada antes del launch.',type:'operaciones',prio:'critico',prod:['all']},
+{id:85,phase:'p3',dept:'kam',text:'<strong>Target list finalizada y cuentas priorizadas:</strong> faros, first wave, second wave, long tail — con criterios objetivos de priorización y account plans por hospital Tier 1.',type:'acceso',prio:'critico',prod:['all']},
+{id:86,phase:'p3',dept:'kam',text:'<strong>Entrenamiento por tipo de stakeholder:</strong> clínico (científica), farmacia hospitalaria (económica/protocolos), gerencia (impacto presupuestario), acceso regional (narrativa autonómica).',type:'comercial',prio:'alto',prod:['all']},
+{id:87,phase:'p3',dept:'pv',text:'<strong>SOPs de farmacovigilancia y medical information validados:</strong> case intake, AE reporting, escalados — incluyendo manejo de AEs en situaciones especiales (uso compasivo).',type:'proceso',prio:'critico',prod:['all']},
+{id:88,phase:'p3',dept:'pv',text:'<strong>FAQ y Standard Medical Responses listos:</strong> línea de medical info operativa, respuestas a preguntas frecuentes aprobadas, formación del equipo de campo en reporte de AEs.',type:'proceso',prio:'alto',prod:['all']},
+
+// ── FASE 4: T-6 a T-3 ──
+{id:89,phase:'p4',dept:'gm',text:'<strong>Launch Readiness Checklist con semáforo semanal:</strong> estatus de cada dimensión, bloqueos escalados a dirección, decisiones de inversión táctica de último minuto.',type:'gobierno',prio:'critico',prod:['all']},
+{id:90,phase:'p4',dept:'gm',text:'<strong>Criterio "podríamos lanzar mañana":</strong> si alguien pregunta hoy si el equipo puede lanzar, la respuesta debe ser sí — ese es el estándar de readiness para esta fase.',type:'gobierno',prio:'critico',prod:['all']},
+{id:91,phase:'p4',dept:'acc',text:'<strong>Simulacro de negociación nacional:</strong> ensayo de reunión CIPM con objeciones tipo de la administración, escenarios de precio y contra-propuestas — con feedback de expertos.',type:'acceso',prio:'critico',prod:['all']},
+{id:92,phase:'p4',dept:'acc',text:'<strong>Objections anticipadas al listing hospitalario:</strong> alto impacto presupuestario, incertidumbre de outcomes, duración del tratamiento, pacientes prevalentes, alternativas más baratas.',type:'acceso',prio:'critico',prod:['all']},
+{id:93,phase:'p4',dept:'med',text:'<strong>Intensificación con early adopters:</strong> preparar primeros prescriptores, confirmar readiness de publicaciones y congresos, lanzar insight loop semanal del equipo de medical.',type:'cientifico',prio:'critico',prod:['all']},
+{id:94,phase:'p4',dept:'med',text:'<strong>Entrenamiento en casos difíciles:</strong> safety edge cases, preguntas off-label, comparaciones con competidores, manejo de claims no aprobados — medical info y field medical.',type:'cientifico',prio:'alto',prod:['all']},
+{id:95,phase:'p4',dept:'sup',text:'<strong>Release de lotes confirmado y first commercial order simulado:</strong> end-to-end test del proceso completo — incidencias resueltas antes del Day 0.',type:'operaciones',prio:'critico',prod:['all']},
+{id:96,phase:'p4',dept:'sup',text:'<strong>SLA con distribuidor confirmado y contingencia de shortage lista:</strong> línea roja directa para incidencias en las primeras 8 semanas, stock de seguridad disponible.',type:'operaciones',prio:'critico',prod:['all']},
+{id:97,phase:'p4',dept:'mkt',text:'<strong>Equipo comercial certificado:</strong> role plays de launch completados, mensajes y claims congelados, launch playbook distribuido, plan de launch meetings finalizado.',type:'comercial',prio:'critico',prod:['all']},
+{id:98,phase:'p4',dept:'mkt',text:'<strong>Dashboard de lanzamiento listo:</strong> integraciones CRM-BI activas, KPIs con baseline, proceso de reforecast mensual establecido, reporting templates aprobados.',type:'gobierno',prio:'alto',prod:['all']},
+{id:99,phase:'p4',dept:'kam',text:'<strong>Primeras reuniones de farmacia y first-call schedule bloqueados:</strong> agenda de las primeras 4 semanas confirmada, coordinación con MSL para acompañamiento establecida.',type:'acceso',prio:'critico',prod:['all']},
+{id:100,phase:'p4',dept:'uc',text:'<strong>Readiness completo de uso compasivo verificado:</strong> proceso probado, stock dedicado disponible, respuesta estándar redactada, equipo formado, contactos AEMPS actualizados.',type:'proceso',prio:'critico',prod:['onco','er','specialty']},
+
+// ── FASE 5: T-3 a T0 ──
+{id:101,phase:'p5',dept:'gm',text:'<strong>Daily readiness review:</strong> seguimiento intensivo de todos los hitos de las últimas semanas, validación final de go/no-go, decisiones tácticas de último minuto a nivel de dirección.',type:'gobierno',prio:'critico',prod:['all']},
+{id:102,phase:'p5',dept:'gm',text:'<strong>Validación go/no-go formal:</strong> confirmar que todas las condiciones están cumplidas — regulatory, supply, access, field, materials — antes de activar el Day 0.',type:'gobierno',prio:'critico',prod:['all']},
+{id:103,phase:'p5',dept:'acc',text:'<strong>Seguimiento intensivo de hitos nacionales:</strong> CIPM resolución, publicación en BOE, situación del IPT — seguir también en BIFIMED/Ministerio y CCAA target.',type:'acceso',prio:'critico',prod:['all']},
+{id:104,phase:'p5',dept:'acc',text:'<strong>Escenarios de acceso preparados:</strong> financiación plena, financiación restringida, demora de P&R, acceso temporal — plan de acción comercial listo para cada escenario.',type:'acceso',prio:'critico',prod:['all']},
+{id:105,phase:'p5',dept:'uc',text:'<strong>Early access activo — comité interno de validación:</strong> coordinar solicitudes pendientes, garantizar documentación, abastecimiento y seguimiento de pacientes en uso compasivo.',type:'proceso',prio:'critico',prod:['onco','er','specialty']},
+{id:106,phase:'p5',dept:'uc',text:'<strong>Priorización de centros tractores para early access:</strong> controlar equidad y criterio clínico para evitar caos reputacional o percepción de uso del UC como herramienta comercial.',type:'proceso',prio:'alto',prod:['onco','er','specialty']},
+{id:107,phase:'p5',dept:'mkt',text:'<strong>Launch playbook comunicado internamente:</strong> toda la organización alineada, briefing de cuentas top, speakers y primeras reuniones de farmacia coordinadas y en agenda.',type:'comercial',prio:'critico',prod:['all']},
+{id:108,phase:'p5',dept:'mkt',text:'<strong>Secuencia de activación coordinada:</strong> cuentas top → speakers → reuniones de farmacia → formaciones hospitalarias internas → plan de first 30 days completado.',type:'comercial',prio:'critico',prod:['all']},
+{id:109,phase:'p5',dept:'sup',text:'<strong>Stock comercial disponible y circuitos de pedido activos:</strong> alta de cliente en sistemas, maestro de materiales, EDI, facturación y devoluciones validados — línea roja activa.',type:'operaciones',prio:'critico',prod:['all']},
+
+// ── FASE 6: T0 a T+3 ──
+{id:110,phase:'p6',dept:'gm',text:'<strong>5 prioridades del aterrizaje:</strong> 1) producto disponible, 2) hospitales pueden pedirlo, 3) saben a quién tratar, 4) el circuito no se rompe, 5) el equipo aprende muy rápido.',type:'gobierno',prio:'critico',prod:['all']},
+{id:111,phase:'p6',dept:'acc',text:'<strong>National-to-local cascade ejecutado:</strong> convertir la financiación nacional en listings regionales y hospitalarios — seguir restricciones reales vs. teóricas en cada CCAA.',type:'acceso',prio:'critico',prod:['all']},
+{id:112,phase:'p6',dept:'acc',text:'<strong>Listings regionales y hospitalarios priorizados:</strong> resolver bloqueos de comités de farmacia en hospitales faro, adaptar budget impact al nivel local de cada hospital.',type:'acceso',prio:'critico',prod:['all']},
+{id:113,phase:'p6',dept:'acc',text:'<strong>Conversión listing-to-first-order monitoreada semanalmente:</strong> diferencia entre "aprobado en comité" y "primer pedido cursado" — alerta temprana de bloqueos post-listing.',type:'acceso',prio:'critico',prod:['all']},
+{id:114,phase:'p6',dept:'med',text:'<strong>Soporte a adopción temprana:</strong> MSLs con early adopters, recoger insights de uso real, identificar dudas clínicas repetidas, reforzar evidencia donde haya fricción clínica.',type:'cientifico',prio:'critico',prod:['all']},
+{id:115,phase:'p6',dept:'med',text:'<strong>Monitorización de safety en condiciones reales:</strong> primer análisis de safety postcomercialización, coordinación con PV, comunicación transparente ante cualquier señal.',type:'cientifico',prio:'critico',prod:['all']},
+{id:116,phase:'p6',dept:'kam',text:'<strong>First wave plans ejecutados:</strong> acompañar circuitos de prescripción, activar champions, registrar barreras por cuenta (prescripción, dispensación, autorización, derivación, logística).',type:'acceso',prio:'critico',prod:['all']},
+{id:117,phase:'p6',dept:'kam',text:'<strong>Account plans revisados cada 2 semanas:</strong> ajustar tácticas según realidad del hospital — ¿dónde está el bloqueo real?, ¿quién puede desbloquearlo?, next best action.',type:'acceso',prio:'critico',prod:['all']},
+{id:118,phase:'p6',dept:'mkt',text:'<strong>Mensajes ajustados a realidad del mercado:</strong> lanzar contenidos según fase de adopción de cada segmento, medir engagement, identificar qué materiales mueven conversación.',type:'comercial',prio:'alto',prod:['all']},
+{id:119,phase:'p6',dept:'sup',text:'<strong>Fill rate y backorders vigilados diariamente:</strong> corregir previsión temprana, resolver incidencias de entrega, conservación y trazabilidad — reporte diario primeras 4 semanas.',type:'operaciones',prio:'critico',prod:['all']},
+{id:120,phase:'p6',dept:'fin',text:'<strong>Métricas financieras de lanzamiento:</strong> ventas brutas y netas, cuentas activas, centros con stock, pacientes tratados, tasa de conversión listing→uso — reforecast mensual.',type:'gobierno',prio:'alto',prod:['all']},
+
+// ── FASE 7: T+3 a T+6 ──
+{id:121,phase:'p7',dept:'gm',text:'<strong>Decisión rápida sobre correcciones:</strong> más inversión, cambio de foco, cambio de cobertura, refuerzo regional — no defender el plan original por inercia, sino por evidencia.',type:'gobierno',prio:'critico',prod:['all']},
+{id:122,phase:'p7',dept:'acc',text:'<strong>Second wave activada:</strong> priorizar CCAA rezagadas, usar experiencia de centros tempranos como evidencia para nuevos hospitales, reforzar con datos de outcomes reales.',type:'acceso',prio:'critico',prod:['all']},
+{id:123,phase:'p7',dept:'acc',text:'<strong>Argumentos económicos actualizados con datos de uso real:</strong> si hay pacientes tratados, usar primeros datos de práctica clínica para reforzar budget impact y desactivar objeciones.',type:'acceso',prio:'alto',prod:['all']},
+{id:124,phase:'p7',dept:'med',text:'<strong>Experiencia clínica temprana consolidada:</strong> case series, abstracts y RWE preliminar — primeros datos de práctica real publicados o presentados para acelerar la adopción.',type:'cientifico',prio:'alto',prod:['all']},
+{id:125,phase:'p7',dept:'mkt',text:'<strong>Re-segmentación si la realidad lo exige:</strong> refinar targeting, diferenciar estrategia en centros tractores vs. comunitarios, revisar incentivos si empujan comportamientos equivocados.',type:'comercial',prio:'alto',prod:['all']},
+{id:126,phase:'p7',dept:'sup',text:'<strong>Forecast ajustado a demanda real:</strong> corregir stock regional, plan de continuidad ante expansión geográfica, optimizar distribución según patrones de demanda observados.',type:'operaciones',prio:'alto',prod:['all']},
+
+// ── FASE 8: T+6 a T+12 ──
+{id:127,phase:'p8',dept:'gm',text:'<strong>Evaluar transición de launch a franchise build:</strong> ¿el mercado adopta?, ¿el equipo puede pasar de first prescription a deep & wide?, ¿hay que preparar next indication?',type:'gobierno',prio:'critico',prod:['all']},
+{id:128,phase:'p8',dept:'gm',text:'<strong>Business case vs. realidad:</strong> medir ROI del launch, qué inversiones funcionaron y cuáles no, reajustar headcount y cobertura para year 2.',type:'gobierno',prio:'alto',prod:['all']},
+{id:129,phase:'p8',dept:'gm',text:'<strong>Documentar aprendizajes del lanzamiento:</strong> lessons learned, qué haríamos diferente, qué funciona en el contexto español — para el próximo lanzamiento y para la red global.',type:'gobierno',prio:'medio',prod:['all']},
+{id:130,phase:'p8',dept:'acc',text:'<strong>Cerrar brechas territoriales:</strong> última ola de hospitales rezagados, escalado de CCAA con acceso bloqueado, datos de outcomes de centros adoptantes como argumento.',type:'acceso',prio:'critico',prod:['all']},
+{id:131,phase:'p8',dept:'acc',text:'<strong>Negociar ampliaciones o revisión de restricciones:</strong> con evidencia de uso real, presentar ante comités y CCAA para ampliar criterios de prescripción y financiación.',type:'acceso',prio:'alto',prod:['all']},
+{id:132,phase:'p8',dept:'acc',text:'<strong>Defensa ante competidores o revisiones de protocolo:</strong> monitorear pipeline, preparar argumentario de defensa, datos de persistencia y adherencia del producto.',type:'acceso',prio:'alto',prod:['all']},
+{id:133,phase:'p8',dept:'med',text:'<strong>Insights convertidos en publicaciones y educación médica:</strong> publicaciones de práctica clínica real en journals españoles, presentaciones con datos propios en congresos.',type:'cientifico',prio:'alto',prod:['all']},
+{id:134,phase:'p8',dept:'med',text:'<strong>Red de centros de referencia y expertos consolidada:</strong> centros investigadores activos, portfolio de IIS, formación avanzada en uso óptimo del medicamento.',type:'cientifico',prio:'alto',prod:['all']},
+{id:135,phase:'p8',dept:'mkt',text:'<strong>De awareness y adopción a persistencia y profundidad:</strong> mensajes de segunda generación, casos clínicos de éxito, programas de adherencia, desarrollo de centros no tractores.',type:'comercial',prio:'alto',prod:['all']},
+{id:136,phase:'p8',dept:'mkt',text:'<strong>Optimización del mix de canales:</strong> análisis de ROI por canal y actividad, rebalancear inversión según retorno demostrado — año 2 más eficiente que año 1.',type:'comercial',prio:'medio',prod:['all']},
+{id:137,phase:'p8',dept:'sup',text:'<strong>Modelo de distribución optimizado y forecast rolling 24 meses:</strong> revisión de contratos con mayoristas, evaluación de distribución directa a hospitales de mayor volumen.',type:'operaciones',prio:'medio',prod:['all']},
+{id:138,phase:'p8',dept:'psp',text:'<strong>Análisis de adherencia y outcomes del PSP:</strong> persistencia a 6-12 meses, discontinuaciones y motivos, NPS del programa, expansión si los datos apoyan el valor añadido.',type:'paciente',prio:'alto',prod:['all']},
+{id:139,phase:'p8',dept:'med',text:'<strong>Roadmap de next indications / line extensions:</strong> estrategia regulatoria para extensión de indicación, plan de acceso incremental, ensayos exploratorios en marcha.',type:'estrategia',prio:'medio',prod:['all']},
+{id:140,phase:'p8',dept:'fin',text:'<strong>Annual Launch Performance Review:</strong> revisión formal del año 1 — ventas, acceso, mensajes, efectividad commercial, patient outcomes, ROI del lanzamiento completo.',type:'gobierno',prio:'critico',prod:['all']},
+];
+
+// ══════════════════════════════════════════════════════════
+// WORKSTREAMS DATA
+// ══════════════════════════════════════════════════════════
+const WORKSTREAMS = [
+  {letter:'A', title:'Estratégico / GM / PMO', color:'var(--gm)', items:['Launch governance y ways of working','RACI cross-functional','Business case y guardrails financieros','Risk register y scenario planning','KPI tree y criterios de éxito','Cadencia de decisión y war room','Executive alignment y escalation path','Launch charter España v1']},
+  {letter:'B', title:'Regulatory / AEMPS', color:'var(--reg)', items:['Roadmap EMA/AEMPS y milestone map','Código Nacional y secuencia IPT','Textos locales, artworks y PIL en español','Materiales aprobados y visados','Cambios post-autorización (variaciones)','Compliance promocional y MLR process','Importaciones y situaciones especiales','FMD serialización y pack español']},
+  {letter:'C', title:'Market Access / Pricing / HEOR', color:'var(--acc)', items:['Target population real (4 anillos)','Payer map nacional-regional-hospitalario','P&R strategy y price corridor','Dossier nacional CIPM','Modelos económicos (cost-effectiveness + BIA)','Regional strategy por CCAA','Hospital listing packs','Contracting strategy y MEAs','Objection handling de pagadores']},
+  {letter:'D', title:'Medical Affairs', color:'var(--med)', items:['Scientific platform y narrative','KOL mapping por tier','Insight plan y advisory board program','Publication plan y congress strategy','MSL deployment y KPIs','Educación médica no promocional','Early access / UC medical governance','Evidence gap closure y RWE plan']},
+  {letter:'E', title:'Commercial / Marketing', color:'var(--mkt)', items:['Brand positioning y segmentation','Customer personas reales','Omnichannel framework y customer journey','Content architecture (unbranded + branded)','Brand materials y launch campaign','CRM setup y targeting','Sales force materials y playbook','Field execution plan semana a semana']},
+  {letter:'F', title:'Sales / KAM / RAM', color:'var(--kam)', items:['Coverage model y territory design','Account prioritization (faros/waves)','Account plans por hospital Tier 1','Stakeholder maps por centro','Access conversations y pharmacy committee prep','Coordinación MSL-KAM-Ventas','First 90-day action plan','Re-segmentación post-launch']},
+  {letter:'G', title:'Supply / Quality / Operations', color:'var(--sup)', items:['Source of supply y release strategy','Importación y almacén GDP-compliant','Distribución y cold chain','Safety stock y launch stock','Returns, recalls y serialización FMD','Customer service y master data','Order-to-cash validado','Forecast rolling y demand planning']},
+  {letter:'H', title:'Pharmacovigilance / Med Info', color:'var(--pv)', items:['SOPs de farmacovigilancia','Case intake y AE reporting','Training obligatorio de campo','Escalations y safety signals','Compassionate-use safety handling','FAQ y Standard Medical Responses (SMRs)','PSUR y reporting periódico a AEMPS']},
+  {letter:'I', title:'Legal / Compliance', color:'var(--fin)', items:['Contract templates (KOLs, hospitales, advisory boards)','Grants y sponsorships Farmaindustria','Promo/non-promo boundaries claras','Data privacy RGPD para PSP y estudios','Approval workflows MLR','Expert engagements y transfer of value','Patient programs review legal']},
+  {letter:'J', title:'Public Affairs / Pacientes', color:'var(--pa)', items:['Disease awareness no promocional','Advocacy map y stakeholder coalition','Inequity narrative y acceso equitativo','Policy windows y oportunidades','Institutional engagement (Ministerio, CCAA)','Co-creación con organizaciones de pacientes','Media strategy (salud/ciencia)']},
+  {letter:'K', title:'RRHH / Formación', color:'var(--hr)', items:['Org design y role clarity','Hiring plan y timelines de onboarding','Formación inicial (disease area + producto)','Launch certification del equipo','Cross-functional bootcamps','Manager coaching y field coaching','Compliance training obligatorio']},
+  {letter:'L', title:'Finance / Analytics', color:'var(--fin)', items:['P&L del launch y reforecast mensual','Scenario forecasting (base/optimista/pesimista)','Launch investment tracking por workstream','Gross-to-net management','Dashboard de launch performance','ROI review y business case vs. realidad']},
+];
+
+// ══════════════════════════════════════════════════════════
+// SPAIN SPECIFIC DATA
+// ══════════════════════════════════════════════════════════
+const ES_ITEMS = {
+  regulatorio: [
+    {level:'critico', icon:'🔑', title:'El Código Nacional no es un trámite administrativo menor', text:'El CN activa el circuito nacional y, para medicamentos centralizados que se quieran comercializar en España, está directamente ligado al arranque formal del IPT. Un retraso en la solicitud del CN puede retrasar todo el proceso de P&R. Debe planificarse en el momento óptimo, post-CHMP, con anticipación a los plazos de AEMPS.'},
+    {level:'critico', icon:'📋', title:'El IPT es el primer filtro real de la financiación española', text:'El Informe de Posicionamiento Terapéutico (IPT) determina el lugar del medicamento en la terapéutica española antes de que el CIPM fije el precio. Un posicionamiento restrictivo en el IPT puede comprometer toda la estrategia de acceso. Es fundamental preparar alegaciones científicas sólidas si el borrador no refleja el valor del producto.'},
+    {level:'importante', icon:'⏱', title:'La mediana regulatoria bajó a ~303 días — pero hay variabilidad real', text:'El Ministerio informó que la mediana desde registro nacional hasta financiación bajó a 303 días, y el registro inicial vía AEMPS tuvo una mediana de 42 días en la cohorte más reciente. Esto mejora la previsibilidad, pero no elimina el riesgo de retrasos por estrategia del laboratorio, precio, evidencia o complejidad del caso.', cite:'Nota informativa Ministerio de Sanidad'},
+    {level:'info', icon:'⚖️', title:'Uso compasivo: el RD 1015/2009 exige un proceso formal riguroso', text:'El centro hospitalario debe cursar solicitud individualizada con: visto bueno de la dirección del centro, informe clínico justificativo, conformidad del promotor/titular del AC cuando proceda y número de envases necesarios. Además existen autorizaciones temporales para grupos significativos de pacientes (PUC de cohorte). Todo el proceso interno de la compañía debe estar preparado para responder con rapidez.', cite:'RD 1015/2009 sobre medicamentos de uso humano en situaciones especiales'},
+  ],
+  acceso: [
+    {level:'critico', icon:'🗺', title:'El éxito no termina con la financiación nacional — la batalla autonómica es la que importa', text:'En España, obtener la resolución del CIPM es solo el comienzo. Después llega la variabilidad autonómica y hospitalaria: cada CCAA tiene sus propios procedimientos, comisiones asesoras y criterios de uso. Muchos launches pierden 6-18 meses en esta fase. El mapa de acceso real por hospital es más importante que el papel del BOE.'},
+    {level:'critico', icon:'🏥', title:'Comités de farmacia hospitalaria: el verdadero gate keeper del uso', text:'En el canal hospitalario español, el comité de farmacia (o Comisión de Farmacia y Terapéutica) decide si el medicamento entra o no en la guía farmacoterapéutica del hospital. Cada hospital tiene su propio proceso, calendario, composición y criterios. El DAFU (Documento de Evaluación de Fármacos de Uso Hospitalario) debe prepararse específicamente por hospital.'},
+    {level:'importante', icon:'📊', title:'La CIPM tiene su propio calendario y ritmo — planificar en consecuencia', text:'La CIPM publica calendarios, acuerdos y notas informativas. La situación de financiación debe seguirse también en BIFIMED (Base de Información de Medicamentos) y en el Ministerio. Conviene planificar el launch no solo por la fecha regulatoria, sino por la ventana real de financiación de la CIPM.'},
+    {level:'importante', icon:'💬', title:'Negociación CIPM: informal antes que formal', text:'La reunión informal pre-submission con DGFPS/CIPM es una práctica habitual que permite calibrar expectativas de precio, comparadores clave y condiciones de financiación antes de la presentación formal. No aprovechar este mecanismo es un error estratégico frecuente en equipos de acceso con menos experiencia en el mercado español.'},
+    {level:'info', icon:'🔀', title:'Variabilidad autonómica: del acceso universal al "depende"', text:'España tiene 17 CCAA con distintos niveles de autonomía en gestión farmacéutica. Algunas CCAA tienen comisiones regionales que generan addendas al IPT nacional, restricciones adicionales de prescripción, o acuerdos de riesgo compartido propios. La estrategia de acceso debe ser nacional Y autonómica Y hospitalaria — son tres conversaciones distintas.'},
+  ],
+  operativo: [
+    {level:'critico', icon:'🏗', title:'El canal de distribución en España tiene sus particularidades', text:'España opera con un sistema de distribución mayoritariamente a través de almacenes de distribución (Alliance Healthcare, HEFAME, OCP Iberia, Bidafarma). El canal hospitalario puede ser directo o vía mayoristas habilitados. Hay que definir la estrategia de distribución con precisión — incluyendo la gestión de la serialización FMD (Falsified Medicines Directive) conectada al NMVS español.'},
+    {level:'importante', icon:'🌡', title:'Condiciones de prescripción: DH, H y Visado de Inspección', text:'En España, los medicamentos pueden tener condiciones especiales de prescripción: Diagnóstico Hospitalario (DH), Uso Hospitalario (H) o Visado de Inspección (VI). El VI es gestionado por cada CCAA y puede añadir una capa burocrática adicional que varía en tiempo y requisitos por territorio. El impacto en el modelo comercial es significativo.'},
+    {level:'info', icon:'📱', title:'Sistemas de prescripción: Bot PLUS y sistemas hospitalarios propios', text:'El Código Nacional debe estar correctamente activo en Bot PLUS (CGCOF), la principal base de datos de medicamentos de España, así como en los sistemas de prescripción hospitalaria (Farmasyst, GAIA, HP-DOCTOR, etc.). Un CN que no aparece en los sistemas usados por los prescriptores es un medicamento que de facto no existe para ellos.'},
+    {level:'info', icon:'📜', title:'Farmaindustria y el Código de Buenas Prácticas', text:'España tiene uno de los códigos de autorregulación de la industria farmacéutica más exigentes de Europa. El Código de Buenas Prácticas de Farmaindustria regula estrictamente la interacción con profesionales sanitarios, las donaciones, los advisory boards, los congresos y los programas de soporte. El proceso MLR (Medical-Legal-Regulatory) debe incorporar esta especificidad española.'},
+  ]
+};
+
+// ══════════════════════════════════════════════════════════
+// 25 ENTREGABLES DATA
+// ══════════════════════════════════════════════════════════
+const ENTREGABLES = [
+  {n:1, name:'Launch Charter España', desc:'Documento fundacional: ambición, governance, RACI, criterios de éxito, principios de trabajo y cadencia de decisión del equipo de lanzamiento.', dept:'GM / PMO'},
+  {n:2, name:'Launch Governance + RACI', desc:'RACI cross-functional completo y documentado, con clarity de decisiones por nivel (operational/tactical/strategic) y procesos de escalado.', dept:'GM / PMO'},
+  {n:3, name:'Market Landscape Deck', desc:'Análisis del estándar de cuidado, competidores actuales y pipeline, terapias off-label, barreras de diagnóstico y derivación, y posición esperada del producto.', dept:'Marketing / Strategy'},
+  {n:4, name:'Epidemiology & Patient Funnel Model', desc:'Modelo cuantitativo: población total → diagnosticada → tratable → elegible → accesible, con desglose por CCAA y estimación de velocidad de absorción.', dept:'Market Access / HEOR'},
+  {n:5, name:'Access Strategy Spain', desc:'Estrategia integrada de acceso: precio, IPT, CIPM, CCAA, hospitales, MEAs — con escenarios y plan de contingencia.', dept:'Market Access'},
+  {n:6, name:'Price Corridor Model', desc:'Modelado de escenarios de precio: target, floor, fallback y net price, con análisis de IRP y impacto en mercados de referencia.', dept:'Market Access / Finance'},
+  {n:7, name:'HEOR / Budget Impact Core Pack', desc:'Modelo de coste-efectividad (si aplica) + análisis de impacto presupuestario nacional y regional, con análisis de sensibilidad — formato GENESIS-compatible.', dept:'HEOR / Market Access'},
+  {n:8, name:'Stakeholder Map Nacional-Regional-Local', desc:'Mapa completo de decisores: Ministerio, CIPM, AEMPS, CCAA, hospitales, comités de farmacia, sociedades, pacientes — con nivel de influencia y posición actual.', dept:'Market Access / Medical'},
+  {n:9, name:'KOL Map', desc:'Mapa de líderes de opinión por tier (nacional/regional/local), especialidad, red de influencia, publicaciones, afiliaciones — base del MSL engagement plan.', dept:'Medical Affairs'},
+  {n:10, name:'Scientific Platform', desc:'Narrativa científica completa: burden, MoA, diferenciación, endpoints relevantes para el paciente, claims aprobados — base de toda la comunicación médica.', dept:'Medical Affairs'},
+  {n:11, name:'Brand Positioning Local', desc:'Posicionamiento de marca adaptado al mercado español: target prescriptor, insight, beneficio diferencial, razón de creer — validado con KOLs y equipo de campo.', dept:'Marketing'},
+  {n:12, name:'Message House', desc:'Arquitectura de mensajes jerarquizada: core message, pilares de apoyo, proof points y claims por tipo de stakeholder (clínico, pagador, paciente).', dept:'Marketing'},
+  {n:13, name:'Segmentation & Targeting', desc:'Segmentación de prescriptores por potencial, especialidad, receptividad y canal preferido — base del call plan, la asignación de territorios y el CRM.', dept:'Marketing / Sales'},
+  {n:14, name:'Account Prioritization', desc:'Lista priorizada de hospitales: faros, first wave, second wave, long tail — con criterios objetivos y asignación de KAM/MSL responsable por cuenta.', dept:'KAM / Sales'},
+  {n:15, name:'Hospital Listing Pack', desc:'Documento de soporte para comités de farmacia: resumen clínico, coste por paciente, impacto presupuestario local, circuito del paciente, criterios de uso propuestos.', dept:'KAM / Market Access'},
+  {n:16, name:'Early Access / Compassionate Use SOP', desc:'Protocolo interno completo de gestión del uso compasivo: criterios, documentación, circuito de aprobación, stock dedicado, reporting a AEMPS y seguimiento de pacientes.', dept:'Medical / Regulatory'},
+  {n:17, name:'Regulatory Milestone Tracker', desc:'Tracker actualizado de todos los hitos regulatorios: CHMP, EC decision, AEMPS, CN, IPT, CIPM, BOE — con fechas confirmadas y buffer de tiempo real.', dept:'Regulatory'},
+  {n:18, name:'Código Nacional / IPT Readiness Tracker', desc:'Seguimiento específico del proceso CN + IPT: status actual, próximo hito, responsable, riesgos de retraso y plan de mitigation.', dept:'Regulatory / Market Access'},
+  {n:19, name:'Supply Launch Readiness Plan', desc:'Plan completo de supply chain: first stock build, distribución, almacén, cold chain, serialización, order-to-cash, contingencia de shortage.', dept:'Supply Chain'},
+  {n:20, name:'Field Training Curriculum', desc:'Programa completo de formación: disease area, producto, mensajes, acceso, competitors, técnicas de venta, compliance — con certificación y KPIs de readiness.', dept:'RRHH / Marketing'},
+  {n:21, name:'FAQs / Objection Handlers', desc:'Base de conocimiento de respuestas a preguntas frecuentes y manejo de objeciones por tipo de stakeholder (clínico, pagador, farmacia) — aprobado por MLR.', dept:'Medical / Marketing'},
+  {n:22, name:'Safety & Med Info SOPs', desc:'SOPs de farmacovigilancia y medical information: case intake, AE reporting, escalados, FAQ médico, Standard Medical Responses — operativos desde el Day 1.', dept:'Farmacovigilancia'},
+  {n:23, name:'Launch Dashboard', desc:'Dashboard ejecutivo de seguimiento del lanzamiento: KPIs de acceso, ventas, prescripción, engagement y supply — con semáforo, reforecast y comparativa vs. objetivo.', dept:'Finance / Analytics / GM'},
+  {n:24, name:'Plan 1-10-100 Días', desc:'Plan de acción específico para los primeros 1, 10 y 100 días post-launch: qué hace quién, en qué hospitales, con qué objetivos — con métricas de seguimiento diario/semanal.', dept:'Commercial / KAM / GM'},
+  {n:25, name:'Post-Launch Learning Review', desc:'Proceso formal de revisión post-lanzamiento a los 3, 6 y 12 meses: qué funcionó, qué no, qué cambiaríamos — documentado para alimentar el Brand Plan del año 2.', dept:'GM / Cross-Funcional'},
+];
+
+// ══════════════════════════════════════════════════════════
+// PRODUCT RISKS
+// ══════════════════════════════════════════════════════════
+const PROD_RISKS = {
+  all: ['Retraso CIPM/BOE (mediana histórica ~303 días desde registro nacional)','Variabilidad autonómica post-BOE: el acceso real llega mucho más tarde','Comités de farmacia hospitalaria con criterios restrictivos de impacto presupuestario','Restricciones de población financiada más estrechas que el label autorizado'],
+  ap:  ['Prescripción condicionada por el visado de inspección (VI) en algunas CCAA','Médicos de familia con alta carga asistencial y bajo tiempo de visita','Competencia genérica fuerte en el segmento de primaria','Necesidad de impactar a un universo muy amplio de prescriptores'],
+  specialty:['Acceso hospitalario: listing en comités es el cuello de botella principal','Protocolo de uso restringido puede limitar la población real accesible','Necesidad de MSLs con profundo conocimiento del ecosistema especializado','Derivación desde AP puede ser un obstáculo si el pathway no está bien definido'],
+  onco:['Prescripción en tumor boards / comités multidisciplinares — múltiples aprobadores','Competencia intensa en oncología con múltiples opciones de tratamiento','Acceso hospitalario muy específico y protocolizado (guías SEOM/ESMO)','Gestión de toxicidades y safety profile en práctica real vs. ensayos clínicos'],
+  er:  ['Uso compasivo prioritario y urgente — proceso interno debe estar muy preparado','Pocos pacientes = pocos KOLs = red muy concentrada de decisión','Organizaciones de pacientes muy activas y con alto poder de advocacy','Precio potencialmente alto → escrutinio máximo de pagadores y medios']
+};
+
+// ══════════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ══════════════════════════════════════════════════════════
+
+let activePhaseFilter='all', activeDeptFilter='all', activePrioFilter='all', activeSearch='', activeProd='all';
+
+function getDeptMeta(id){ return DEPTS.find(d=>d.id===id)||{name:id,color:'#888'}; }
+
+function actionMatchesProd(a, prod){
+  if(prod==='all') return true;
+  return a.prod.includes('all') || a.prod.includes(prod);
+}
+
+function renderList(){
+  const container = document.getElementById('listContainer');
+  container.innerHTML = '';
+  let total = 0, visible = 0;
+  PHASES.forEach(ph=>{
+    const phaseActions = ACTIONS.filter(a=>a.phase===ph.id);
+    const deptIds = [...new Set(phaseActions.map(a=>a.dept))];
+    let phaseVisible = 0;
+    const phSec = document.createElement('div');
+    phSec.className='phase-sec'; phSec.dataset.phase=ph.id;
+    phSec.innerHTML=`<div class="phase-hdr"><div class="phase-tag">${ph.period}</div><div class="phase-nm">${ph.name}</div><div class="phase-desc">${ph.desc}</div></div>`;
+    deptIds.forEach(deptId=>{
+      const dm=getDeptMeta(deptId);
+      const deptActions=phaseActions.filter(a=>a.dept===deptId);
+      const blk=document.createElement('div');
+      blk.className='dept-blk'; blk.dataset.dept=deptId;
+      blk.innerHTML=`<div class="dept-hdr" onclick="toggleDept(this)"><div class="ddot" style="background:${dm.color}"></div><div class="dnm" style="color:${dm.color}">${dm.name}</div><div class="dcnt" id="dc-${ph.id}-${deptId}">${deptActions.length} acciones</div><div class="dtog">▶</div></div><div class="dept-body">`;
+      const body=blk.querySelector('.dept-body');
+      deptActions.forEach((a,i)=>{
+        const typeCls=TYPE_CLS[a.type]||'t-gob';
+        const prioCls=PRIO_CLS[a.prio]||'p-m';
+        const row=document.createElement('div');
+        row.className='arow';
+        row.dataset.phase=a.phase; row.dataset.dept=a.dept; row.dataset.prio=a.prio; row.dataset.prod=JSON.stringify(a.prod);
+        row.innerHTML=`<div class="anum">${i+1}</div><div class="atxt">${a.text}</div><div class="atype ${typeCls}">${a.type}</div><div class="aprio"><span class="prio ${prioCls}">${a.prio}</span></div>`;
+        body.appendChild(row);
+        total++;
+      });
+      blk.innerHTML=blk.innerHTML; // force re-render (dept-body already appended)
+      phSec.appendChild(blk);
+    });
+    container.appendChild(phSec);
+  });
+  applyFilters();
+}
+
+function applyFilters(){
+  const rows=document.querySelectorAll('.arow');
+  let visible=0;
+  rows.forEach(r=>{
+    const prods=JSON.parse(r.dataset.prod||'["all"]');
+    const matchPhase=activePhaseFilter==='all'||r.dataset.phase===activePhaseFilter;
+    const matchDept=activeDeptFilter==='all'||r.dataset.dept===activeDeptFilter;
+    const matchPrio=activePrioFilter==='all'||r.dataset.prio===activePrioFilter;
+    const matchSearch=!activeSearch||r.textContent.toLowerCase().includes(activeSearch);
+    const matchProd=activeProd==='all'||prods.includes('all')||prods.includes(activeProd);
+    const show=matchPhase&&matchDept&&matchPrio&&matchSearch&&matchProd;
+    r.classList.toggle('hidden',!show);
+    if(show) visible++;
+  });
+  document.querySelectorAll('.phase-sec').forEach(s=>{
+    const vis=s.querySelectorAll('.arow:not(.hidden)').length;
+    const matchPhase=activePhaseFilter==='all'||s.dataset.phase===activePhaseFilter;
+    s.style.display=(matchPhase&&vis>0)?'':'none';
+  });
+  document.querySelectorAll('.dept-blk').forEach(b=>{
+    const vis=b.querySelectorAll('.arow:not(.hidden)').length;
+    b.style.display=vis>0?'':'none';
+    const cntEl=b.querySelector('.dcnt');
+    if(cntEl) cntEl.textContent=vis+' acciones';
+    const body=b.querySelector('.dept-body');
+    const tog=b.querySelector('.dtog');
+    if(vis>0&&(activeSearch||activeDeptFilter!=='all'||activePrioFilter!=='all')){
+      body.classList.add('open'); tog.classList.add('open');
+    }
+  });
+  document.getElementById('cnt').textContent=visible;
+  document.getElementById('noRes').style.display=visible===0?'block':'none';
+}
+
+function toggleDept(hdr){
+  const body=hdr.nextElementSibling;
+  const tog=hdr.querySelector('.dtog');
+  body.classList.toggle('open'); tog.classList.toggle('open');
+}
+
+function renderWorkstreams(){
+  const g=document.getElementById('wsGrid');
+  WORKSTREAMS.forEach(ws=>{
+    const c=document.createElement('div');
+    c.className='ws-card';
+    c.innerHTML=`<div class="ws-card-hdr"><div class="ws-letter" style="color:${ws.color}">${ws.letter}</div><div class="ws-title">${ws.title}</div></div><div class="ws-body">${ws.items.map(i=>`<div class="ws-item">${i}</div>`).join('')}</div>`;
+    g.appendChild(c);
+  });
+}
+
+function renderEspana(){
+  const el=document.getElementById('esContent');
+  const secs={regulatorio:'🏛 Regulatorio y Procesos AEMPS',acceso:'💰 Acceso, Precio y Variabilidad Territorial',operativo:'⚙️ Operativo, Distribución y Compliance'};
+  Object.entries(ES_ITEMS).forEach(([key,items])=>{
+    el.innerHTML+=`<div class="es-section-ttl">${secs[key]}</div>`;
+    const g=document.createElement('div'); g.className='es-grid';
+    items.forEach(it=>{
+      g.innerHTML+=`<div class="es-card ${it.level}"><div class="es-icon">${it.icon}</div><div class="es-ttl">${it.title}</div><div class="es-txt">${it.text}</div>${it.cite?`<div class="es-cite">Fuente: ${it.cite}</div>`:''}</div>`;
+    });
+    el.appendChild(g);
+  });
+}
+
+function renderEntregables(){
+  const g=document.getElementById('entGrid');
+  ENTREGABLES.forEach(e=>{
+    const c=document.createElement('div'); c.className='ent-card';
+    c.innerHTML=`<div class="ent-num">${String(e.n).padStart(2,'0')}</div><div class="ent-info"><div class="ent-nm">${e.name}</div><div class="ent-desc">${e.desc}</div><div class="ent-dept">${e.dept}</div></div>`;
+    g.appendChild(c);
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// MI PRODUCTO GENERATOR
+// ══════════════════════════════════════════════════════════
+
+function addMonths(date, months){
+  const d=new Date(date); d.setMonth(d.getMonth()+months); return d;
+}
+function fmtDate(d){
+  return d.toLocaleDateString('es-ES',{month:'short',year:'numeric'});
+}
+
+function generatePlan(){
+  const name=document.getElementById('mpName').value.trim()||'Mi Producto';
+  const indic=document.getElementById('mpIndic').value.trim()||'Indicación no especificada';
+  const area=document.getElementById('mpArea').value||'Área terapéutica';
+  const prod=document.querySelector('input[name="mpProd"]:checked').value;
+  const launchDateStr=document.getElementById('mpDate').value;
+  const currentPhase=document.getElementById('mpPhase').value;
+  
+  if(!launchDateStr){alert('Por favor, introduce una fecha estimada de lanzamiento.'); return;}
+  
+  const launchDate=new Date(launchDateStr);
+  const prodLabels={ap:'🏥 Atención Primaria',specialty:'💊 Specialty',onco:'🔬 Oncología',er:'🧬 Enfermedades Raras'};
+  
+  // Phase date offsets from launch date (in months)
+  const phaseOffsets=[
+    {id:'p1',start:-24,end:-18},
+    {id:'p2',start:-18,end:-12},
+    {id:'p3',start:-12,end:-6},
+    {id:'p4',start:-6,end:-3},
+    {id:'p5',start:-3,end:0},
+    {id:'p6',start:0,end:3},
+    {id:'p7',start:3,end:6},
+    {id:'p8',start:6,end:12},
+  ];
+  
+  const now=new Date();
+  
+  const risks=[...(PROD_RISKS.all||[]),...(PROD_RISKS[prod]||[])];
+  
+  let html=`<div class="mp-report">
+  <div class="mp-report-hdr">
+    <div class="mp-prod-nm">${name}</div>
+    <div class="mp-prod-meta">
+      <div class="mp-meta-chip">📋 ${indic}</div>
+      <div class="mp-meta-chip">🔬 ${area}</div>
+      <div class="mp-meta-chip">${prodLabels[prod]}</div>
+      <div class="mp-meta-chip">🚀 Lanzamiento estimado: ${fmtDate(launchDate)}</div>
+      <div class="mp-meta-chip">📍 Fase actual: ${PHASES.find(p=>p.id===currentPhase)?.period}</div>
+    </div>
+  </div>`;
+  
+  phaseOffsets.forEach(po=>{
+    const ph=PHASES.find(p=>p.id===po.id);
+    const startDate=addMonths(launchDate,po.start);
+    const endDate=addMonths(launchDate,po.end);
+    const isCurrent=po.id===currentPhase;
+    const isPast=phaseOffsets.indexOf(po)<phaseOffsets.findIndex(p=>p.id===currentPhase);
+    const phaseClass=isCurrent?'current':isPast?'past':'future';
+    const badge=isCurrent?'<span class="mp-phase-badge badge-current">← FASE ACTUAL</span>':isPast?'<span class="mp-phase-badge badge-past">Completada</span>':'<span class="mp-phase-badge badge-future">Próxima</span>';
+    
+    const phaseActions=ACTIONS.filter(a=>a.phase===po.id&&(a.prod.includes('all')||a.prod.includes(prod)));
+    const criticals=phaseActions.filter(a=>a.prio==='critico');
+    const highs=phaseActions.filter(a=>a.prio==='alto');
+    
+    html+=`<div class="mp-phase-block">
+      <div class="mp-phase-hdr ${phaseClass}">
+        <div class="mp-phase-dates">${ph.period}</div>
+        <div style="flex:1">
+          <div class="mp-phase-name">${ph.name}</div>
+          <div style="font-size:10px;color:var(--faint);margin-top:2px">${fmtDate(startDate)} → ${fmtDate(endDate)}</div>
+        </div>
+        ${badge}
+      </div>`;
+    
+    if(criticals.length>0){
+      html+=`<div class="mp-phase-actions">
+        <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:4px;font-weight:700">🔴 Acciones Críticas (${criticals.length})</div>
+        ${criticals.map(a=>`<div class="mp-action-item">${a.text}</div>`).join('')}
+        ${highs.length>0?`<div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#e8c060;margin:8px 0 4px;font-weight:700">🟡 Acciones de Alta Prioridad (${highs.length})</div>${highs.map(a=>`<div class="mp-action-item">${a.text}</div>`).join('')}`:''}</div>`;
+    }
+    
+    html+=`</div>`;
+  });
+  
+  html+=`<div class="mp-risk-box">
+    <div class="mp-risk-ttl">⚠ Riesgos Específicos — ${prodLabels[prod]} en España</div>
+    ${risks.map(r=>`<div class="mp-risk-item">${r}</div>`).join('')}
+  </div></div>`;
+  
+  document.getElementById('mpOut').innerHTML=html;
+}
+
+// ══════════════════════════════════════════════════════════
+// EXCEL EXPORT
+// ══════════════════════════════════════════════════════════
+
+function exportExcel(){
+  if(typeof XLSX==='undefined'){alert('La librería de Excel no está disponible. Verifica tu conexión a internet.');return;}
+  
+  const wb=XLSX.utils.book_new();
+  
+  // Sheet 1: Lista Completa
+  const sh1Data=[['Fase','Periodo','Departamento','Acción','Tipo','Prioridad','Mercado']];
+  ACTIONS.forEach(a=>{
+    if(activeProd!=='all'&&!a.prod.includes('all')&&!a.prod.includes(activeProd)) return;
+    const ph=PHASES.find(p=>p.id===a.phase);
+    const dm=getDeptMeta(a.dept);
+    const text=a.text.replace(/<[^>]*>/g,'');
+    sh1Data.push([ph?.name||a.phase, ph?.period||a.phase, dm.name, text, a.type, a.prio, a.prod.join(', ')]);
+  });
+  const ws1=XLSX.utils.aoa_to_sheet(sh1Data);
+  ws1['!cols']=[{wch:28},{wch:14},{wch:26},{wch:80},{wch:14},{wch:10},{wch:20}];
+  XLSX.utils.book_append_sheet(wb,ws1,'Lista Maestra');
+  
+  // Sheet 2: 25 Entregables
+  const sh2Data=[['#','Entregable','Descripción','Responsable']];
+  ENTREGABLES.forEach(e=>sh2Data.push([e.n, e.name, e.desc, e.dept]));
+  const ws2=XLSX.utils.aoa_to_sheet(sh2Data);
+  ws2['!cols']=[{wch:4},{wch:32},{wch:80},{wch:30}];
+  XLSX.utils.book_append_sheet(wb,ws2,'25 Entregables');
+  
+  // Sheet 3: Workstreams
+  const sh3Data=[['Workstream','Área / Departamento','Componentes Clave']];
+  WORKSTREAMS.forEach(ws=>sh3Data.push([ws.letter+'. '+ws.title,'',ws.items.join(' | ')]));
+  const ws3=XLSX.utils.aoa_to_sheet(sh3Data);
+  ws3['!cols']=[{wch:30},{wch:20},{wch:100}];
+  XLSX.utils.book_append_sheet(wb,ws3,'Workstreams');
+  
+  // Sheet 4: España Específico
+  const sh4Data=[['Categoría','Nivel','Punto Clave','Descripción']];
+  const cats={regulatorio:'Regulatorio',acceso:'Acceso',operativo:'Operativo'};
+  Object.entries(ES_ITEMS).forEach(([key,items])=>{
+    items.forEach(it=>sh4Data.push([cats[key], it.level, it.title, it.text]));
+  });
+  const ws4=XLSX.utils.aoa_to_sheet(sh4Data);
+  ws4['!cols']=[{wch:15},{wch:12},{wch:50},{wch:100}];
+  XLSX.utils.book_append_sheet(wb,ws4,'España Específico');
+  
+  const prod=activeProd==='all'?'Todos':activeProd;
+  XLSX.writeFile(wb,`Launch_Master_España_LH_${prod}_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+// ══════════════════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════════════════
+
+function switchTab(tabId){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tabId));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.toggle('active',c.id===tabId));
+  document.getElementById('ctrlBar').style.display=tabId==='t1'?'':'none';
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT & EVENT LISTENERS
+// ══════════════════════════════════════════════════════════
+
+renderList();
+renderWorkstreams();
+renderEspana();
+renderEntregables();
+
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+
+document.querySelectorAll('[data-fp]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-fp]').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); activePhaseFilter=b.dataset.fp; applyFilters();
+}));
+
+document.querySelectorAll('[data-fd]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-fd]').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); activeDeptFilter=b.dataset.fd; applyFilters();
+}));
+
+document.querySelectorAll('[data-fpr]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-fpr]').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); activePrioFilter=b.dataset.fpr; applyFilters();
+}));
+
+document.getElementById('srch').addEventListener('input',e=>{
+  activeSearch=e.target.value.toLowerCase().trim(); applyFilters();
+});
+
+document.querySelectorAll('[data-prod]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-prod]').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); activeProd=b.dataset.prod; applyFilters();
+}));
+
+document.getElementById('dlExcel').addEventListener('click', exportExcel);
+document.getElementById('genBtn').addEventListener('click', generatePlan);
+
+// Set today as default launch date + 18 months
+const defDate=new Date(); defDate.setMonth(defDate.getMonth()+18);
+document.getElementById('mpDate').value=defDate.toISOString().slice(0,10);
+
+// ══════════════════════════════════════════════════════════
+// RED NEURAL — Ecosystem Network
+// ══════════════════════════════════════════════════════════
+
+(function buildNeuralNet(){
+  const W=900, H=580, CX=450, CY=290, R1=155, R2=258;
+
+  function polar(r,deg){ const a=(deg-90)*Math.PI/180; return {x:CX+r*Math.cos(a), y:CY+r*Math.sin(a)}; }
+
+  const DEPT_COLORS={
+    gm:'#ffffff', reg:'#e8a838', med:'#3dba8a', acc:'#4a9eff',
+    mkt:'#d81f2a', ven:'#ff7c3e', kam:'#b06cf4', sup:'#5ec8e8',
+    uc:'#f0c040', ms:'#80e060', psp:'#ff88bb', fin:'#aaaaaa',
+    pv:'#90c0ff', pa:'#60d4a0', hr:'#ddaaff', xfn:'#e0e0e0'
+  };
+
+  const PILLARS=[
+    {id:'med',   label:'Medical',     sub:'Affairs',  angle:0,   color:DEPT_COLORS.med},
+    {id:'acc',   label:'Market',      sub:'Access',   angle:40,  color:DEPT_COLORS.acc},
+    {id:'mkt',   label:'Marketing',   sub:'& Comms',  angle:80,  color:DEPT_COLORS.mkt},
+    {id:'ven',   label:'Ventas',      sub:'& KAM',    angle:120, color:DEPT_COLORS.ven},
+    {id:'kam',   label:'KAM',         sub:'Accounts', angle:160, color:DEPT_COLORS.kam},
+    {id:'sup',   label:'Supply',      sub:'Chain',    angle:200, color:DEPT_COLORS.sup},
+    {id:'reg',   label:'Regulatory',  sub:'& Reg.',   angle:240, color:DEPT_COLORS.reg},
+    {id:'psp',   label:'Patient',     sub:'Support',  angle:280, color:DEPT_COLORS.psp},
+    {id:'ms',    label:'Mkt Shape',   sub:'& Policy', angle:320, color:DEPT_COLORS.ms},
+  ];
+
+  const OUTER=[
+    {id:'gm',  label:'GM/PMO',     pillar:'med', offset:-18, color:DEPT_COLORS.gm},
+    {id:'uc',  label:'UC/ATU',     pillar:'acc', offset:-18, color:DEPT_COLORS.uc},
+    {id:'fin', label:'Finance',    pillar:'mkt', offset:-18, color:DEPT_COLORS.fin},
+    {id:'pv',  label:'Farmacov.',  pillar:'ven', offset:-18, color:DEPT_COLORS.pv},
+    {id:'pa',  label:'Pub.Affairs',pillar:'kam', offset:-18, color:DEPT_COLORS.pa},
+    {id:'hr',  label:'RRHH',       pillar:'sup', offset:-18, color:DEPT_COLORS.hr},
+    {id:'xfn', label:'X-Func.',    pillar:'reg', offset:-18, color:DEPT_COLORS.xfn},
+  ];
+
+  const PHASES=[
+    {label:'T-24/18',angle:0},  {label:'T-18/12',angle:45},
+    {label:'T-12/6', angle:90}, {label:'T-6/3',  angle:135},
+    {label:'T-3/T0', angle:180},{label:'T0/+3',  angle:225},
+    {label:'T+3/+6', angle:270},{label:'T+6/+12',angle:315},
+  ];
+
+  // Build SVG
+  const ns='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.style.cssText='width:100%;max-height:520px;display:block;';
+
+  // defs
+  const defs=document.createElementNS(ns,'defs');
+  const style=document.createElementNS(ns,'style');
+  style.textContent=`
+    @keyframes lmpFlow  {from{stroke-dashoffset:32} to{stroke-dashoffset:0}}
+    @keyframes lmpPulse {0%,100%{opacity:.4} 50%{opacity:1}}
+    @keyframes lmpOrbit {from{stroke-dashoffset:0} to{stroke-dashoffset:-600}}
+    .lmp-pulse{animation:lmpPulse 2.8s ease-in-out infinite}
+    .lmp-flow {animation:lmpFlow  1.4s linear infinite}
+  `;
+  defs.appendChild(style);
+
+  // glow filter
+  const filt=document.createElementNS(ns,'filter');
+  filt.setAttribute('id','lmpGlow'); filt.setAttribute('x','-60%'); filt.setAttribute('y','-60%');
+  filt.setAttribute('width','220%'); filt.setAttribute('height','220%');
+  const gb=document.createElementNS(ns,'feGaussianBlur');
+  gb.setAttribute('stdDeviation','5'); gb.setAttribute('result','blur');
+  const fm=document.createElementNS(ns,'feMerge');
+  ['blur','SourceGraphic'].forEach(n=>{const mn=document.createElementNS(ns,'feMergeNode');if(n==='blur')mn.setAttribute('in','blur');else mn.setAttribute('in','SourceGraphic');fm.appendChild(mn);});
+  filt.appendChild(gb); filt.appendChild(fm); defs.appendChild(filt);
+  svg.appendChild(defs);
+
+  function mkEl(tag,attrs,txt){
+    const el=document.createElementNS(ns,tag);
+    Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,String(v)));
+    if(txt!==undefined)el.textContent=txt;
+    return el;
+  }
+
+  // Ring guides
+  [R2+35, R2, R1+20, 78].forEach((r,i)=>{
+    svg.appendChild(mkEl('circle',{cx:CX,cy:CY,r,fill:'none',stroke:`rgba(255,255,255,${0.015+i*0.008})`,
+      'stroke-width':'1'}));
+  });
+
+  // Phase labels on outer ring
+  PHASES.forEach(p=>{
+    const pos=polar(R2+48,p.angle);
+    const t=mkEl('text',{x:pos.x,y:pos.y,'text-anchor':'middle','dominant-baseline':'middle',
+      'font-size':'7','font-family':'system-ui,sans-serif','font-weight':'700',
+      fill:'rgba(255,255,255,0.18)'},p.label);
+    svg.appendChild(t);
+  });
+
+  // Build node map for edges
+  const nodePos={};
+  nodePos['center']={x:CX,y:CY};
+  PILLARS.forEach(p=>{ const pos=polar(R1,p.angle); nodePos[p.id]={...pos}; });
+  OUTER.forEach(o=>{ const pillar=PILLARS.find(p=>p.id===o.pillar); const pos=polar(R2,pillar.angle+o.offset); nodePos[o.id]={...pos}; });
+
+  // Edges
+  let ei=0;
+  function drawEdge(x1,y1,x2,y2,color,main,act){
+    const opacity=main?0.07+act*0.55:0.04+act*0.3;
+    const rgb=hexRgb(color);
+    const el=mkEl('line',{x1,y1,x2,y2,
+      stroke:`rgba(${rgb},${opacity})`,
+      'stroke-width':main?1.5:0.7,
+      'stroke-dasharray':main?'9 6':'4 6'});
+    if(act>0.2) el.classList.add('lmp-flow');
+    el.style.animationDelay=`${(ei*0.12)%2}s`;
+    el.style.animationDuration=`${0.9+(1-act)*2}s`;
+    svg.appendChild(el); ei++;
+  }
+
+  // Center → pillars
+  PILLARS.forEach(p=>{ const pos=nodePos[p.id]; drawEdge(CX,CY,pos.x,pos.y,p.color,true,0.7); });
+  // Pillars → outer
+  OUTER.forEach(o=>{ const from=nodePos[o.pillar]; const to=nodePos[o.id]; drawEdge(from.x,from.y,to.x,to.y,o.color,false,0.5); });
+  // Adjacent cross-pillar
+  PILLARS.forEach((p,i)=>{
+    const next=PILLARS[(i+1)%PILLARS.length];
+    const a=nodePos[p.id], b=nodePos[next.id];
+    drawEdge(a.x,a.y,b.x,b.y,'#ffffff',false,0.25);
+  });
+
+  // Outer nodes
+  OUTER.forEach((o,i)=>{
+    const pos=nodePos[o.id];
+    const rgb=hexRgb(o.color);
+    const g=mkEl('g',{}); g.classList.add('lmp-pulse');
+    g.style.animationDelay=`${i*0.3}s`;
+    g.appendChild(mkEl('circle',{cx:pos.x,cy:pos.y,r:15,fill:`rgba(${rgb},0.06)`,stroke:o.color,'stroke-width':'0.8',opacity:'0.7'}));
+    g.appendChild(mkEl('text',{x:pos.x,y:pos.y,'text-anchor':'middle','dominant-baseline':'middle','font-size':'6.5','font-family':'system-ui,sans-serif','font-weight':'700',fill:'white',opacity:'0.7'},o.label));
+    svg.appendChild(g);
+  });
+
+  // Pillar nodes
+  PILLARS.forEach((p,i)=>{
+    const pos=nodePos[p.id];
+    const rgb=hexRgb(p.color);
+    const g=mkEl('g',{}); g.classList.add('lmp-pulse');
+    g.style.animationDelay=`${i*0.35}s`;
+    g.setAttribute('style', `cursor:pointer; animation-delay:${i*0.35}s; animation:lmpPulse ${2.5+i*0.3}s ease-in-out infinite`);
+    // Halo
+    g.appendChild(mkEl('circle',{cx:pos.x,cy:pos.y,r:34,fill:'none',stroke:p.color,'stroke-width':'1',opacity:'0.18'}));
+    // Body
+    g.appendChild(mkEl('circle',{cx:pos.x,cy:pos.y,r:26,fill:`rgba(${rgb},0.1)`,stroke:p.color,'stroke-width':'1.5',opacity:'0.85'}));
+    // Label
+    const lbl=mkEl('text',{x:pos.x,y:pos.y-4,'text-anchor':'middle','dominant-baseline':'middle','font-size':'8','font-family':'system-ui,sans-serif','font-weight':'900',fill:'white',opacity:'0.9'},p.label.toUpperCase());
+    g.appendChild(lbl);
+    const sub=mkEl('text',{x:pos.x,y:pos.y+6,'text-anchor':'middle','dominant-baseline':'middle','font-size':'6.5','font-family':'system-ui,sans-serif','font-weight':'600',fill:p.color,opacity:'0.8'},p.sub);
+    g.appendChild(sub);
+    // Click → filter in tab1
+    g.addEventListener('click',()=>{ switchTab('t1'); setTimeout(()=>{ document.querySelectorAll('[data-fd]').forEach(x=>x.classList.remove('active')); const btn=document.querySelector(`[data-fd="${p.id}"]`); if(btn){btn.classList.add('active'); activeDeptFilter=p.id; applyFilters();} },80); });
+    svg.appendChild(g);
+  });
+
+  // Center node
+  const cg=mkEl('g',{filter:'url(#lmpGlow)'});
+  cg.appendChild(mkEl('circle',{cx:CX,cy:CY,r:58,fill:'rgba(216,31,42,0.04)',stroke:'rgba(216,31,42,0.12)','stroke-width':'1'}));
+  cg.appendChild(mkEl('circle',{cx:CX,cy:CY,r:40,fill:'rgba(216,31,42,0.14)',stroke:'var(--red)','stroke-width':'2.5'}));
+  const ct=mkEl('text',{x:CX,y:CY-6,'text-anchor':'middle','dominant-baseline':'middle','font-size':'11','font-family':'Barlow Condensed,system-ui,sans-serif','font-weight':'900',fill:'#d81f2a','letter-spacing':'1.5px'},'LAUNCH');
+  const ct2=mkEl('text',{x:CX,y:CY+8,'text-anchor':'middle','dominant-baseline':'middle','font-size':'8.5','font-family':'system-ui,sans-serif',fill:'rgba(255,255,255,0.4)'},'Ecosystem');
+  cg.appendChild(ct); cg.appendChild(ct2); svg.appendChild(cg);
+
+  // Helper
+  function hexRgb(hex){
+    const c=hex.replace('#','');
+    return `${parseInt(c.slice(0,2),16)},${parseInt(c.slice(2,4),16)},${parseInt(c.slice(4,6),16)}`;
+  }
+
+  // Inject tab content
+  const tab6=document.getElementById('t6');
+  const hdr=document.createElement('div'); hdr.className='ttl-area';
+  hdr.innerHTML='<div class="page-ttl">Red Neural · Ecosistema de Lanzamiento</div><div class="page-sub">16 funciones interconectadas · 148 acciones · 8 fases · Haz clic en un nodo para filtrar la Lista Maestra</div>';
+  const wrap=document.createElement('div');
+  wrap.style.cssText='background:#09090b;border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px;margin-top:20px;';
+  wrap.appendChild(svg);
+
+  // Legend
+  const leg=document.createElement('div');
+  leg.style.cssText='display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;';
+  Object.entries(DEPT_COLORS).forEach(([id,color])=>{
+    const labels={gm:'GM/PMO',reg:'Regulatorio',med:'Medical',acc:'Acceso',mkt:'Marketing',ven:'Ventas',
+      kam:'KAM',sup:'Supply',uc:'UC/ATU',ms:'Mkt Shape',psp:'PSP',fin:'Finance',pv:'Farmacovig.',pa:'Pub.Affairs',hr:'RRHH',xfn:'X-Funcional'};
+    const d=document.createElement('div');
+    d.style.cssText='display:flex;align-items:center;gap:5px;font-size:10px;cursor:pointer;opacity:0.7;transition:opacity .15s;';
+    d.onmouseenter=()=>d.style.opacity='1'; d.onmouseleave=()=>d.style.opacity='0.7';
+    d.innerHTML=`<div style="width:8px;height:8px;border-radius:50%;background:${color}"></div><span style="color:rgba(255,255,255,0.4)">${labels[id]||id}</span>`;
+    d.onclick=()=>{ switchTab('t1'); setTimeout(()=>{ document.querySelectorAll('[data-fd]').forEach(x=>x.classList.remove('active')); const btn=document.querySelector(`[data-fd="${id}"]`); if(btn){btn.classList.add('active'); activeDeptFilter=id; applyFilters();} },80); };
+    leg.appendChild(d);
+  });
+  wrap.appendChild(leg);
+  tab6.appendChild(hdr); tab6.appendChild(wrap);
+})();
+
+</script>
+</body>
+</html>

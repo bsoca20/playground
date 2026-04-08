@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { EcosystemMap } from "@/components/simulator/ecosystem-map";
 import { BarChart2, Building2, CheckSquare, Lock, MessageSquare, Target, TrendingUp } from "lucide-react";
 import { Bar, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Button } from "@/components/ui/button";
@@ -119,7 +120,7 @@ const YEAR_PRICE_GUARDRAILS: Record<number, { target: number; authorized: number
 const STORAGE_PREFIX = "cefalix:v2";
 
 function normalizePhase(value?: string): Phase {
-  if (value === "context" || value === "preread" || value === "simulator" || value === "summary" || value === "review") {
+  if (value === "context" || value === "preread" || value === "simulator" || value === "summary" || value === "review" || value === "ecosystem") {
     return value;
   }
   return "context";
@@ -238,7 +239,7 @@ export function StudentShell({
   const baselineMarket = MARKET_BASELINE[baselineYear as keyof typeof MARKET_BASELINE];
   const accessScenario = ACCESS_SCENARIOS[SCENARIO_EVOLUTION[currentYear]];
   const currentProjection = accessScenario.timeline[baselineYear as keyof typeof accessScenario.timeline];
-  const phaseOrder: Phase[] = ["context", "preread", "simulator", "review"];
+  const phaseOrder: Phase[] = ["context", "preread", "simulator", "review", "ecosystem"];
   const phaseIndex = phaseOrder.indexOf(phase);
   const yearIsConfirmed = confirmedYears.includes(currentYear);
   const priceGuardrail = YEAR_PRICE_GUARDRAILS[currentYear];
@@ -1779,6 +1780,18 @@ export function StudentShell({
           </div>
         ) : null}
 
+        {phase === "ecosystem" ? (
+          <div className="mt-4 space-y-6">
+            <div>
+              <div className="text-xs font-black uppercase tracking-[0.28em]" style={{ color: "#FF3030" }}>Ecosystem Map</div>
+              <p className="mt-1 text-xs" style={{ color: "rgba(0,0,0,0.4)" }}>
+                Red neural de lanzamiento — cada nodo refleja el nivel de activación de tu equipo en tiempo real.
+              </p>
+            </div>
+            <EcosystemMap sim={sim} currentYear={currentYear} launchClosed={launchClosed} />
+          </div>
+        ) : null}
+
         <div className="mt-8 flex flex-wrap justify-between gap-3 rounded-[2rem] border border-zinc-200 bg-white p-5 shadow-sm">
           <button
             onClick={goToPreviousPhase}
@@ -1905,7 +1918,8 @@ function phaseLabel(phase: Phase) {
     preread: "Key Data",
     simulator: "Your Key Actions",
     summary: "One-page summary",
-    review: "One-Page Boardroom"
+    review: "One-Page Boardroom",
+    ecosystem: "Ecosystem Map"
   };
 
   return labels[phase];

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Next.js Dev Server",
+      "runtimeExecutable": "/usr/local/bin/node",
+      "runtimeArgs": ["/Users/orlandovergara/Documents/Playground/node_modules/next/dist/bin/next", "dev", "-p", "3005"],
+      "port": 3005
+    }
+  ]
+}

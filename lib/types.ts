@@ -5,7 +5,8 @@ export type Phase =
   | "preread"
   | "simulator"
   | "summary"
-  | "review";
+  | "review"
+  | "ecosystem";
 
 export type Level = "none" | "low" | "medium" | "high";
 

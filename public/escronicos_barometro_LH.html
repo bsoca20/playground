@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VII Barómetro EsCrónicos 2024 — Leadership House × Bluebarna</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --red:#FF3030;
+  --dark:#1F1D1D;
+  --panel:rgba(255,255,255,0.045);
+  --line:rgba(255,255,255,0.08);
+  --text:rgba(255,255,255,0.72);
+  --muted:rgba(255,255,255,0.42);
+  --white:#fff;
+}
+html,body{height:100%;overflow:hidden;background:#111;}
+body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#fff;}
+.presentation{width:100vw;height:100vh;display:flex;flex-direction:column;background:
+  radial-gradient(circle at top right,rgba(255,48,48,0.12),transparent 28%),
+  radial-gradient(circle at bottom left,rgba(255,48,48,0.08),transparent 30%),
+  var(--dark);}
+.slides-wrap{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;padding:30px 54px 18px;display:none;flex-direction:column;opacity:0;transition:opacity .25s;}
+.slide.active{display:flex;opacity:1;}
+.sh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-shrink:0;}
+.logo{font-family:"Anton",Impact,sans-serif;font-size:12px;letter-spacing:2px;line-height:1.15;color:#fff;}
+.logo small{display:block;font-family:"Helvetica Neue",sans-serif;font-size:8px;letter-spacing:3px;color:rgba(255,255,255,0.5);font-weight:400;}
+.snum{font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:2px;padding-top:2px;}
+.sb{flex:1;display:flex;gap:34px;align-items:center;overflow:hidden;}
+.sl{flex:0 0 365px;display:flex;flex-direction:column;}
+.sr{flex:1;display:flex;flex-direction:column;justify-content:center;}
+.tag{font-size:10px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:10px;}
+.title{font-family:"Anton",Impact,sans-serif;font-size:46px;line-height:1.0;text-transform:uppercase;margin-bottom:14px;}
+.title .r{color:var(--red);}
+.sub{font-size:13px;line-height:1.6;color:var(--text);margin-bottom:14px;}
+.rl{width:42px;height:3px;background:var(--red);margin-bottom:14px;}
+.bs{font-family:"Anton",Impact,sans-serif;font-size:86px;line-height:1;color:var(--red);}
+.bsl{font-size:15px;color:rgba(255,255,255,0.75);line-height:1.4;margin-top:6px;max-width:330px;}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.sc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;}
+.sc .v{font-family:"Anton",Impact,sans-serif;font-size:34px;line-height:1;color:var(--red);margin-bottom:5px;}
+.sc .l{font-size:11px;line-height:1.45;color:rgba(255,255,255,0.6);}
+.sc .src{font-size:9px;letter-spacing:.3px;color:rgba(255,255,255,0.26);margin-top:5px;}
+.cc{position:relative;width:100%;}
+.qb{background:rgba(255,48,48,0.08);border-left:3px solid var(--red);padding:12px 16px;border-radius:0 6px 6px 0;margin:10px 0;}
+.qb p{font-size:13px;line-height:1.55;font-style:italic;color:rgba(255,255,255,0.82);}
+.qb .att{font-size:9px;color:var(--red);margin-top:5px;letter-spacing:1px;text-transform:uppercase;}
+.il{list-style:none;margin-top:8px;}
+.il li{font-size:12px;line-height:1.45;color:var(--text);padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:10px;}
+.il li::before{content:"→";color:var(--red);flex-shrink:0;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;}
+.grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:100%;}
+.stg{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;}
+.stg.hi{background:rgba(255,48,48,0.08);border-color:rgba(255,48,48,0.2);}
+.num{font-family:"Anton",Impact,sans-serif;font-size:24px;color:var(--red);line-height:1;margin-bottom:8px;}
+.st{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#fff;margin-bottom:6px;}
+.sd{font-size:11px;line-height:1.4;color:rgba(255,255,255,0.5);}
+.ladder{display:flex;flex-direction:column;gap:8px;}
+.step{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+.step .n{font-family:"Anton",Impact,sans-serif;font-size:28px;color:var(--red);min-width:34px;text-align:center;}
+.step .t{font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.step .d{font-size:11px;color:rgba(255,255,255,0.54);line-height:1.4;}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;}
+.pill{display:inline-flex;align-items:center;border:1px solid rgba(255,48,48,0.18);background:rgba(255,48,48,0.08);color:#fff;border-radius:999px;padding:7px 12px;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;}
+.center-panel{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:18px;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;}
+.kpi{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px;text-align:center;}
+.kpi .kv{font-family:"Anton",Impact,sans-serif;font-size:34px;line-height:1;color:var(--red);}
+.kpi .kl{font-size:11px;line-height:1.4;color:rgba(255,255,255,0.54);margin-top:5px;}
+.split{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;width:100%;}
+.journey{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;}
+.jn{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;min-height:170px;}
+.jn.hi{background:rgba(255,48,48,0.08);border-color:rgba(255,48,48,0.22);}
+.jn .jt{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.jn .jv{font-family:"Anton",Impact,sans-serif;font-size:36px;line-height:1;color:#fff;margin-bottom:8px;}
+.jn .jv.red{color:var(--red);}
+.jn .jd{font-size:11px;color:rgba(255,255,255,0.54);line-height:1.45;}
+.footer-band{display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid rgba(255,255,255,0.07);margin-top:auto;flex-shrink:0;}
+.srcs{font-size:9px;color:rgba(255,255,255,0.24);letter-spacing:.2px;}
+.nt{font-size:9px;color:rgba(255,255,255,0.26);cursor:pointer;letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(255,255,255,0.1);padding:3px 8px;border-radius:3px;transition:all .2s;user-select:none;}
+.nt:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
+.np{background:rgba(0,0,0,0.92);border-top:2px solid var(--red);padding:14px 52px;max-height:150px;overflow-y:auto;display:none;flex-shrink:0;}
+.np.vis{display:block;}
+.np h4{font-size:9px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:7px;}
+.np p{font-size:11px;color:rgba(255,255,255,0.7);line-height:1.65;}
+.nb{background:rgba(0,0,0,0.45);padding:9px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0;}
+.dots{display:flex;gap:5px;align-items:center;}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.18);cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--red);width:16px;border-radius:2px;}
+.nc{font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:1px;}
+.nctrls{display:flex;gap:10px;}
+.nb-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.62);padding:5px 14px;border-radius:3px;cursor:pointer;font-size:11px;letter-spacing:1px;text-transform:uppercase;transition:all .2s;}
+.nb-btn:hover{background:var(--red);border-color:var(--red);color:#fff;}
+</style>
+</head>
+<body>
+<div class="presentation">
+  <div class="slides-wrap">
+
+    <div class="slide active" data-n="1">
+      <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">01 / 10</div></div>
+      <div class="sb">
+        <div class="sl">
+          <div class="tag">Sistema Sanitario · Cronicidad · España 2024</div>
+          <div class="title" style="font-size:58px;line-height:.93;">EL NUEVO<br><span class="r">TABLERO</span><br>DE LA<br>CRONICIDAD.</div>
+          <p class="sub" style="margin-top:14px;">El VII Barómetro EsCrónicos 2024 muestra una recuperación parcial de la atención, pero deja claro que la experiencia del paciente crónico sigue fragmentada. Atención Primaria mejora. Urgencias sigue rota. La salud percibida no acompaña.</p>
+          <div class="pill">Executive dashboard · 10 slides · LH style</div>
+        </div>
+        <div class="sr">
+          <div class="bs">5,2</div>
+          <div class="bsl">nota media del sistema sanitario público en 2024. Mejora frente a 2022, pero sigue por debajo de los niveles previos a la pandemia.</div>
+          <div class="sg" style="margin-top:18px;">
+            <div class="sc"><div class="v">52%</div><div class="l">bastante o muy satisfecho con la atención sanitaria recibida</div><div class="src">Barómetro EsCrónicos 2024</div></div>
+            <div class="sc"><div class="v">42%</div><div class="l">percibe su estado de salud como bueno o muy bueno</div><div class="src">Barómetro EsCrónicos 2024</div></div>
+            <div class="sc"><div class="v">33%</div><div class="l">percibe su salud como mala o muy mala en 2024</div><div class="src">Vs. 16% en 2017</div></div>
+            <div class="sc"><div class="v">565</div><div class="l">respuestas analizadas en el informe 2024</div><div class="src">Plataforma de Organizaciones de Pacientes</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-band"><div class="srcs">Fuente principal: VII Barómetro EsCrónicos 2024 · Plataforma de Organizaciones de Pacientes × UCM</div><div class="nt" onclick="toggleNotes()">Speaker notes [N]</div></div>
+    </div>
+
+    <div class="slide" data-n="2">
+      <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">02 / 10</div></div>
+      <div class="sb">
+        <div class="sl">
+          <div class="rl"></div>
+          <div class="tag">La paradoja central</div>
+          <div class="title">La atención<br>sube.<br>La salud<br><span class="r">no.</span></div>
+          <p class="sub">El sistema consigue mejorar la percepción del servicio más rápido de lo que mejora el bienestar real del paciente. Ese desfase es la señal más importante del informe.</p>
+          <div class="qb">
+            <p>"A pesar de esta mejora en la valoración tanto del sistema sanitario como de la atención sanitaria recibida, la percepción general de la salud en 2024 sigue siendo significativamente peor que en los años previos a la pandemia."</p>
+            <div class="att">Conclusiones · VII Barómetro EsCrónicos 2024</div>
+          </div>
+        </div>
+        <div class="sr">
+          <div style="font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Recuperación del sistema vs salud percibida</div>
+          <div class="cc" style="height:250px;"><canvas id="gapChart"></canvas></div>
+          <div class="sg" style="margin-top:12px;">
+            <div class="sc" style="background:rgba(255,48,48,0.08);border-color:rgba(255,48,48,0.18);"><div class="v">+0,7</div><div class="l">puntos de mejora del sistema vs 2022</div><div class="src">De 4,5 a 5,2</div></div>
+            <div class="sc"><div class="v">-11 pp</div><div class="l">empeoramiento de la salud mala o muy mala vs 2017</div><div class="src">De 16% a 33%</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-band"><div class="srcs">Datos: valoración media del sistema 2019–2024 y percepción de salud 2017–2024</div><div class="nt" onclick="toggleNotes()">Speaker notes [N]</div></div>
+    </div>
+
+    <div class="slide" data-n="3">
+      <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">03 / 10</div></div>
+      <div class="sb">
+        <div class="sl">
+          <div class="rl"></div>
+          <div class="tag">Mapa de experiencia</div>
+          <div class="title">Tres servicios.<br>Tres realidades.</div>
+          <p class="sub">El paciente crónico no vive “el sistema” como un bloque único. Vive un mosaico: una Atención Primaria que aguanta, una atención hospitalaria que cumple, y unas urgencias que siguen generando fricción.</p>
+          <ul class="il">
+            <li>Atención Primaria: recuperación fuerte y papel de puerta de entrada.</li>
+            <li>Hospitalaria: mejora moderada, todavía sin volver a máximos históricos.</li>
+            <li>Urgencias: punto débil persistente, con alto espacio de mejora estructural.</li>
+          </ul>
+        </div>
+        <div class="sr">
+          <div class="cc" style="height:270px;"><canvas id="serviceChart"></canvas></div>
+          <div class="kpi-row" style="margin-top:12px;">
+            <div class="kpi"><div class="kv">82%</div><div class="kl">valoración positiva en Atención Primaria</div></div>
+            <div class="kpi"><div class="kv">61%</div><div class="kl">valoración positiva en consultas hospitalarias</div></div>
+            <div class="kpi"><div class="kv">35%</div><div class="kl">valoración positiva en urgencias</div></div>
+            <div class="kpi"><div class="kv">36%</div><div class="kl">tasa de positividad en urgencias</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-band"><div class="srcs">Fuente: Conclusiones y Tabla 7 del VII Barómetro EsCrónicos 2024</div><div class="nt" onclick="toggleNotes()">Speaker notes [N]</div></div>
+    </div>
+
+    <div class="slide" data-n="4">
+      <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">04 / 10</div></div>
+      <div class="sb">
+        <div class="sl">
+          <div class="rl"></div>
+          <div class="tag">Motor de recuperación</div>
+          <div class="title">Atención<br>Primaria<br><span class="r">salva el cuadro.</span></div>
+          <p class="sub">La principal conclusión operativa del informe es clara: cuando Atención Primaria se refuerza, mejora la percepción del sistema completo y se reduce presión sobre especializada y urgencias.</p>
+          <div class="qb">
+            <p>"La valoración de la Atención Primaria ha contribuido a una mejora general en la atención sanitaria recibida y tiene un papel crucial en la gestión de la cronicidad."</p>
+            <div class="att">Conclusiones · VII Barómetro EsCrónicos 2024</div>
+          </div>
+        </div>
+        <div class="sr">
+          <div class="grid-3">
+            <div class="stg hi"><div class="num">82%</div><div class="st">Valoración positiva</div><div class="sd">Sube desde el 43% en 2022 y vuelve a niveles similares a 2015.</div></div>
+            <div class="stg"><div class="num">+39 pp</div><div class="st">Rebote 2022→2024</div><div class="sd">Es la recuperación más fuerte entre los servicios analizados.</div></div>
+            <div class="stg hi"><div class="num">01</div><div class="st">Palanca sistémica</div><div class="sd">Detección temprana, seguimiento continuo y alivio de presión en otros niveles.</div></div>
+          </div>
+          <div class="center-panel" style="margin-top:12px;">
+            <div style="font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Lo que esto significa para liderazgo</div>
+            <div class="flow">
+              <div class="stg"><div class="st">Entrada</div><div class="sd">Más accesibilidad y continuidad.</div></div>
+              <div class="stg"><div class="st">Seguimiento</div><div class="sd">Menos pérdida de pacientes crónicos en el camino.</div></div>
+              <div class="stg"><div class="st">Derivación</div><div class="sd">Mejor coordinación con especializada.</div></div>
+              <div class="stg hi"><div class="st">Impacto</div><div class="sd">Menos tensión en urgencias y mejor lectura global del sistema.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-band"><div class="srcs">Fuente: conclusiones del informe, líneas sobre fortalecimiento de Atención Primaria y gestión de crónicos</div><div class="nt" onclick="toggleNotes()">Speaker notes [N]</div></div>
+    </div>
+
+    <div class="slide" data-n="5">
+      <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">05 / 10</div></div>
+      <div class="sb">
+        <div class="sl">
+          <div class="rl"></div>
+          <div class="tag">Punto rojo del sistema</div>
+          <div class="title">Urgencias sigue<br><span class="r">atascada.</span></div>
+          <p class="sub">La mejora del sistema no ha llegado con la misma intensidad a urgencias. El informe es explícito: hacen falta medidas estructurales, no ajustes cosméticos.</p>
+          <ul class="il">
+            <li>35% de valoraciones positivas en urgencias.</li>
+            <li>36% de tasa de positividad.</li>
+            <li>Alta proporción de valoraciones neutras y negativas.</li>
+            <li>Se recomiendan vías rápidas y triaje específico para crónicos.</li>
+          </ul>
+        </div>
+        <div class="sr">
+          <div class="split">
+            <div class="center-panel">
+              <div style="font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Diagnóstico</div>
+              <div style="font-family:'Anton',Impact,sans-serif;font-size:72px;color:var(--red);line-height:1;">35%</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5;margin-top:6px;">valoración positiva en urgencias. Sigue siendo uno de los puntos débiles más claros del sistema para pacientes crónicos.</div>
+              <div style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.48);line-height:1.45;">La lectura boardroom es simple: cuando el paciente pierde continuidad, el sistema termina pagando en urgencias.</div>
+            </div>
+            <div class="ladder">
+              <div class="step"><div class="n">1</div><div><div class="t">Vías rápidas</div><div class="d">Circuitos específicos para pacientes crónicos en situaciones de emergencia.</div></div></div>
+              <div class="step"><div class="n">2</div><div><div class="t">Triaje específico</div><div class="d">Protocolos adaptados a patologías crónicas para ganar precisión y tiempo.</div></div></div>
+              <div class="step"><div class="n">3</div><div><div class="t">Personal capacitado</div><div class="d">Capacidad real de manejo de cronicidad dentro del entorno de urgencias.</div></div></div>
+              <div class="step" style="background:rgba(255,48,48,0.08);border-color:rgba(255,48,48,0.2);"><div class="n">4</div><div><div class="t">Impacto esperado</div><div class="d">Menor espera, mejor satisfacción y mejores resultados clínicos.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-band"><div class="srcs">Fuente: valoración de urgencias y recomendación 7 del VII Barómetro EsCrónicos 2024</div><div class="nt" onclick="toggleNotes()">Speaker notes [N]</div></div>
+    </div>
+
+    <div class="slide" data-n="6">
+      <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">06 / 10</div></div>
+      <div class="sb">
+        <div class="sl">
+          <div class="rl"></div>
+          <div class="tag">Análisis por sexo</div>
+          <div class="title">La paradoja<br>de género.</div>
+          <p class="sub">El informe encuentra una tensión relevante: las mujeres reportan peor estado de salud y mayor avance de enfermedad, pero valoran mejor el sistema sanitario público que los hombres.</p>
+          <div class="qb">
+            <p>"A pesar de reportar peor estado de salud, las mujeres valoran más positivamente la atención sanitaria que reciben."</p>
+            <div class="att">Conclusiones · VII Barómetro EsCrónicos 2024</div>
+          </div>
+        </div>
+        <div class="sr">
+          <div class="journey">
+            <div class="jn hi"><div class="jt">Mujeres</div><div class="jv red">6,03</div><div class="jd">nota media al sistema sanitario público. También valoran mejor Atención Primaria y urgencias.</div></div>
+            <div class="jn"><div class="jt">Hombres</div><div class="jv">4,43</div><div class="jd">valoración media del sistema, claramente inferior a la de las mujeres.</div></div>
+            <div class="jn"><div class="jt">Lectura</div><div class="jv">≠</div><div class="jd">Experiencia percibida y estado de salud no evolucionan igual. La satisfacción no basta como proxy de bienestar.</div></div>
+          </div>
+          <div class="center-panel" style="margin-top:12px;">
+            <div style="font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Implicación de diseño</div>
+            <div class="grid-3">
+              <div class="stg"><div class="st">Segmentación</div><div class="sd">No diseñar políticas de cronicidad asumiendo una experiencia homogénea.</div></div>
+              <div class="stg hi"><div class="st">Enfoque de género</div><div class="sd">El propio informe pide integrar perspectiva de género en autocuidado, adherencia y necesidades de atención.</div></div>
+              <div class="stg"><div class="st">Medición</div><div class="sd">Separar indicadores de experiencia, salud percibida y resultados reales.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-band"><div class="srcs">Fuente: apartado 6.3 Análisis por sexo del VII Barómetro EsCrónicos 2024</div><div class="nt" onclick="toggleNotes()">Speaker notes [N]</div></div>
+    </div>
+
+    <div class="slide" data-n="7">
+      <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">07 / 10</div></div>
+      <div class="sb" style="flex-direction:column;align-items:flex-start;gap:12px;">
+        <div>
+          <div class="tag">Agenda de transformación</div>
+          <div class="title" style="font-size:36px;">Las 8 acciones que propone el informe</div>
+          <p class="sub" style="max-width:860px;">El barómetro no se queda en diagnóstico. Propone una hoja de ruta muy concreta para rediseñar la gestión de la cronicidad desde continuidad, empoderamiento, salud mental y resultados.</p>
+        </div>
+        <div class="grid-4">
+          <div class="stg hi"><div class="num">01</div><div class="st">Autocuidado</div><div class="sd">Programas de autocuidado y empoderamiento con enfoque de género.</div></div>
+          <div class="stg"><div class="num">02</div><div class="st">Coordinación</div><div class="sd">Circuitos preferentes entre Atención Primaria y especializada.</div></div>
+          <div class="stg hi"><div class="num">03</div><div class="st">Participación</div><div class="sd">Paciente más activo en la gestión de su salud y decisiones compartidas.</div></div>
+          <div class="stg"><div class="num">04</div><div class="st">Asociaciones</div><div class="sd">Formalizar su papel en políticas públicas y mejora asistencial.</div></div>
+          <div class="stg"><div class="num">05</div><div class="st">Formación</div><div class="sd">Capacitación específica del personal sanitario en cronicidad.</div></div>
+          <div class="stg hi"><div class="num">06</div><div class="st">Apoyo psicológico</div><div class="sd">Integrar salud mental y herramientas digitales de apoyo emocional.</div></div>
+          <div class="stg"><div class="num">07</div><div class="st">Urgencias</div><div class="sd">Vías rápidas y triaje específico para pacientes crónicos.</div></div>
+          <div class="stg hi"><div class="num">08</div><div class="st">Transparencia</div><div class="sd">Indicadores públicos de gestión y resultados en salud.</div></div>
+        </div>
+        <div class="center-panel" style="width:100%;">
+          <div style="font-size:11px;color:rgba(255,255,255,0.7);line-height:1.55;">Lectura LH: la propuesta del informe no es solo clínica. Es una agenda de <strong style="color:#fff;">arquitectura operativa</strong>. Lo que pide es rediseñar el sistema alrededor del paciente crónico, no simplemente aumentar actividad.</div>
+        </div>
+      </div>
+      <div class="footer-band"><div class="srcs">Fuente: apartado 7. Propuestas y recomendaciones del VII Barómetro EsCrónicos 2024</div><div class="nt" onclick="toggleNotes()">Speaker notes [N]</div></div>
+    </div>
+
+    <div class="slide" data-n="8">
+      <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">08 / 10</div></div>
+      <div class="sb">
+        <div class="sl">
+          <div class="rl"></div>
+          <div class="tag">Leadership House lens</div>
+          <div class="title">De servicio<br>a sistema<br><span class="r">integrado.</span></div>
+          <p class="sub">Si juntamos el informe en una sola imagen, la conclusión es ésta: cronicidad no se gestiona por silos. Se gestiona como un sistema de continuidad, información y acompañamiento.</p>
+        </div>
+        <div class="sr">
+          <div class="flow">
+            <div class="stg"><div class="st">Acceso</div><div class="sd">Atención Primaria sólida y puerta de entrada efectiva.</div></div>
+            <div class="stg"><div class="st">Continuidad</div><div class="sd">Coordinación entre niveles con historial compartido.</div></div>
+            <div class="stg"><div class="st">Capacitación</div><div class="sd">Equipos entrenados en cronicidad y soporte emocional.</div></div>
+            <div class="stg hi"><div class="st">Resultados</div><div class="sd">Menos urgencias evitables y mejor salud percibida.</div></div>
+          </div>
+          <div class="center-panel" style="margin-top:12px;">
+            <div style="font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Arquitectura objetivo</div>
+            <div class="journey">
+              <div class="jn"><div class="jt">Paciente</div><div class="jv red">Autocuidado</div><div class="jd">Educación, adherencia, seguimiento y toma de decisiones compartidas.</div></div>
+              <div class="jn hi"><div class="jt">Sistema</div><div class="jv">Coordinación</div><div class="jd">Primaria, especializada, urgencias y salud mental conectadas.</div></div>
+              <div class="jn"><div class="jt">Ecosistema</div><div class="jv">Asociaciones</div><div class="jd">Acompañamiento, voz del paciente y difusión de recursos.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-band"><div class="srcs">Síntesis LH basada en conclusiones y recomendaciones del informe</div><div class="nt" onclick="toggleNotes()">Speaker notes [N]</div></div>
+    </div>
+
+    <div class="slide" data-n="9">
+      <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">09 / 10</div></div>
+      <div class="sb">
+        <div class="sl">
+          <div class="rl"></div>
+          <div class="tag">Boardroom dashboard</div>
+          <div class="title">Los KPI que sí<br>deberíamos<br><span class="r">seguir.</span></div>
+          <p class="sub">El informe termina pidiendo evaluación y transparencia. Traducido a leadership dashboard: hay que medir más allá de actividad, y gobernar el sistema con indicadores de continuidad y resultados en salud.</p>
+        </div>
+        <div class="sr">
+          <div class="grid-5">
+            <div class="stg hi"><div class="num">01</div><div class="st">Valoración del sistema</div><div class="sd">Media global y evolución anual.</div></div>
+            <div class="stg"><div class="num">02</div><div class="st">Salud percibida</div><div class="sd">% bueno/muy bueno y % malo/muy malo.</div></div>
+            <div class="stg hi"><div class="num">03</div><div class="st">Continuidad asistencial</div><div class="sd">Coordinación entre Primaria y especializada.</div></div>
+            <div class="stg"><div class="num">04</div><div class="st">Urgencias</div><div class="sd">Tiempos, adecuación y experiencia específica de crónicos.</div></div>
+            <div class="stg hi"><div class="num">05</div><div class="st">Resultados públicos</div><div class="sd">Transparencia como motor de mejora continua.</div></div>
+          </div>
+          <div class="cc" style="height:220px;margin-top:12px;"><canvas id="kpiChart"></canvas></div>
+          <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.52);line-height:1.5;">La clave no es sólo mirar percepción. Es cruzar experiencia, salud percibida y puntos de fricción para ver si el sistema realmente está gestionando mejor la cronicidad.</div>
+        </div>
+      </div>
+      <div class="footer-band"><div class="srcs">Inspirado en la recomendación 8: evaluación y transparencia de resultados</div><div class="nt" onclick="toggleNotes()">Speaker notes [N]</div></div>
+    </div>
+
+    <div class="slide" data-n="10">
+      <div class="sh"><div class="logo">LEADERSHIP<br>HOUSE<small>POWERED BY BLUEBARNA</small></div><div class="snum">10 / 10</div></div>
+      <div class="sb">
+        <div class="sl">
+          <div class="tag">Cierre estratégico</div>
+          <div class="title" style="font-size:44px;line-height:.93;">NO ES UN<br>PROBLEMA DE<br>ACTIVIDAD.<br>ES UN PROBLEMA DE<br><span class="r">DISEÑO.</span></div>
+          <p class="sub" style="margin-top:10px;">El VII Barómetro EsCrónicos 2024 deja una idea poderosa: el sistema puede mejorar en valoración y seguir fallando al paciente crónico si no rediseña continuidad, apoyo emocional, coordinación y urgencias.</p>
+        </div>
+        <div class="sr">
+          <div class="grid-3">
+            <div class="sc" style="background:rgba(255,48,48,0.08);border-color:rgba(255,48,48,0.2);"><div class="v">Primaria</div><div class="l">es la palanca de recuperación.</div></div>
+            <div class="sc" style="background:rgba(255,48,48,0.08);border-color:rgba(255,48,48,0.2);"><div class="v">Urgencias</div><div class="l">es la fricción crítica.</div></div>
+            <div class="sc" style="background:rgba(255,48,48,0.08);border-color:rgba(255,48,48,0.2);"><div class="v">Salud</div><div class="l">sigue peor que antes de la pandemia.</div></div>
+          </div>
+          <div class="qb" style="margin-top:14px;">
+            <p>"El futuro no es medir si el paciente fue atendido. Es medir si el sistema fue capaz de sostenerlo."</p>
+            <div class="att">Leadership House × Bluebarna · síntesis ejecutiva</div>
+          </div>
+          <div class="center-panel" style="margin-top:12px;">
+            <div style="font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Next leadership move</div>
+            <div class="grid-3">
+              <div class="stg"><div class="st">Repriorizar</div><div class="sd">Cronicidad como agenda transversal, no funcional.</div></div>
+              <div class="stg hi"><div class="st">Orquestar</div><div class="sd">Paciente, profesionales, asociaciones y datos como un solo sistema.</div></div>
+              <div class="stg"><div class="st">Medir</div><div class="sd">Salud, continuidad y urgencias con transparencia radical.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-band"><div class="srcs">Fuente principal: [PDF] https://plataformadepacientes.org/wp-content/uploads/2024/11/VII-BAROMETRO-ESCRONICOS-FINAL-website.pdf</div><div class="nt" onclick="toggleNotes()">Speaker notes [N]</div></div>
+    </div>
+
+  </div>
+
+  <div class="np" id="np"><h4>Speaker Notes</h4><p id="notesCopy"></p></div>
+  <div class="nb">
+    <div class="dots" id="dots"></div>
+    <div class="nc" id="counter">1 / 10</div>
+    <div class="nctrls">
+      <button class="nb-btn" onclick="prev()">← Prev</button>
+      <button class="nb-btn" onclick="next()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const notes = [
+  "Abre con la idea de que el sistema mejora, pero el paciente crónico todavía no siente una recuperación completa. La tensión entre servicio y salud es la tesis del deck.",
+  "Esta slide instala la gran paradoja: mejor valoración del sistema y peor salud percibida que antes de la pandemia. Es la señal de que actividad y bienestar no son equivalentes.",
+  "Aquí hay que leer el sistema como un portafolio de experiencias. Atención Primaria rescata la foto global, hospitalaria mejora, urgencias sigue siendo el punto rojo.",
+  "No es una slide de celebración, sino de enfoque. Primaria funciona como infraestructura crítica para cronicidad: entrada, seguimiento y reducción de presión aguas abajo.",
+  "Urgencias exige rediseño operativo. El informe no sugiere comunicación ni campañas: pide triaje específico, vías rápidas y capacidad real para manejar crónicos.",
+  "La lectura de género es estratégica. No basta con agregar una media global. Experiencia, salud y uso del sistema se comportan distinto según sexo.",
+  "Estas ocho acciones son una agenda de transformación del sistema. Conviene presentarlas como un roadmap de liderazgo, no como una lista administrativa.",
+  "Esta es la síntesis LH: pasar de servicios fragmentados a un sistema integrado de continuidad asistencial. La clave es orquestación, no suma de iniciativas.",
+  "Si el informe pide transparencia, nuestra traducción es un dashboard de gobierno. Menos indicadores de actividad y más indicadores de continuidad, salud y fricción.",
+  "Cierra elevando la conversación. El problema no es cuánto hace el sistema, sino cómo está diseñado para sostener al paciente crónico a lo largo del tiempo."
+];
+
+let cur = 1;
+const tot = 10;
+let notesOn = false;
+
+function show(n){
+  document.querySelectorAll('.slide').forEach(s => { s.style.display = 'none'; s.classList.remove('active'); });
+  const target = document.querySelector('.slide[data-n="'+n+'"]');
+  if(target){ target.style.display = 'flex'; target.classList.add('active'); }
+  cur = n;
+  document.getElementById('counter').textContent = n + ' / ' + tot;
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i + 1 === n));
+  document.getElementById('notesCopy').textContent = notes[n - 1] || '';
+}
+function next(){ if(cur < tot) show(cur + 1); }
+function prev(){ if(cur > 1) show(cur - 1); }
+function toggleNotes(){
+  notesOn = !notesOn;
+  document.getElementById('np').classList.toggle('vis', notesOn);
+}
+
+const dc = document.getElementById('dots');
+for(let i = 1; i <= tot; i++){
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 1 ? ' active' : '');
+  d.onclick = () => show(i);
+  dc.appendChild(d);
+}
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+  if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
+  if(e.key === 'n' || e.key === 'N') toggleNotes();
+});
+
+show(1);
+
+window.addEventListener('load', () => {
+  new Chart(document.getElementById('gapChart'), {
+    type: 'line',
+    data: {
+      labels: ['2017', '2019', '2022', '2024'],
+      datasets: [
+        {
+          label: 'Sistema sanitario (media)',
+          data: [6.7, 5.8, 4.5, 5.2],
+          borderColor: '#FF3030',
+          backgroundColor: 'rgba(255,48,48,0.12)',
+          tension: 0.35,
+          pointRadius: 4,
+          pointBackgroundColor: '#FF3030',
+          yAxisID: 'y'
+        },
+        {
+          label: '% salud mala o muy mala',
+          data: [16, 47, 38, 33],
+          borderColor: 'rgba(255,255,255,0.45)',
+          backgroundColor: 'transparent',
+          tension: 0.35,
+          pointRadius: 4,
+          pointBackgroundColor: 'rgba(255,255,255,0.55)',
+          yAxisID: 'y1'
+        }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ labels:{ color:'rgba(255,255,255,0.55)', boxWidth:10, font:{size:10} } } },
+      scales:{
+        x:{ ticks:{ color:'rgba(255,255,255,0.42)', font:{size:10} }, grid:{ color:'rgba(255,255,255,0.05)' } },
+        y:{ min:4, max:7, ticks:{ color:'rgba(255,255,255,0.4)', font:{size:9} }, grid:{ color:'rgba(255,255,255,0.05)' } },
+        y1:{ position:'right', min:0, max:50, ticks:{ color:'rgba(255,255,255,0.28)', font:{size:9}, callback:v => v + '%' }, grid:{ display:false } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('serviceChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Atención Primaria', 'Hospitalaria', 'Urgencias'],
+      datasets: [{
+        data: [82, 61, 35],
+        backgroundColor: ['#FF3030', 'rgba(255,110,110,0.78)', 'rgba(255,255,255,0.12)'],
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:c => c.raw + '% valoración positiva' } } },
+      scales:{
+        x:{ ticks:{ color:'rgba(255,255,255,0.5)', font:{size:10} }, grid:{ display:false } },
+        y:{ min:0, max:100, ticks:{ color:'rgba(255,255,255,0.4)', font:{size:9}, callback:v => v + '%' }, grid:{ color:'rgba(255,255,255,0.05)' } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('kpiChart'), {
+    type: 'radar',
+    data: {
+      labels: ['Sistema', 'Salud percibida', 'Primaria', 'Hospitalaria', 'Urgencias'],
+      datasets: [
+        {
+          label: 'Situación 2024',
+          data: [52, 42, 82, 61, 35],
+          borderColor: '#FF3030',
+          backgroundColor: 'rgba(255,48,48,0.18)',
+          pointBackgroundColor: '#FF3030'
+        }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:false } },
+      scales:{
+        r:{
+          min:0, max:100,
+          angleLines:{ color:'rgba(255,255,255,0.08)' },
+          grid:{ color:'rgba(255,255,255,0.08)' },
+          pointLabels:{ color:'rgba(255,255,255,0.55)', font:{size:10} },
+          ticks:{ display:false }
+        }
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
