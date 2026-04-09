@@ -425,8 +425,8 @@ export function StudentShell({
       try {
         const rows = await getSessionState(sessionCode);
         const mine = rows.find(
-          (row) => row.user_role === "student" && row.user_name === teamKey
-        );
+  (row: any) => row.user_role === "student" && row.user_name === teamKey
+);
 
         if (!cancelled && mine?.payload) {
           const payload = mine.payload as {
@@ -536,8 +536,8 @@ export function StudentShell({
       try {
         const rows = await getSessionState(sessionCode);
         const mine = rows.find(
-          (row) => row.user_role === "student" && row.user_name === teamKey
-        );
+  (row: any) => row.user_role === "student" && row.user_name === teamKey
+);
 
         if (mine?.payload) {
           const payload = mine.payload as {
