@@ -20,6 +20,8 @@ import { applySelections, selectionCost } from "@/lib/engine";
 import { Action, Level, Phase, YearSelections } from "@/lib/types";
 import { ActionCard } from "@/components/simulator/action-card";
 import { ShareBars } from "@/components/simulator/share-bars";
+import { getSessionState, upsertStudentState } from "@/lib/session-state";
+import { subscribeToSessionState } from "@/lib/session-realtime";
 
 const GENERAL_INSTRUCTIONS = [
   "Eres Eva, directora de la unidad de negocio de Cefalix en España.",
@@ -209,6 +211,8 @@ export function StudentShell({
   const [teamKey, setTeamKey] = useState("");
   const [registrationState, setRegistrationState] = useState<"loading" | "done" | "pending">("loading");
   const [registrationInput, setRegistrationInput] = useState("");
+  const [isHydratingFromSupabase, setIsHydratingFromSupabase] = useState(true);
+  const [syncError, setSyncError] = useState("");
   const [selections, setSelections] = useState<YearSelections>({
     2017: [],
     2018: [],
@@ -410,6 +414,155 @@ export function StudentShell({
     teamKey,
     unlockedYearKey
   ]);
+
+ 
+  useEffect(() => {
+    if (registrationState !== "done" || !teamKey) return;
+
+    let cancelled = false;
+
+    async function hydrateFromSupabase() {
+      try {
+        const rows = await getSessionState(sessionCode);
+        const mine = rows.find(
+          (row) => row.user_role === "student" && row.user_name === teamKey
+        );
+
+        if (!cancelled && mine?.payload) {
+          const payload = mine.payload as {
+            teamName?: string;
+            selections?: YearSelections;
+            confirmedYears?: number[];
+            currentYearIndex?: number;
+            unlockedYearIndex?: number;
+            boardroomNotes?: string;
+            boardroomMessages?: StudentMessage[];
+            facilitatorMessages?: FacilitatorMessage[];
+            facilitatorEvents?: string[];
+            launchClosed?: boolean;
+            decision2019Pop?: "accept" | "reject" | null;
+            decision2019Price?: "accept_200" | "propose" | "no_launch" | null;
+            decision2019ProposedPrice?: string;
+            caseLost?: boolean;
+          };
+
+          if (payload.teamName) setTeamName(payload.teamName);
+          if (payload.selections) setSelections(payload.selections);
+          if (payload.confirmedYears) setConfirmedYears(payload.confirmedYears);
+          if (typeof payload.currentYearIndex === "number") setCurrentYearIndex(payload.currentYearIndex);
+          if (typeof payload.unlockedYearIndex === "number") setUnlockedYearIndex(payload.unlockedYearIndex);
+          if (typeof payload.boardroomNotes === "string") setBoardroomNotes(payload.boardroomNotes);
+          if (payload.boardroomMessages) setBoardroomMessages(payload.boardroomMessages);
+          if (payload.facilitatorMessages) setFacilitatorMessages(payload.facilitatorMessages);
+          if (payload.facilitatorEvents) setFacilitatorEvents(payload.facilitatorEvents);
+          if (typeof payload.launchClosed === "boolean") setLaunchClosed(payload.launchClosed);
+          if (payload.decision2019Pop !== undefined) setDecision2019Pop(payload.decision2019Pop);
+          if (payload.decision2019Price !== undefined) setDecision2019Price(payload.decision2019Price);
+          if (typeof payload.decision2019ProposedPrice === "string") {
+            setDecision2019ProposedPrice(payload.decision2019ProposedPrice);
+          }
+          if (typeof payload.caseLost === "boolean") setCaseLost(payload.caseLost);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setSyncError(error instanceof Error ? error.message : "Error syncing with Supabase");
+        }
+      } finally {
+        if (!cancelled) setIsHydratingFromSupabase(false);
+      }
+    }
+
+    hydrateFromSupabase();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [registrationState, teamKey, sessionCode]);
+
+  useEffect(() => {
+    if (registrationState !== "done" || !teamKey || isHydratingFromSupabase) return;
+
+    async function syncToSupabase() {
+      try {
+        setSyncError("");
+        await upsertStudentState(sessionCode, teamKey, {
+          teamName,
+          selections,
+          confirmedYears,
+          currentYearIndex,
+          unlockedYearIndex,
+          boardroomNotes,
+          boardroomMessages,
+          facilitatorMessages,
+          facilitatorEvents,
+          launchClosed,
+          decision2019Pop,
+          decision2019Price,
+          decision2019ProposedPrice,
+          caseLost,
+          updatedAt: new Date().toISOString(),
+        });
+      } catch (error) {
+        setSyncError(error instanceof Error ? error.message : "Error saving to Supabase");
+      }
+    }
+
+    syncToSupabase();
+  }, [
+    registrationState,
+    teamKey,
+    isHydratingFromSupabase,
+    sessionCode,
+    teamName,
+    selections,
+    confirmedYears,
+    currentYearIndex,
+    unlockedYearIndex,
+    boardroomNotes,
+    boardroomMessages,
+    facilitatorMessages,
+    facilitatorEvents,
+    launchClosed,
+    decision2019Pop,
+    decision2019Price,
+    decision2019ProposedPrice,
+    caseLost,
+  ]);
+
+  useEffect(() => {
+    if (registrationState !== "done" || !teamKey) return;
+
+    const unsubscribe = subscribeToSessionState(sessionCode, async () => {
+      try {
+        const rows = await getSessionState(sessionCode);
+        const mine = rows.find(
+          (row) => row.user_role === "student" && row.user_name === teamKey
+        );
+
+        if (mine?.payload) {
+          const payload = mine.payload as {
+            teamName?: string;
+            selections?: YearSelections;
+            confirmedYears?: number[];
+            currentYearIndex?: number;
+            unlockedYearIndex?: number;
+            boardroomNotes?: string;
+          };
+
+          if (payload.teamName) setTeamName(payload.teamName);
+          if (payload.selections) setSelections(payload.selections);
+          if (payload.confirmedYears) setConfirmedYears(payload.confirmedYears);
+          if (typeof payload.currentYearIndex === "number") setCurrentYearIndex(payload.currentYearIndex);
+          if (typeof payload.unlockedYearIndex === "number") setUnlockedYearIndex(payload.unlockedYearIndex);
+          if (typeof payload.boardroomNotes === "string") setBoardroomNotes(payload.boardroomNotes);
+        }
+      } catch (error) {
+        setSyncError(error instanceof Error ? error.message : "Realtime sync error");
+      }
+    });
+
+    return unsubscribe;
+  }, [registrationState, teamKey, sessionCode]);
 
   useEffect(() => {
     window.localStorage.setItem(teamNameKey, teamName || "Equipo sin nombre");
