@@ -483,34 +483,33 @@ export function StudentShell({
     if (registrationState !== "done" || !teamKey || isHydratingFromSupabase) return;
 
     async function syncToSupabase() {
-      try {
-        setSyncError("");
-        await upsertStudentState(sessionCode, teamKey, {
-          teamName,
-          selections,
-          confirmedYears,
-          currentYearIndex,
-          unlockedYearIndex,
-          boardroomNotes,
-          boardroomMessages,
-          facilitatorMessages,
-          facilitatorEvents,
-          launchClosed,
-          decision2019Pop,
-          decision2019Price,
-          decision2019ProposedPrice,
-          caseLost,
-          updatedAt: new Date().toISOString(),
-        });
-      } catch (error) {
-        setSyncError(error instanceof Error ? error.message : "Error saving to Supabase");
-      }
-console.log("SYNC TO SUPABASE", {
-  sessionCode,
-  teamKey,
-  selections,
-});
-    }
+  try {
+    setSyncError("");
+
+    await upsertStudentState(sessionCode, teamKey, {
+      teamName,
+      selections,
+      confirmedYears,
+      currentYearIndex,
+      unlockedYearIndex,
+      boardroomNotes,
+      boardroomMessages,
+      facilitatorMessages,
+      facilitatorEvents,
+      launchClosed,
+      decision2019Pop,
+      decision2019Price,
+      decision2019ProposedPrice,
+      caseLost,
+      updatedAt: new Date().toISOString(),
+    });
+
+    console.log("✅ Saved to Supabase");
+  } catch (error) {
+    console.error("❌ Supabase error:", error); // 👈 CLAVE
+    setSyncError(error instanceof Error ? error.message : "Error saving to Supabase");
+  }
+}
 
     syncToSupabase();
   }, [
