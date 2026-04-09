@@ -505,6 +505,11 @@ export function StudentShell({
       } catch (error) {
         setSyncError(error instanceof Error ? error.message : "Error saving to Supabase");
       }
+console.log("SYNC TO SUPABASE", {
+  sessionCode,
+  teamKey,
+  selections,
+});
     }
 
     syncToSupabase();
